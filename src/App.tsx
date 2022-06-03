@@ -1,26 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {Card, Row, Col} from 'antd';
+import {useEffect, useState} from 'react';
+import {PowerPlantType, PowerPlantCard} from './components';
 
 function App() {
+
+  const [powerPlants, setPowerPlants] = useState<PowerPlantType[]>([]);
+
+ 
+  useEffect(()=>{},[]);
+
+  useEffect(()=>{
+     setPowerPlants([{
+    title: 'Power Plant 1',
+    price: 100,
+    capacity: 100,
+  },
+  {
+    title: 'Power Plant 2',
+    price: 200,
+    capacity: 200,
+  },
+    {
+      title: 'Power Plant 3',
+      price: 300,
+      capacity: 300,
+    },
+    {
+      title: 'Power Plant 4',
+      price: 300,
+      capacity: 300,
+    }
+  ])
+
+  },[])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Row gutter={16}>
+        { powerPlants && powerPlants.map((powerPlant) => (
+          <Col span={8}>
+            <PowerPlantCard powerPlant={powerPlant}/>
+          </Col>
+        ))
+        }
+      </Row>
+    </>
   );
 }
 
 export default App;
+
+
