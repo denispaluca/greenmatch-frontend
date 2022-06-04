@@ -1,53 +1,19 @@
-import {Card, Row, Col} from 'antd';
-import {useEffect, useState} from 'react';
-import {PowerPlantType, PowerPlantCard} from './components';
+import {Route, Routes} from "react-router-dom";
+import {Layout} from "./components";
+import Dashboard from "./Dashboard";
 
-function App() {
-
-  const [powerPlants, setPowerPlants] = useState<PowerPlantType[]>([]);
-
- 
-  useEffect(()=>{},[]);
-
-  useEffect(()=>{
-     setPowerPlants([{
-    title: 'Power Plant 1',
-    price: 100,
-    capacity: 100,
-  },
-  {
-    title: 'Power Plant 2',
-    price: 200,
-    capacity: 200,
-  },
-    {
-      title: 'Power Plant 3',
-      price: 300,
-      capacity: 300,
-    },
-    {
-      title: 'Power Plant 4',
-      price: 300,
-      capacity: 300,
-    }
-  ])
-
-  },[])
-
-  return (
-    <>
-      <Row gutter={16}>
-        { powerPlants && powerPlants.map((powerPlant) => (
-          <Col span={8}>
-            <PowerPlantCard powerPlant={powerPlant}/>
-          </Col>
-        ))
-        }
-      </Row>
-    </>
+export function App(){
+  return(
+    <Routes>
+      <Route element={<Layout/>}>
+        <Route path="/" element={<Dashboard/>} />
+        <Route 
+          path="/user-settings" 
+          element={<div>Add a page here</div>}
+        />
+      </Route>
+      </Routes>
   );
 }
 
 export default App;
-
-
