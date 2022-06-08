@@ -1,19 +1,36 @@
-import { Card } from 'antd';
+import { Card, Space } from 'antd';
+import { SettingOutlined, CloseCircleFilled } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+
+export enum EnergyType {
+  Solar,
+  Wind,
+  Hydro
+}
+
 export type PowerPlantType = {
-  title: string,
-  price: number,
-  capacity: number,
+  name: string,
+  location: string,
+  type: EnergyType,
 }
 
 interface PowerPlantProps {
   powerPlant: PowerPlantType;
 }
 
-export function PowerPlantCard({powerPlant}: PowerPlantProps){
+export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
   return (
-          <Card title={powerPlant.title}>
-            <p>Capacity: {powerPlant.capacity}</p>
-            <p>Price: {powerPlant.price}</p>
-          </Card>
+    <Card
+      style={{ borderRadius: "20px", overflow: "hidden" }}
+      hoverable
+      title={powerPlant.name}
+      actions={[
+        <Link to="/login"><SettingOutlined /></Link>,
+        <Space style={{color:'#ff8178'}}><CloseCircleFilled/>Offline</Space>
+      ]}
+    >
+      <p>Location: {powerPlant.location}</p>
+      <p>Type: {EnergyType[powerPlant.type]}</p>
+    </Card>
   )
 }
