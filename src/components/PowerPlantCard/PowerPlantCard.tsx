@@ -14,8 +14,8 @@ export type PowerPlantType = {
   name: string,
   location: string,
   type: EnergyType,
-  status: StatusType,
-  price?: number,
+  live: StatusType,
+  currentPrice?: number,
   capacity?: number,
   duration?: number[],
 }
@@ -32,7 +32,7 @@ export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
       title={powerPlant.name}
       actions={[
         <Link to={`powerplant/${powerPlant.id}/edit`}><SettingOutlined /></Link>,
-        <StatusDisplay status={powerPlant.status}/>
+        <StatusDisplay live={powerPlant.live}/>
       ]}
     >
       <p>Location: {powerPlant.location}</p>

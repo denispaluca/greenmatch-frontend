@@ -7,14 +7,15 @@ export enum StatusType {
 }
 
 interface StatusProps {
-  status: StatusType;
+  live: StatusType;
 }
 
-export function StatusDisplay({status}: StatusProps) {
+/* Displays either "Online" or "Offline" in the actions section of the power plant card */
+export function StatusDisplay({live}: StatusProps) {
   return (
     <>
       {
-      (status === StatusType.Online) 
+      (live === StatusType.Online) 
       ? <Space style={{ color: '#6fbf84' }}><CheckCircleFilled />Online</Space>
       : <Space style={{ color: '#ff8178' }}><CloseCircleFilled />Offline</Space>
       }
