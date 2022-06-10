@@ -1,7 +1,7 @@
 import { Card } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { StatusType, StatusDisplay } from '../StatusDisplay/StatusDisplay';
+import { StatusDisplay } from '../StatusDisplay/StatusDisplay';
 
 export enum EnergyType {
   Solar,
@@ -14,7 +14,7 @@ export type PowerPlantType = {
   name: string,
   location: string,
   type: EnergyType,
-  live: StatusType,
+  live: Boolean,
   currentPrice?: number,
   capacity?: number,
   duration?: number[],

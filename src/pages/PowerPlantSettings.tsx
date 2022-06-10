@@ -1,13 +1,13 @@
 import { Button, Checkbox, Form, InputNumber, Space, Switch } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
-import { EnergyType, Status } from '../components';
+import { EnergyType } from '../components';
 
 const dummyData = [{
   id: 1,
   name: 'Power Plant 1',
   location: 'Munich',
   type: EnergyType.Solar,
-  live: Status.Online,
+  live: true,
   currentPrice: 10,
   capacity: 1000,
   duration: [5, 10],
@@ -17,7 +17,7 @@ const dummyData = [{
   name: 'Power Plant 2',
   location: 'Berlin',
   type: EnergyType.Hydro,
-  live: Status.Offline,
+  live: false,
   currentPrice: 10,
   capacity: 1000,
   duration: [5, 10],
@@ -27,7 +27,7 @@ const dummyData = [{
   name: 'Power Plant 3',
   location: 'Cologne',
   type: EnergyType.Wind,
-  live: Status.Offline,
+  live: false,
   currentPrice: 10,
   capacity: 1000,
   duration: [5, 10],
@@ -37,7 +37,7 @@ const dummyData = [{
   name: 'Power Plant 4',
   location: 'Hamburg',
   type: EnergyType.Wind,
-  live: Status.Offline,
+  live: false,
   currentPrice: 10,
   capacity: 1000,
   duration: [5, 10],
@@ -75,7 +75,7 @@ export function PowerPlantSettings() {
 
   /* Decides based on the ID of the power plant whether the status switch should be activated or not */
   const checked = (id: string | undefined) => {
-    if (dummyData[Number(id) - 1].live === Status.Offline) {
+    if (dummyData[Number(id) - 1].live === false) {
       return false
     } else {
       return true
