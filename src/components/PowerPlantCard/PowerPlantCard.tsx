@@ -1,6 +1,7 @@
-import { Card, Space } from 'antd';
-import { SettingOutlined, CloseCircleFilled } from '@ant-design/icons';
+import { Card } from 'antd';
+import { SettingOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { StatusType, StatusDisplay } from '../StatusDisplay/StatusDisplay';
 
 export enum EnergyType {
   Solar,
@@ -9,9 +10,14 @@ export enum EnergyType {
 }
 
 export type PowerPlantType = {
+  id: number,
   name: string,
   location: string,
   type: EnergyType,
+  status: StatusType,
+  price?: number,
+  capacity?: number,
+  duration?: number[],
 }
 
 interface PowerPlantProps {
@@ -25,8 +31,8 @@ export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
       hoverable
       title={powerPlant.name}
       actions={[
-        <Link to="/login"><SettingOutlined /></Link>,
-        <Space style={{color:'#ff8178'}}><CloseCircleFilled/>Offline</Space>
+        <Link to={`powerplant/${powerPlant.id}/edit`}><SettingOutlined /></Link>,
+        <StatusDisplay status={powerPlant.status}/>
       ]}
     >
       <p>Location: {powerPlant.location}</p>

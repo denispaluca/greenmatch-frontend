@@ -1,6 +1,6 @@
 import { Row, Col, Button, Modal, Input, Form, Cascader } from 'antd';
 import { useEffect, useState } from 'react';
-import { PowerPlantType, PowerPlantCard, EnergyType } from '../components';
+import { PowerPlantType, PowerPlantCard, EnergyType, Status } from '../components';
 
 export function Dashboard() {
 
@@ -10,24 +10,44 @@ export function Dashboard() {
 
   useEffect(() => {
     setPowerPlants([{
+      id: 1,
       name: 'Power Plant 1',
       location: 'Munich',
       type: EnergyType.Solar,
+      status: Status.Online,
+      price: 10,
+      capacity: 1000,
+      duration: [5, 10],
     },
     {
+      id: 2,
       name: 'Power Plant 2',
       location: 'Berlin',
       type: EnergyType.Hydro,
+      status: Status.Offline,
+      price: 10,
+      capacity: 1000,
+      duration: [5, 10],
     },
     {
+      id: 3,
       name: 'Power Plant 3',
       location: 'Cologne',
       type: EnergyType.Wind,
+      status: Status.Offline,
+      price: 10,
+      capacity: 1000,
+      duration: [5, 10],
     },
     {
+      id: 4,
       name: 'Power Plant 4',
       location: 'Hamburg',
       type: EnergyType.Wind,
+      status: Status.Offline,
+      price: 10,
+      capacity: 1000,
+      duration: [5, 10],
     }
     ])
 
@@ -61,9 +81,11 @@ export function Dashboard() {
     setPowerPlants([
       ...powerPlants,
       {
+        id: powerPlants.length + 1,
         name: values.name,
         location: values.location,
-        type: values.type
+        type: values.type,
+        status: Status.Offline,
       }
     ])
     setIsModalVisible(false);
