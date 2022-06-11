@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, InputNumber, Space, Switch } from 'antd';
+import { Button, Checkbox, CheckboxOptionType, Form, InputNumber, Space, Switch } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { EnergyType } from '../components';
 
@@ -61,7 +61,7 @@ export function PowerPlantSettings() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  const checkboxGroupOptions = [
+  const durationOptions: CheckboxOptionType[] = [
     { label: '5 Years', value: 5 },
     { label: '10 Years', value: 10 },
     { label: '15 Years', value: 15 },
@@ -128,7 +128,7 @@ export function PowerPlantSettings() {
           label="PPA Duration"
           name="duration"
           rules={[{ required: true, message: 'Please check the possible PPA durations!' }]}>
-          <Checkbox.Group options={checkboxGroupOptions} />
+          <Checkbox.Group options={durationOptions} />
         </Form.Item>
         <Form.Item
           label="Status"
