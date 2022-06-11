@@ -41,6 +41,16 @@ const dummyData = [{
   currentPrice: 10,
   capacity: 1000,
   duration: [5, 10],
+},
+{
+  id: 5,
+  name: 'Power Plant 5',
+  location: 'Hamburg',
+  type: EnergyType.Wind,
+  live: false,
+  currentPrice: 10,
+  capacity: 1000,
+  duration: [5, 10],
 }
 ]
 

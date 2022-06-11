@@ -81,7 +81,7 @@ export function Dashboard() {
     setPowerPlants([
       ...powerPlants,
       {
-        id: powerPlants.length + 1,
+        id: (powerPlants.length + 1),
         name: values.name,
         location: values.location,
         type: values.type,
