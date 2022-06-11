@@ -1,5 +1,6 @@
 import { Row, Col, Radio, CheckboxOptionType, InputNumber, Checkbox, Divider, Slider, Button } from "antd";
 import React, { useState, useEffect } from "react";
+import { TeamOutlined, UserOutlined } from "@ant-design/icons";
 
 type PPADuration = 5 | 10 | 15;
 
@@ -129,23 +130,32 @@ const ConsumerDasboard: React.FC = () => {
                 />
               </Col>
             </Row>
-            <Slider
-              min={0}
-              max={1000}
-              value={nrEmpolyees}
-              onChange={setNrEmpolyees}
-            />
+            <Row justify="space-between">
+              <Col>
+                <UserOutlined style={{ fontSize: '150%' }} />
+              </Col>
+              <Col flex="auto">
+                <Slider
+                  min={0}
+                  max={1000}
+                  value={nrEmpolyees}
+                  onChange={setNrEmpolyees}
+                />
+              </Col>
+              <Col >
+                <TeamOutlined style={{ fontSize: '150%' }} />
+              </Col>
+            </Row>
 
             <Divider> OR </Divider>
-            <Row>
+            <Row justify="space-between">
               Yearly Consumption
-            </Row>
-            <Row>
               <InputNumber
                 min={0}
                 max={100000}
                 value={yearlyConsumption}
                 onChange={setYearlyConsumption}
+                addonAfter="kWh"
               />
             </Row>
           </Col>
