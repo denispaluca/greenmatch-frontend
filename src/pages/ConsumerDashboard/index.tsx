@@ -66,16 +66,13 @@ const ConsumerDasboard: React.FC = () => {
               </Col>
 
               <Col span={12}>
-                <Row>
-                  <InputNumber
-                    min={0}
-                    max={100000}
-                    value={priceStart}
-                    onChange={setPriceStart}
-                  />
-
-                  Cent / kWh
-                </Row>
+                <InputNumber
+                  min={0}
+                  max={100000}
+                  value={priceStart}
+                  onChange={setPriceStart}
+                  addonAfter="Cent / kWh"
+                />
               </Col>
             </Row>
 
@@ -85,16 +82,13 @@ const ConsumerDasboard: React.FC = () => {
               </Col>
 
               <Col span={12}>
-                <Row>
-                  <InputNumber
-                    min={0}
-                    max={100000}
-                    value={priceEnd}
-                    onChange={setPriceEnd}
-                  />
-
-                  Cent / kWh
-                </Row>
+                <InputNumber
+                  min={0}
+                  max={100000}
+                  value={priceEnd}
+                  onChange={setPriceEnd}
+                  addonAfter="Cent / kWh"
+                />
               </Col>
             </Row>
           </Col>
