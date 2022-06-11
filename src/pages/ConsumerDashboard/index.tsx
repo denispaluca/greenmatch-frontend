@@ -24,6 +24,8 @@ function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
 
+const YEARLY_MWH_PER_EMPLOYEE = 4;
+
 const ConsumerDasboard: React.FC = () => {
   const [duration, setDuration] = useState<PPADuration>();
   const [priceStart, setPriceStart] = useState<number>();
@@ -56,6 +58,25 @@ const ConsumerDasboard: React.FC = () => {
     setMaxCapacity(maxCapacity);
   }
 
+  const onChangePriceStart = (value: number) => {
+    if (priceEnd && value > priceEnd) {
+      setPriceEnd(undefined);
+    }
+    setPriceStart(value);
+  }
+
+  const onChangePriceEnd = (value: number) => {
+    if (priceStart && value < priceStart) {
+      setPriceStart(undefined);
+    }
+    setPriceEnd(value);
+  }
+
+  const maxEmployees = Math.floor(maxCapacity / YEARLY_MWH_PER_EMPLOYEE);
+  const onChangeEmployees = (value: number) => {
+    setNrEmpolyees(value);
+    setYearlyConsumption(value * YEARLY_MWH_PER_EMPLOYEE);
+  }
 
   const reset = () => {
     setDuration(undefined);
@@ -102,7 +123,7 @@ const ConsumerDasboard: React.FC = () => {
                   min={minPrice}
                   max={maxPrice}
                   value={priceStart}
-                  onChange={setPriceStart}
+                  onChange={onChangePriceStart}
                   addonAfter="Cent / kWh"
                 />
               </Col>
@@ -118,7 +139,7 @@ const ConsumerDasboard: React.FC = () => {
                   min={minPrice}
                   max={maxPrice}
                   value={priceEnd}
-                  onChange={setPriceEnd}
+                  onChange={onChangePriceEnd}
                   addonAfter="Cent / kWh"
                 />
               </Col>
@@ -154,10 +175,10 @@ const ConsumerDasboard: React.FC = () => {
               </Col>
               <Col span={12}>
                 <InputNumber
-                  min={0}
-                  max={1000}
+                  min={1}
+                  max={maxEmployees}
                   value={nrEmpolyees}
-                  onChange={setNrEmpolyees}
+                  onChange={onChangeEmployees}
                 />
               </Col>
             </Row>
@@ -167,10 +188,10 @@ const ConsumerDasboard: React.FC = () => {
               </Col>
               <Col flex="auto">
                 <Slider
-                  min={0}
-                  max={1000}
+                  min={1}
+                  max={maxEmployees}
                   value={nrEmpolyees}
-                  onChange={setNrEmpolyees}
+                  onChange={onChangeEmployees}
                 />
               </Col>
               <Col >
@@ -186,7 +207,7 @@ const ConsumerDasboard: React.FC = () => {
                 max={maxCapacity}
                 value={yearlyConsumption}
                 onChange={setYearlyConsumption}
-                addonAfter="kWh"
+                addonAfter="MWh"
               />
             </Row>
           </Col>
