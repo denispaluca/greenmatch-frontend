@@ -112,17 +112,13 @@ export function PowerPlantSettings() {
           label="Capacity"
           name="capacity"
           rules={[{ required: true, message: 'Please input the yearly capacity of the power plant!' }]}>
-          <Space>
-            <InputNumber style={{ width: "100%" }} type="number" onChange={value => form.setFieldsValue({ "capacity": value })} min={0} /><div>kWh per Year</div>
-          </Space>
+          <InputNumber type="number" onChange={value => form.setFieldsValue({ "capacity": value })} min={0} addonAfter="kWh / Year" />
         </Form.Item>
         <Form.Item
           label="Current Price"
           name="currentPrice"
           rules={[{ required: true, message: 'Please input the current price per kWh!' }]}>
-          <Space>
-            <InputNumber style={{ width: "100%" }} type="number" onChange={value => form.setFieldsValue({ "currentPrice": value })} min={0} /><div>Cents per kWh</div>
-          </Space>
+          <InputNumber type="number" onChange={value => form.setFieldsValue({ "currentPrice": value })} min={0} addonAfter="Cent / kWh" />
         </Form.Item>
         <Form.Item
           label="PPA Duration"
