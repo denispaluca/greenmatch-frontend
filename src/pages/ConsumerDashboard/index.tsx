@@ -1,5 +1,5 @@
 import { Row, Col, Radio, CheckboxOptionType, InputNumber, Checkbox, Divider, Slider, Button } from "antd";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { TeamOutlined, UserOutlined } from "@ant-design/icons";
 
 type PPADuration = 5 | 10 | 15;
@@ -18,6 +18,12 @@ const energyOptions: CheckboxOptionType[] = [
   { label: 'Hydro', value: 'hydro' }
 ];
 
+function getRandomInt(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
 const ConsumerDasboard: React.FC = () => {
   const [duration, setDuration] = useState<PPADuration>();
   const [priceStart, setPriceStart] = useState<number>();
@@ -25,6 +31,31 @@ const ConsumerDasboard: React.FC = () => {
   const [acceptedEnergyTypes, setAcceptedEnergyTypes] = useState<EnergyTypes[]>([]);
   const [nrEmpolyees, setNrEmpolyees] = useState(10);
   const [yearlyConsumption, setYearlyConsumption] = useState(0);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(100);
+  const [maxCapacity, setMaxCapacity] = useState(100000);
+
+  useEffect(() => {
+    fetchPriceRange();
+    fetchMaxCapacity();
+  }, []);
+
+  const fetchPriceRange = async () => {
+    //const response = await fetch('/api/price-range');
+    const minPrice = getRandomInt(1, 50);
+    const maxPrice = getRandomInt(minPrice, 100);
+    setMinPrice(minPrice);
+    setMaxPrice(maxPrice);
+    setPriceStart(minPrice);
+    setPriceEnd(maxPrice);
+  }
+
+  const fetchMaxCapacity = async () => {
+    //const response = await fetch('/api/max-capacity');
+    const maxCapacity = getRandomInt(30000, 100000);
+    setMaxCapacity(maxCapacity);
+  }
+
 
   const reset = () => {
     setDuration(undefined);
@@ -68,8 +99,8 @@ const ConsumerDasboard: React.FC = () => {
 
               <Col span={12}>
                 <InputNumber
-                  min={0}
-                  max={100000}
+                  min={minPrice}
+                  max={maxPrice}
                   value={priceStart}
                   onChange={setPriceStart}
                   addonAfter="Cent / kWh"
@@ -84,8 +115,8 @@ const ConsumerDasboard: React.FC = () => {
 
               <Col span={12}>
                 <InputNumber
-                  min={0}
-                  max={100000}
+                  min={minPrice}
+                  max={maxPrice}
                   value={priceEnd}
                   onChange={setPriceEnd}
                   addonAfter="Cent / kWh"
@@ -152,7 +183,7 @@ const ConsumerDasboard: React.FC = () => {
               Yearly Consumption
               <InputNumber
                 min={0}
-                max={100000}
+                max={maxCapacity}
                 value={yearlyConsumption}
                 onChange={setYearlyConsumption}
                 addonAfter="kWh"
@@ -162,10 +193,11 @@ const ConsumerDasboard: React.FC = () => {
         </Row>
       </Col>
     </Row>
-    <Row justify="center">
+    <Row justify="space-evenly">
       <Button type="primary" onClick={reset}>Reset</Button>
       <Button type="primary">Find</Button>
     </Row>
+    <Divider />
   </>);
 }
 
