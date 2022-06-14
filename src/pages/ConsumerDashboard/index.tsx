@@ -1,8 +1,8 @@
 import { Row, Col, Radio, CheckboxOptionType, InputNumber, Checkbox, Divider, Slider, Button } from "antd";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { TeamOutlined, UserOutlined } from "@ant-design/icons";
+import OffersTable, { EnergyTypes, PowerPlantOffer, PPADuration } from "../../components/OffersTable";
 
-type PPADuration = 5 | 10 | 15;
 
 const durationOptions: CheckboxOptionType[] = [
   { label: '5 years', value: 5 },
@@ -10,7 +10,7 @@ const durationOptions: CheckboxOptionType[] = [
   { label: '15 years', value: 15 }
 ];
 
-type EnergyTypes = 'wind' | 'solar' | 'hydro';
+
 
 const energyOptions: CheckboxOptionType[] = [
   { label: 'Wind', value: 'wind' },
@@ -24,6 +24,8 @@ function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
 
+
+
 const YEARLY_MWH_PER_EMPLOYEE = 4;
 
 const ConsumerDasboard: React.FC = () => {
@@ -36,10 +38,12 @@ const ConsumerDasboard: React.FC = () => {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100);
   const [maxCapacity, setMaxCapacity] = useState(100000);
+  const [offers, setOffers] = useState<PowerPlantOffer[]>([]);
 
   useEffect(() => {
     fetchPriceRange();
     fetchMaxCapacity();
+    fetchOffers();
   }, []);
 
   const fetchPriceRange = async () => {
@@ -56,6 +60,27 @@ const ConsumerDasboard: React.FC = () => {
     //const response = await fetch('/api/max-capacity');
     const maxCapacity = getRandomInt(30000, 100000);
     setMaxCapacity(maxCapacity);
+  }
+
+  const fetchOffers = async () => {
+    const offers = await fetch('https://62a44ae6259aba8e10e5a1d8.mockapi.io/deals');
+    const durations: PPADuration[] = [5, 10, 15];
+    const energyTYpes: EnergyTypes[] = ['wind', 'solar', 'hydro'];
+    const offersJson: PowerPlantOffer[] = (await offers.json()).map((offer: PowerPlantOffer): PowerPlantOffer => {
+      const duration = durations[getRandomInt(0, durations.length)];
+      const energyType = energyTYpes[getRandomInt(0, energyTYpes.length)];
+      const maxCapacity = getRandomInt(30000, 100000);
+      const remainingCapacity = getRandomInt(0, maxCapacity);
+      return {
+        ...offer,
+        duration,
+        energyType,
+        maxCapacity,
+        remainingCapacity
+      }
+    });
+
+    setOffers(offersJson);
   }
 
   const onChangePriceStart = (value: number) => {
@@ -219,6 +244,8 @@ const ConsumerDasboard: React.FC = () => {
       <Button type="primary">Find</Button>
     </Row>
     <Divider />
+
+    <OffersTable offers={offers} />
   </>);
 }
 
