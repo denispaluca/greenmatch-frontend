@@ -1,58 +1,7 @@
 import { Button, Checkbox, CheckboxOptionType, Form, InputNumber, Space, Switch } from 'antd';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { EnergyType } from '../components';
-
-const dummyData = [{
-  id: 1,
-  name: 'Power Plant 1',
-  location: 'Munich',
-  type: EnergyType.Solar,
-  live: true,
-  currentPrice: 10,
-  capacity: 1000,
-  duration: [5, 10],
-},
-{
-  id: 2,
-  name: 'Power Plant 2',
-  location: 'Berlin',
-  type: EnergyType.Hydro,
-  live: false,
-  currentPrice: 10,
-  capacity: 1000,
-  duration: [5, 10],
-},
-{
-  id: 3,
-  name: 'Power Plant 3',
-  location: 'Cologne',
-  type: EnergyType.Wind,
-  live: false,
-  currentPrice: 10,
-  capacity: 1000,
-  duration: [5, 10],
-},
-{
-  id: 4,
-  name: 'Power Plant 4',
-  location: 'Hamburg',
-  type: EnergyType.Wind,
-  live: false,
-  currentPrice: 10,
-  capacity: 1000,
-  duration: [5, 10],
-},
-{
-  id: 5,
-  name: 'Power Plant 5',
-  location: 'Hamburg',
-  type: EnergyType.Wind,
-  live: false,
-  currentPrice: 10,
-  capacity: 1000,
-  duration: [5, 10],
-}
-]
+import { EnergyType, PowerPlantType } from '../components';
 
 export function PowerPlantSettings() {
 
@@ -60,6 +9,33 @@ export function PowerPlantSettings() {
   const { id } = useParams()
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [powerPlant, setPowerPlant] = useState<PowerPlantType>();
+
+  useEffect(() => {
+    fetchPowerPlant()
+  }, [])
+
+  const fetchPowerPlant = async () => {
+    const powerplants = await fetch(`https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants/${id}`)
+    console.log(powerplants)
+    const ppJson = await powerplants.json()
+    console.log(ppJson)
+    const cpp = {
+      ...ppJson,
+      duration: [5, 10],
+      type: EnergyType.Wind
+    }
+
+    setPowerPlant(cpp)
+  }
+
+  if (!powerPlant) {
+    return (
+      <div>
+        loading
+      </div>
+    )
+  }
 
   const durationOptions: CheckboxOptionType[] = [
     { label: '5 Years', value: 5 },
@@ -85,7 +61,7 @@ export function PowerPlantSettings() {
 
   /* Decides based on the ID of the power plant whether the status switch should be activated or not */
   const checked = (id: string | undefined) => {
-    if (dummyData[Number(id) - 1].live === false) {
+    if (powerPlant.live === false) {
       return false
     } else {
       return true
@@ -106,23 +82,33 @@ export function PowerPlantSettings() {
       <h1>Power Plant ID: {id}</h1>
       <Form {...layout}
         form={form}
-        name="basic"
-      >
+        name="basic">
         <Form.Item
           label="Capacity"
+          initialValue={powerPlant.capacity}
           name="capacity"
           rules={[{ required: true, message: 'Please input the yearly capacity of the power plant!' }]}>
-          <InputNumber type="number" onChange={value => form.setFieldsValue({ "capacity": value })} min={0} addonAfter="kWh / Year" />
+          <InputNumber
+            type="number"
+            onChange={value => form.setFieldsValue({ "capacity": value })}
+            min={0}
+            addonAfter="kWh / Year" />
         </Form.Item>
         <Form.Item
           label="Current Price"
           name="currentPrice"
+          initialValue={powerPlant.currentPrice}
           rules={[{ required: true, message: 'Please input the current price per kWh!' }]}>
-          <InputNumber type="number" onChange={value => form.setFieldsValue({ "currentPrice": value })} min={0} addonAfter="Cent / kWh" />
+          <InputNumber
+            type="number"
+            onChange={value => form.setFieldsValue({ "currentPrice": value })}
+            min={0}
+            addonAfter="Cent / kWh" />
         </Form.Item>
         <Form.Item
           label="PPA Duration"
           name="duration"
+          initialValue={powerPlant.duration}
           rules={[{ required: true, message: 'Please check the possible PPA durations!' }]}>
           <Checkbox.Group options={durationOptions} />
         </Form.Item>
@@ -130,13 +116,24 @@ export function PowerPlantSettings() {
           label="Status"
           name="status">
           <Space>
-            <Switch defaultChecked={checked(id)} checkedChildren="Online" unCheckedChildren="Offline" onChange={value => form.setFieldsValue({ "status": value })} />
+            <Switch
+              defaultChecked={checked(id)}
+              checkedChildren="Online"
+              unCheckedChildren="Offline"
+              onChange={value => form.setFieldsValue({ "status": value })} />
           </Space>
         </Form.Item>
         <Form.Item {...tailLayout}>
           <Space>
-            <Button onClick={() => { navigate(-1) }}>Cancel</Button>
-            <Button type="primary" htmlType="submit" onClick={handleSave}>Save</Button>
+            <Button onClick={() => { navigate(-1) }}>
+              Cancel
+            </Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              onClick={handleSave}>
+              Save
+            </Button>
           </Space>
         </Form.Item>
       </Form>

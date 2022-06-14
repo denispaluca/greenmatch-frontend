@@ -9,49 +9,21 @@ export function Dashboard() {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    setPowerPlants([{
-      id: 1,
-      name: 'Power Plant 1',
-      location: 'Munich',
-      type: EnergyType.Solar,
-      live: true,
-      currentPrice: 10,
-      capacity: 1000,
-      duration: [5, 10],
-    },
-    {
-      id: 2,
-      name: 'Power Plant 2',
-      location: 'Berlin',
-      type: EnergyType.Hydro,
-      live: false,
-      currentPrice: 10,
-      capacity: 1000,
-      duration: [5, 10],
-    },
-    {
-      id: 3,
-      name: 'Power Plant 3',
-      location: 'Cologne',
-      type: EnergyType.Wind,
-      live: false,
-      currentPrice: 10,
-      capacity: 1000,
-      duration: [5, 10],
-    },
-    {
-      id: 4,
-      name: 'Power Plant 4',
-      location: 'Hamburg',
-      type: EnergyType.Wind,
-      live: false,
-      currentPrice: 10,
-      capacity: 1000,
-      duration: [5, 10],
-    }
-    ])
-
+    fetchPowerPlants()
   }, [])
+
+  const fetchPowerPlants = async () => {
+    const powerplants = await fetch("https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants")
+    const ppJson = await powerplants.json()
+    const cpp = ppJson.map((p: any) => {
+      return ({
+        ...p,
+        duration: [5, 10],
+        type: EnergyType.Wind
+      })
+    })
+    setPowerPlants(cpp)
+  }
 
   interface Option {
     value: EnergyType;
