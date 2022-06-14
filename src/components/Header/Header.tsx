@@ -1,6 +1,7 @@
 import { Menu, Avatar, Dropdown, PageHeader, Space } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import {dispatch} from '../../state';
 
 const menu = (
     <Menu
@@ -21,6 +22,14 @@ const menu = (
                 key: '3',
                 label: (
                     <Link to="/user-settings"><div>User Settings</div></Link>
+                ),
+            },
+            {
+                key: '4',
+                label: (
+                    <div onClick={()=>dispatch({
+                        type: 'logout',
+                    })}>Logout</div> 
                 ),
             }
         ]}

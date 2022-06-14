@@ -1,19 +1,26 @@
 import { Routes, Route } from "react-router-dom";
-import { Layout } from './components/Layout/Layout';
-import Dashboard from "./pages/Dashboard"
-import Login from "./pages/Login"
-import UserSettings from "./pages/UserSettings";
 import ConsumerDashboard from "./pages/ConsumerDashboard/ConsumerDashboard";
+
+import { Layout } from './components';
+import { 
+    Dashboard, 
+    UserSettings, 
+    Login, 
+    Conclusion,
+    PowerPlantSettings
+} from './pages';
 
 export function App() {
     return (
         <Routes>
             <Route element={<Layout />}>
                 <Route path="/" element={<Dashboard />} />
-                <Route path="login" element={<Login />} />
+                <Route path="powerplant/:id/edit" element={<PowerPlantSettings />} />
                 <Route path="user-settings" element={<UserSettings />} />
                 <Route path="deals" element={<ConsumerDashboard />} />
+                <Route path="conclusion" element={<Conclusion />} />
             </Route>
+            <Route path="login" element={<Login />} />
         </Routes>
     )
 }
