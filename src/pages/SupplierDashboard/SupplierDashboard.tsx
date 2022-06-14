@@ -1,6 +1,7 @@
 import { Row, Col, Button, Modal, Input, Form, Cascader } from 'antd';
 import { useEffect, useState } from 'react';
-import { PowerPlantType, PowerPlantCard, EnergyType } from '../components';
+import { PowerPlantCard } from '../../components';
+import { PowerPlantType, EnergyTypeEnum } from '../../types';
 
 export function Dashboard() {
 
@@ -19,28 +20,28 @@ export function Dashboard() {
       return ({
         ...p,
         duration: [5, 10],
-        type: EnergyType.Wind
+        type: EnergyTypeEnum.Wind
       })
     })
     setPowerPlants(cpp)
   }
 
   interface Option {
-    value: EnergyType;
+    value: EnergyTypeEnum;
     label: string;
   }
 
   const optionArray: Option[] = [
     {
-      value: EnergyType.Solar,
+      value: EnergyTypeEnum.Solar,
       label: "Solar"
     },
     {
-      value: EnergyType.Wind,
+      value: EnergyTypeEnum.Wind,
       label: "Wind"
     },
     {
-      value: EnergyType.Hydro,
+      value: EnergyTypeEnum.Hydro,
       label: "Hydro"
     },
   ];

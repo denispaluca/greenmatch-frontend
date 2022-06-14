@@ -1,7 +1,7 @@
 import { Button, Checkbox, CheckboxOptionType, Form, InputNumber, Space, Switch } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { EnergyType, PowerPlantType } from '../components';
+import { PowerPlantType, EnergyTypeEnum } from '../../../types';
 
 export function PowerPlantSettings() {
 
@@ -23,7 +23,7 @@ export function PowerPlantSettings() {
     const cpp = {
       ...ppJson,
       duration: [5, 10],
-      type: EnergyType.Wind
+      type: EnergyTypeEnum.Wind
     }
 
     setPowerPlant(cpp)
