@@ -1,10 +1,7 @@
 import { Routes, Route } from "react-router-dom";
+import { Conclusion } from "./pages/Conclusion/Conclusion";
 import { Layout } from './components';
 import { Dashboard, UserSettings, Login } from './pages';
-import { createGlobalState } from 'react-hooks-global-state';
-
-const initialState = { count: 0 };
-const { useGlobalState } = createGlobalState(initialState);
 
 export function App() {
     return (
@@ -12,6 +9,7 @@ export function App() {
             <Route element={<Layout />}>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="user-settings" element={<UserSettings />} />
+                <Route path="conclusion" element={<Conclusion />} />
             </Route>
             <Route path="login" element={<Login />} />
         </Routes>
