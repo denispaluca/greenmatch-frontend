@@ -3,7 +3,7 @@ import { Layout } from './components/Layout/Layout';
 import Dashboard from "./pages/Dashboard"
 import Login from "./pages/Login"
 import UserSettings from "./pages/UserSettings";
-import ConsumerDashboard from "./pages/ConsumerDashboard";
+import ConsumerDashboard from "./pages/ConsumerDashboard/ConsumerDashboard";
 
 export function App() {
     return (

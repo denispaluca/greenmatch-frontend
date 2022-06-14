@@ -1,7 +1,7 @@
 import { Row, Col, Radio, CheckboxOptionType, InputNumber, Checkbox, Divider, Slider, Button } from "antd";
 import React, { useState, useEffect } from "react";
 import { TeamOutlined, UserOutlined } from "@ant-design/icons";
-import OffersTable, { EnergyTypes, PowerPlantOffer, PPADuration } from "../../components/OffersTable";
+import OffersTable, { EnergyTypes, PowerPlantOffer, PPADuration } from "../../components";
 
 
 const durationOptions: CheckboxOptionType[] = [
