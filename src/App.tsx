@@ -1,7 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import { Conclusion } from "./pages/Conclusion/Conclusion";
 import { Layout } from './components';
-import { Dashboard, UserSettings, Login } from './pages';
+import { 
+    Dashboard, 
+    UserSettings, 
+    Login, 
+    Conclusion
+} from './pages';
 
 export function App() {
     return (
