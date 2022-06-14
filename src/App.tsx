@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import PowerPlantSettings from "./pages/PowerPlantSettings";
 import { Layout } from './components';
 import { 
     Dashboard, 
     UserSettings, 
     Login, 
-    Conclusion
+    Conclusion,
+    PowerPlantSettings
 } from './pages';
 
 export function App() {
