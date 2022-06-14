@@ -9,29 +9,21 @@ export function Dashboard() {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    setPowerPlants([{
-      name: 'Power Plant 1',
-      location: 'Munich',
-      type: EnergyType.Solar,
-    },
-    {
-      name: 'Power Plant 2',
-      location: 'Berlin',
-      type: EnergyType.Hydro,
-    },
-    {
-      name: 'Power Plant 3',
-      location: 'Cologne',
-      type: EnergyType.Wind,
-    },
-    {
-      name: 'Power Plant 4',
-      location: 'Hamburg',
-      type: EnergyType.Wind,
-    }
-    ])
-
+    fetchPowerPlants()
   }, [])
+
+  const fetchPowerPlants = async () => {
+    const powerplants = await fetch("https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants")
+    const ppJson = await powerplants.json()
+    const cpp = ppJson.map((p: any) => {
+      return ({
+        ...p,
+        duration: [5, 10],
+        type: EnergyType.Wind
+      })
+    })
+    setPowerPlants(cpp)
+  }
 
   interface Option {
     value: EnergyType;
@@ -61,9 +53,11 @@ export function Dashboard() {
     setPowerPlants([
       ...powerPlants,
       {
+        id: (powerPlants.length + 1),
         name: values.name,
         location: values.location,
-        type: values.type
+        type: values.type,
+        live: false,
       }
     ])
     setIsModalVisible(false);

@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import PowerPlantSettings from "./pages/PowerPlantSettings";
 import { Layout } from './components';
 import { 
     Dashboard, 
@@ -12,6 +13,7 @@ export function App() {
         <Routes>
             <Route element={<Layout />}>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="powerplant/:id/edit" element={<PowerPlantSettings />} />
                 <Route path="user-settings" element={<UserSettings />} />
                 <Route path="conclusion" element={<Conclusion />} />
             </Route>
