@@ -1,4 +1,5 @@
-import { Button, Checkbox, CheckboxOptionType, Form, InputNumber, Space, Switch } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Button, Checkbox, CheckboxOptionType, Form, InputNumber, Space, Spin, Switch } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PowerPlantType, EnergyTypeEnum } from '../../../types';
@@ -31,9 +32,7 @@ export function PowerPlantSettings() {
 
   if (!powerPlant) {
     return (
-      <div>
-        loading
-      </div>
+      <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} />} />
     )
   }
 

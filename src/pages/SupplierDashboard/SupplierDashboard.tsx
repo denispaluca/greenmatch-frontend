@@ -1,4 +1,4 @@
-import { Row, Col, Button, Modal, Input, Form, Cascader } from 'antd';
+import { Button, Modal, Input, Form, Cascader, List } from 'antd';
 import { useEffect, useState } from 'react';
 import { PowerPlantCard } from '../../components';
 import { PowerPlantType, EnergyTypeEnum } from '../../types';
@@ -116,14 +116,22 @@ export function Dashboard() {
           </Form.Item>
         </Form>
       </Modal>
-      <Row gutter={[16, 16]}>
-        {powerPlants && powerPlants.map((powerPlant) => (
-          <Col span={8}>
-            <PowerPlantCard powerPlant={powerPlant} />
-          </Col>
-        ))
-        }
-      </Row>
+      <List
+        grid={{ gutter: 16, column: 3 }}
+        dataSource={powerPlants}
+        pagination={{
+          onChange: page => {
+            console.log(page);
+          },
+          pageSize: 6,
+          showSizeChanger: false,
+          hideOnSinglePage: true
+        }}
+        renderItem={item => (
+          <List.Item>
+            <PowerPlantCard powerPlant={item} />
+          </List.Item>)}
+      />
     </>
   );
 }
