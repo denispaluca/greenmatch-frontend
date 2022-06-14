@@ -1,25 +1,8 @@
 import { Button, Progress, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
-export type EnergyTypes = 'wind' | 'solar' | 'hydro';
-export type PPADuration = 5 | 10 | 15;
-export interface PowerPlantOffer {
-  id: string;
-  name: string;
-  energyType: EnergyTypes;
-  duration: PPADuration;
-  price: number;
-  maxCapacity: number;
-  remainingCapacity: number;
-  website: string;
-  powerplantLocation: string;
-  companyName: string;
-  companyLogo: string;
-  powerplantName: string;
-}
+import {PowerPlantOffer} from '../../types';
 
 interface OffersTableProps {
   offers: PowerPlantOffer[];
@@ -74,4 +57,4 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
   />);
 }
 
-export default OffersTable;
+export { OffersTable };

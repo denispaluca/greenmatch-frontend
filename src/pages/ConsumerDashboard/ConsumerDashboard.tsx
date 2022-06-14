@@ -1,8 +1,8 @@
 import { Row, Col, Radio, CheckboxOptionType, InputNumber, Checkbox, Divider, Slider, Button } from "antd";
 import React, { useState, useEffect } from "react";
 import { TeamOutlined, UserOutlined } from "@ant-design/icons";
-import OffersTable, { EnergyTypes, PowerPlantOffer, PPADuration } from "../../components";
-
+import { OffersTable,} from "../../components";
+import { EnergyTypes, PowerPlantOffer, PPADuration } from "../../types"
 
 const durationOptions: CheckboxOptionType[] = [
   { label: '5 years', value: 5 },
@@ -249,4 +249,4 @@ const ConsumerDasboard: React.FC = () => {
   </>);
 }
 
-export default ConsumerDasboard;
+export { ConsumerDasboard };
