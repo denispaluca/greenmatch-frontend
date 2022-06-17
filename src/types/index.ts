@@ -31,4 +31,15 @@ export enum EnergyTypeEnum {
   Hydro
 }
 
+export type Address = {
+  city: string,
+  zipCode: number,
+  street: string,
+  number: number,
+  country: string,
+}
 
+export type BankDetails =  {
+  iban: string,
+  owner: string,
+}

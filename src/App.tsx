@@ -6,7 +6,8 @@ import {
     Login, 
     Conclusion,
     PowerPlantSettings,
-    ConsumerDasboard
+    ConsumerDasboard,
+    SupplierRegistration
 } from './pages';
 
 export function App() {
@@ -20,6 +21,7 @@ export function App() {
                 <Route path="conclusion" element={<Conclusion />} />
             </Route>
             <Route path="login" element={<Login />} />
+            <Route path="register" element={<SupplierRegistration />} />
         </Routes>
     )
 }
