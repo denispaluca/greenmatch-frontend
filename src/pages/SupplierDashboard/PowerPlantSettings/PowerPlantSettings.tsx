@@ -35,7 +35,6 @@ export function PowerPlantSettings() {
       ...ppJson,
       type: EnergyTypeEnum.Wind,
     };
-
     setPowerPlant(cpp);
   };
 
@@ -59,7 +58,7 @@ export function PowerPlantSettings() {
           body: JSON.stringify({
             name: powerPlant?.name,
             location: powerPlant?.location,
-            energyType: powerPlant?.type,
+            energyType: "XY",
             live: values.status,
             currentPrice: values.currentPrice,
             capacity: values.capacity,
