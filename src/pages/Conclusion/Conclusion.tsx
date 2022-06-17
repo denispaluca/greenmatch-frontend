@@ -79,7 +79,7 @@ const fetchPlantDetails = async (id: any) => {
   };
 };
 
-// fetch user data from backend - right now just dummy data
+// fetch user data from backend - right now just dummy data TODO
 const fetchUserData = async () => {
   return { companyName: "Energiesucher GmbH", companyId: 2 };
 };
@@ -165,7 +165,7 @@ export function Conclusion() {
       });
   };
 
-  // TODO show only available Durations to the user i.e. fetch PowerPlantOffer Details beforehand
+  // Returns the corresponding form element depending on the step
   const conclusionForm = useMemo(() => {
     if (!ppDetails || !durationOptions || !ppaProps) {
       return <div>Loading</div>;
