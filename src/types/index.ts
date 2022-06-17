@@ -31,4 +31,24 @@ export enum EnergyTypeEnum {
   Hydro
 }
 
+export type UserData = {
+  companyName: string,
+  companyId: number,
+}
+
+export interface PpaContractDetails {
+  supplier: string;
+  supplierId: number;
+  buyer: string;
+  buyerId: number
+  type: string;
+  plant: string;
+  plantId: number,
+  duration?: number;
+  amount?: number;
+  price: number;
+  start: Date;
+  owner?: string;
+  iban?: string;
+}
 

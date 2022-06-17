@@ -40,6 +40,7 @@ const ConsumerDasboard: React.FC = () => {
   const [maxCapacity, setMaxCapacity] = useState(100000);
   const [offers, setOffers] = useState<PowerPlantOffer[]>([]);
 
+
   useEffect(() => {
     fetchPriceRange();
     fetchMaxCapacity();

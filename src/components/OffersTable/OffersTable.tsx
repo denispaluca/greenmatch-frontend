@@ -47,7 +47,7 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
   const navigate = useNavigate();
   const buttonCol: ColumnType<PowerPlantOffer> = {
     render: (value, offer) => {
-      return <Button type="primary" onClick={() => navigate(`/consumer/${offer.id}`)}>Continue</Button>;
+      return <Button type="primary" onClick={() => navigate(`/offers/${offer.id}`)}>Continue</Button>;
     }
   }
   return (<Table

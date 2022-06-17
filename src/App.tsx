@@ -16,8 +16,8 @@ export function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="powerplant/:id/edit" element={<PowerPlantSettings />} />
                 <Route path="user-settings" element={<UserSettings />} />
-                <Route path="deals" element={<ConsumerDasboard />} />
-                <Route path="conclusion" element={<Conclusion />} />
+                <Route path="offers" element={<ConsumerDasboard />} />
+                <Route path="offers/:id" element={<Conclusion />} />
             </Route>
             <Route path="login" element={<Login />} />
         </Routes>
