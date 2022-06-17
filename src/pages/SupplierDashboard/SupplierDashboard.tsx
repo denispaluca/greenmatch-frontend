@@ -76,8 +76,8 @@ export function Dashboard() {
           body: JSON.stringify({
             name: values.name,
             location: values.location,
-            type: values.type,
-            live: false,
+            energyType: "XY",
+            live: false, // initially every newly added power plant should be offline
           }),
           headers: {
             "Content-Type": "application/json",
