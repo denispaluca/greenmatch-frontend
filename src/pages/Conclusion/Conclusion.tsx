@@ -18,7 +18,6 @@ import {
   EnergyTypes,
   PowerPlantOffer,
   PpaContractDetails,
-  PPADuration,
   UserData,
 } from "../../types";
 
@@ -37,6 +36,10 @@ const radioOptionConf: RadioOptions[] = [
   { label: "15 Years", value: 15 },
 ];
 
+const configuredFilter = {
+  amount: 1500,
+  duration: 5
+}
 
 //Filters based on given number array the options a user can choose during ppa negotiation
 const setPossibleDurations = (durations: number[]) => {
@@ -56,7 +59,6 @@ const getStartDate = () => {
   const date = new Date();
   return new Date(date.getFullYear(), date.getMonth() + 1, 1);
 }
-
 
 //Fetches Power Plant props from backend - since using dummy backend some data is added manualy e.g. duration
 const fetchPlantDetails = async (id: any) => {
@@ -182,7 +184,7 @@ export function Conclusion() {
                 layout="vertical"
                 form={ppaForm}
                 wrapperCol={{ span: 18 }}
-                initialValues={{ amount: 1000 }}
+                initialValues={configuredFilter}
                 autoComplete="off"
               >
                 <Form.Item
