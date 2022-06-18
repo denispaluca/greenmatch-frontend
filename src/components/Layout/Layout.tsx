@@ -13,7 +13,7 @@ export function Layout() {
     if (!loggedIn && location.pathname !== "/landing") {
       navigate("/login");
     }
-  }, [loggedIn, navigate]);
+  }, [loggedIn, navigate, location]);
 
   return (
     <div>
