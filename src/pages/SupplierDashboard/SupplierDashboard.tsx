@@ -3,6 +3,26 @@ import { useEffect, useState } from "react";
 import { PowerPlantCard } from "../../components";
 import { PowerPlantType, EnergyTypeEnum } from "../../types";
 
+interface Option {
+  value: EnergyTypeEnum;
+  label: string;
+}
+
+const optionArray: Option[] = [
+  {
+    value: EnergyTypeEnum.Solar,
+    label: "Solar",
+  },
+  {
+    value: EnergyTypeEnum.Wind,
+    label: "Wind",
+  },
+  {
+    value: EnergyTypeEnum.Hydro,
+    label: "Hydro",
+  },
+];
+
 export function Dashboard() {
   const [powerPlants, setPowerPlants] = useState<PowerPlantType[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -27,28 +47,26 @@ export function Dashboard() {
     setPowerPlants(cpp);
   };
 
-  interface Option {
-    value: EnergyTypeEnum;
-    label: string;
-  }
-
-  const optionArray: Option[] = [
-    {
-      value: EnergyTypeEnum.Solar,
-      label: "Solar",
-    },
-    {
-      value: EnergyTypeEnum.Wind,
-      label: "Wind",
-    },
-    {
-      value: EnergyTypeEnum.Hydro,
-      label: "Hydro",
-    },
-  ];
-
   const showModal = () => {
     setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        console.log("Received values of form: ", values);
+        form.resetFields();
+        onCreate(values);
+      })
+      .catch((info) => {
+        console.log("Validate Failed:", info);
+      });
+  };
+
+  const handleCancel = () => {
+    form.resetFields();
+    setIsModalVisible(false);
   };
 
   const onCreate = (values: any) => {
@@ -62,12 +80,12 @@ export function Dashboard() {
         live: false,
       },
     ]);
-    createPP(values);
+    postPP(values);
     setIsModalVisible(false);
   };
 
   // send POST request and create new power plant
-  async function createPP(values: any) {
+  async function postPP(values: any) {
     try {
       const response = await fetch(
         "https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants",
@@ -99,24 +117,6 @@ export function Dashboard() {
       }
     }
   }
-
-  const handleOk = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        console.log("Received values of form: ", values);
-        form.resetFields();
-        onCreate(values);
-      })
-      .catch((info) => {
-        console.log("Validate Failed:", info);
-      });
-  };
-
-  const handleCancel = () => {
-    form.resetFields();
-    setIsModalVisible(false);
-  };
 
   return (
     <>

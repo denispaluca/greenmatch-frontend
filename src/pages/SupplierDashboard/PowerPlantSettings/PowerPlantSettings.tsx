@@ -13,9 +13,23 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PowerPlantType, EnergyTypeEnum } from "../../../types";
 
+const layout = {
+  labelCol: { span: 2 },
+  wrapperCol: { span: 14 },
+};
+
+const tailLayout = {
+  wrapperCol: { offset: 2, span: 16 },
+};
+
+const durationOptions: CheckboxOptionType[] = [
+  { label: "5 Years", value: 5 },
+  { label: "10 Years", value: 10 },
+  { label: "15 Years", value: 15 },
+];
+
 export function PowerPlantSettings() {
-  /* ID of the power plant */
-  const { id } = useParams();
+  const { id } = useParams(); // ID of the power plant in URL
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [powerPlant, setPowerPlant] = useState<PowerPlantType>();
@@ -42,14 +56,25 @@ export function PowerPlantSettings() {
     return <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} />} />;
   }
 
-  const durationOptions: CheckboxOptionType[] = [
-    { label: "5 Years", value: 5 },
-    { label: "10 Years", value: 10 },
-    { label: "15 Years", value: 15 },
-  ];
+  const handleSave = () => {
+    if (form.getFieldValue("status") === undefined) {
+      /* Has to be set to true or false depending on the status of the power plant stored in the DB */
+      form.setFieldsValue({ status: powerPlant.live });
+    }
+    form
+      .validateFields()
+      .then((values) => {
+        console.log("Received values of form: ", values);
+        putPP(values);
+        navigate("/");
+      })
+      .catch((info) => {
+        console.log("Validate Failed:", info);
+      });
+  };
 
   // send PUT request and edit power plant
-  async function editPP(values: any) {
+  async function putPP(values: any) {
     try {
       const response = await fetch(
         `https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants/${id}`,
@@ -85,32 +110,6 @@ export function PowerPlantSettings() {
       }
     }
   }
-
-  const handleSave = () => {
-    if (form.getFieldValue("status") === undefined) {
-      /* Has to be set to true or false depending on the status of the power plant stored in the DB */
-      form.setFieldsValue({ status: powerPlant.live });
-    }
-    form
-      .validateFields()
-      .then((values) => {
-        console.log("Received values of form: ", values);
-        editPP(values);
-        navigate("/");
-      })
-      .catch((info) => {
-        console.log("Validate Failed:", info);
-      });
-  };
-
-  const layout = {
-    labelCol: { span: 2 },
-    wrapperCol: { span: 14 },
-  };
-
-  const tailLayout = {
-    wrapperCol: { offset: 2, span: 16 },
-  };
 
   return (
     <>
