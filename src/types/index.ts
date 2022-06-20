@@ -30,5 +30,15 @@ export enum EnergyTypeEnum {
   Wind,
   Hydro
 }
-
+export type Ppa = {
+  id: number;
+  duration: number;
+  startDate: string;
+  endDate: string;
+  cancelled: boolean;
+  price: number;
+  volume: number;
+  description: string;
+  powerplantId: number;
+}
 

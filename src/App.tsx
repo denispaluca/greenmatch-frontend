@@ -6,7 +6,8 @@ import {
     Login, 
     Conclusion,
     PowerPlantSettings,
-    ConsumerDasboard
+    ConsumerDasboard,
+    PPAOverView
 } from './pages';
 
 export function App() {
@@ -18,6 +19,7 @@ export function App() {
                 <Route path="user-settings" element={<UserSettings />} />
                 <Route path="deals" element={<ConsumerDasboard />} />
                 <Route path="conclusion" element={<Conclusion />} />
+                <Route path="ppa-overview/:id" element={<PPAOverView />} />
             </Route>
             <Route path="login" element={<Login />} />
         </Routes>
