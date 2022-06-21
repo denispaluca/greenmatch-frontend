@@ -7,33 +7,29 @@ interface RevenueCardProps {
     type: 'revenue' | 'cost';
     value: number;
 }
- 
-const RevenueCard: FunctionComponent<RevenueCardProps> = ({type, value}) => {
-    const revenueCardCls = styles["revenueCard"] + " " + 
-    (type === 'revenue' ? styles["revenueCard--revenue"] : styles["revenueCard--cost"]);
 
-    console.log(styles["revenueCard"]);
-    console.log(revenueCardCls);
-
+const RevenueCard: FunctionComponent<RevenueCardProps> = ({ type, value }) => {
+    const revenueCardCls = styles["revenueCard"] + " " +
+        (type === 'revenue' ? styles["revenueCard--revenue"] : styles["revenueCard--cost"]);
     return (
         <div className={revenueCardCls}>
             <Typography.Title
                 type={type === 'revenue' ? "success" : "danger"}
                 ellipsis
             >
-                Total {type.charAt(0).toLocaleUpperCase() + type.substring(1)}&nbsp; 
+                Total {type.charAt(0).toLocaleUpperCase() + type.substring(1)}&nbsp;
             </Typography.Title>
             <div className={styles["revenueCard__info"]}>
-                <Typography.Title 
-                type={type === 'revenue' ? "success" : "danger"}
-                ellipsis
+                <Typography.Title
+                    type={type === 'revenue' ? "success" : "danger"}
+                    ellipsis
                 >{value}
-                </Typography.Title>  
+                </Typography.Title>
                 <EuroOutlined />
             </div>
         </div>
     );
 }
- 
+
 export { RevenueCard };
 export default RevenueCard;

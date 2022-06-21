@@ -1,16 +1,15 @@
-import {FunctionComponent, useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import { FunctionComponent, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import {Ppa} from "../../types";
+import { Ppa } from "../../types";
 import PpaCard from "../../components/PpaCard/PpaCard";
-import {Button, Col, Modal, Row, Typography} from "antd";
+import { Button, Col, Modal, Row, Typography } from "antd";
 import { RevenueCard } from "../../components";
 import styles from './PpaOverview.module.scss';
 
 const responsive = {
   superLargeDesktop: {
-    // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 3000 },
     items: 8
   },
@@ -18,7 +17,7 @@ const responsive = {
     breakpoint: { max: 3000, min: 1365 },
     items: 6
   },
-  miniDesktop:{
+  miniDesktop: {
     breakpoint: { max: 1365, min: 1138 },
     items: 5
   },
@@ -26,7 +25,7 @@ const responsive = {
     breakpoint: { max: 1138, min: 910 },
     items: 4
   },
-  miniTablet:{
+  miniTablet: {
     breakpoint: { max: 910, min: 685 },
     items: 3
   },
@@ -40,7 +39,7 @@ const responsive = {
   }
 };
 
-const tempPpaList:Ppa[] = [
+const tempPpaList: Ppa[] = [
   {
     id: 1,
     duration: 5,
@@ -49,10 +48,10 @@ const tempPpaList:Ppa[] = [
     cancelled: false,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
   {
     id: 2,
@@ -62,12 +61,12 @@ const tempPpaList:Ppa[] = [
     cancelled: true,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
-  {    
+  {
     id: 3,
     duration: 5,
     startDate: "2017-07-01",
@@ -75,10 +74,10 @@ const tempPpaList:Ppa[] = [
     cancelled: false,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
   {
     id: 4,
@@ -88,10 +87,10 @@ const tempPpaList:Ppa[] = [
     cancelled: false,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
   {
     id: 5,
@@ -101,10 +100,10 @@ const tempPpaList:Ppa[] = [
     cancelled: false,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
   {
     id: 6,
@@ -114,10 +113,10 @@ const tempPpaList:Ppa[] = [
     cancelled: false,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
   {
     id: 7,
@@ -127,10 +126,10 @@ const tempPpaList:Ppa[] = [
     cancelled: false,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
   {
     id: 8,
@@ -140,10 +139,10 @@ const tempPpaList:Ppa[] = [
     cancelled: false,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
   {
     id: 9,
@@ -153,10 +152,10 @@ const tempPpaList:Ppa[] = [
     cancelled: false,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
   {
     id: 10,
@@ -166,10 +165,10 @@ const tempPpaList:Ppa[] = [
     cancelled: false,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
   {
     id: 11,
@@ -179,10 +178,10 @@ const tempPpaList:Ppa[] = [
     cancelled: false,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
   {
     id: 12,
@@ -192,10 +191,10 @@ const tempPpaList:Ppa[] = [
     cancelled: false,
     price: 0.76,
     volume: 521,
-    description:`Lorem ipsum dolor sit amet,
+    description: `Lorem ipsum dolor sit amet,
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1, 
+    powerplantId: 1,
   },
 ]
 
@@ -211,84 +210,84 @@ const PPAOverView: FunctionComponent = () => {
 
   const handleCancelation = (ppa: Ppa) => {
     console.log("cancelling ppa", ppa);
-   // Send request here... 
+    // Send request here... 
   }
 
-    // Fetch actual data from the backend here later.
-    useEffect(()=>{
-      console.log(params.id);
-      setPpas(tempPpaList);
-    },[params]);
+  // Fetch actual data from the backend here later.
+  useEffect(() => {
+    console.log(params.id);
+    setPpas(tempPpaList);
+  }, [params]);
 
-    return (
-      <div>
-        <Modal 
-          title="PPA Terms of Agreement"
-          visible={selectedPpa !== undefined}
-          onCancel={() => setSelectedPpa(undefined)}
-          footer={[
+  return (
+    <div>
+      <Modal
+        title="PPA Terms of Agreement"
+        visible={selectedPpa !== undefined}
+        onCancel={() => setSelectedPpa(undefined)}
+        footer={[
           <Button key="backInfo" onClick={() => setSelectedPpa(undefined)}>
             Close
           </Button>,
-          ]}
-        >
-          <Typography.Text>
-            {selectedPpa?.description}
-          </Typography.Text>
-        </Modal>
-        <Modal 
-          title={`PPA ${ppaToCancel?.id} Cancellation`}
-          visible={ppaToCancel !== undefined}
-          onCancel={() => setPpaToCancel(undefined)}
-          footer={[
+        ]}
+      >
+        <Typography.Text>
+          {selectedPpa?.description}
+        </Typography.Text>
+      </Modal>
+      <Modal
+        title={`PPA ${ppaToCancel?.id} Cancellation`}
+        visible={ppaToCancel !== undefined}
+        onCancel={() => setPpaToCancel(undefined)}
+        footer={[
           <Button key="back" onClick={() => setPpaToCancel(undefined)}>
             Close
           </Button>,
-          <Button key="ok" 
-              htmlType="submit" 
-              danger
-              onClick={() => {
-                ppaToCancel && handleCancelation(ppaToCancel);
-                setPpaToCancel(undefined);
-              }}>
+          <Button key="ok"
+            htmlType="submit"
+            danger
+            onClick={() => {
+              ppaToCancel && handleCancelation(ppaToCancel);
+              setPpaToCancel(undefined);
+            }}>
             Cancel PPA
           </Button>,
-          ]}
+        ]}
+      >
+        <Typography.Text>
+          Are you sure you want to cancel this PPA?
+        </Typography.Text>
+      </Modal>
+      <Typography.Text
+        type="warning"
+        ellipsis
+        className={styles.ppaInfo}>
+        Click on any of the PPAs to view the details.
+      </Typography.Text>
+      <Carousel responsive={responsive}>
+        {ppas.map(ppa => (
+          <PpaCard
+            ppa={ppa}
+            key={ppa.id}
+            onClick={() => setSelectedPpa(ppa)}
+            onCancel={() => setPpaToCancel(ppa)}
+          />
+        ))}
+      </Carousel>
+      <Row>
+        <Col xs={24} sm={24} md={12}
+          className={styles.revenueCardContainer}
         >
-          <Typography.Text>
-            Are you sure you want to cancel this PPA?
-          </Typography.Text>
-        </Modal>
-          <Typography.Text 
-            type="warning" 
-            ellipsis 
-            className={styles.ppaInfo}>
-            Click on any of the PPAs to view the details.
-          </Typography.Text>
-          <Carousel responsive={responsive}>
-            {ppas.map(ppa => (
-              <PpaCard 
-                ppa={ppa} 
-                key={ppa.id} 
-                onClick={()=>setSelectedPpa(ppa)}
-                onCancel={()=>setPpaToCancel(ppa)}
-              /> 
-              ))}
-            </Carousel>
-            <Row>
-              <Col xs={24} sm={24} md={12} 
-              className={styles.revenueCardContainer}
-              >
-                <RevenueCard type="revenue" value={50}/>
-              </Col>
-              <Col xs={24} sm={24} md={12}
-              className={styles.revenueCardContainer}
-              >
-                <RevenueCard type="cost" value={120}/>
-              </Col>
-            </Row>
-        </div>
-    );
+          <RevenueCard type="revenue" value={50} />
+        </Col>
+        <Col xs={24} sm={24} md={12}
+          className={styles.revenueCardContainer}
+        >
+          <RevenueCard type="cost" value={120} />
+        </Col>
+      </Row>
+    </div>
+  );
 }
 
 export default PPAOverView;
