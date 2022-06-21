@@ -20,7 +20,7 @@ export type PowerPlantType = {
   name: string,
   location: string,
   type: EnergyTypeEnum,
-  live: Boolean,
+  live: boolean,
   currentPrice?: number,
   capacity?: number,
   duration?: number[],
