@@ -20,7 +20,7 @@ export type PowerPlantType = {
   name: string,
   location: string,
   type: EnergyTypeEnum,
-  live: Boolean,
+  live: boolean,
   currentPrice?: number,
   capacity?: number,
   duration?: number[],
@@ -50,5 +50,15 @@ export interface PpaContractDetails {
   start: Date;
   owner?: string;
   iban?: string;
-}
+export type Ppa = {
+    id: number;
+    duration: number;
+    startDate: string;
+    endDate: string;
+    cancelled: boolean;
+    price: number;
+    volume: number;
+    description: string;
+    powerplantId: number;
+  }
 
