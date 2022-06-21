@@ -30,15 +30,35 @@ export enum EnergyTypeEnum {
   Wind,
   Hydro
 }
-export type Ppa = {
-  id: number;
-  duration: number;
-  startDate: string;
-  endDate: string;
-  cancelled: boolean;
-  price: number;
-  volume: number;
-  description: string;
-  powerplantId: number;
+
+export type UserData = {
+  companyName: string,
+  companyId: number,
 }
+
+export interface PpaContractDetails {
+  supplier: string;
+  supplierId: number;
+  buyer: string;
+  buyerId: number
+  type: string;
+  plant: string;
+  plantId: number,
+  duration?: number;
+  amount?: number;
+  price: number;
+  start: Date;
+  owner?: string;
+  iban?: string;
+export type Ppa = {
+    id: number;
+    duration: number;
+    startDate: string;
+    endDate: string;
+    cancelled: boolean;
+    price: number;
+    volume: number;
+    description: string;
+    powerplantId: number;
+  }
 
