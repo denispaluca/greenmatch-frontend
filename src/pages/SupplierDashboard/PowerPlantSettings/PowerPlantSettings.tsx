@@ -1,4 +1,4 @@
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from '@ant-design/icons';
 import {
   Button,
   Checkbox,
@@ -8,10 +8,10 @@ import {
   Space,
   Spin,
   Switch,
-} from "antd";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { PowerPlantType, EnergyTypeEnum } from "../../../types";
+} from 'antd';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { PowerPlantType, EnergyTypeEnum } from '../../../types';
 
 const layout = {
   labelCol: { span: 2 },
@@ -23,9 +23,9 @@ const tailLayout = {
 };
 
 const durationOptions: CheckboxOptionType[] = [
-  { label: "5 Years", value: 5 },
-  { label: "10 Years", value: 10 },
-  { label: "15 Years", value: 15 },
+  { label: '5 Years', value: 5 },
+  { label: '10 Years', value: 10 },
+  { label: '15 Years', value: 15 },
 ];
 
 export function PowerPlantSettings() {
@@ -40,7 +40,7 @@ export function PowerPlantSettings() {
 
   const fetchPowerPlant = async () => {
     const powerplants = await fetch(
-      `https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants/${id}`
+      `https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants/${id}`,
     );
     console.log(powerplants);
     const ppJson = await powerplants.json();
@@ -57,19 +57,20 @@ export function PowerPlantSettings() {
   }
 
   const handleSave = () => {
-    if (form.getFieldValue("status") === undefined) {
-      /* Has to be set to true or false depending on the status of the power plant stored in the DB */
+    if (form.getFieldValue('status') === undefined) {
+      /* Has to be set to true or false depending
+      on the status of the power plant stored in the DB */
       form.setFieldsValue({ status: powerPlant.live });
     }
     form
       .validateFields()
       .then(async (values) => {
-        console.log("Received values of form: ", values);
+        console.log('Received values of form: ', values);
         await putPP(values);
-        navigate("/");
+        navigate('/');
       })
       .catch((info) => {
-        console.log("Validate Failed:", info);
+        console.log('Validate Failed:', info);
       });
   };
 
@@ -79,11 +80,11 @@ export function PowerPlantSettings() {
       const response = await fetch(
         `https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants/${id}`,
         {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify({
             name: powerPlant?.name,
             location: powerPlant?.location,
-            energyType: "XY",
+            energyType: 'XY',
             live: values.status,
             currentPrice: values.currentPrice,
             capacity: values.capacity,
@@ -91,10 +92,10 @@ export function PowerPlantSettings() {
             id: powerPlant?.type,
           }),
           headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -102,11 +103,11 @@ export function PowerPlantSettings() {
       }
     } catch (error) {
       if (error instanceof Error) {
-        console.log("error message: ", error.message);
+        console.log('error message: ', error.message);
         return error.message;
       } else {
-        console.log("unexpected error: ", error);
-        return "An unexpected error occurred";
+        console.log('unexpected error: ', error);
+        return 'An unexpected error occurred';
       }
     }
   }
@@ -114,7 +115,11 @@ export function PowerPlantSettings() {
   return (
     <>
       <h1>Power Plant ID: {id}</h1>
-      <Form {...layout} form={form} name="basic">
+      <Form
+        {...layout}
+        form={form}
+        name="basic"
+      >
         <Form.Item
           label="Capacity"
           initialValue={powerPlant.capacity}
@@ -122,7 +127,7 @@ export function PowerPlantSettings() {
           rules={[
             {
               required: true,
-              message: "Please input the yearly capacity of the power plant!",
+              message: 'Please input the yearly capacity of the power plant!',
             },
           ]}
         >
@@ -140,7 +145,7 @@ export function PowerPlantSettings() {
           rules={[
             {
               required: true,
-              message: "Please input the current price per kWh!",
+              message: 'Please input the current price per kWh!',
             },
           ]}
         >
@@ -158,13 +163,16 @@ export function PowerPlantSettings() {
           rules={[
             {
               required: true,
-              message: "Please check the possible PPA durations!",
+              message: 'Please check the possible PPA durations!',
             },
           ]}
         >
           <Checkbox.Group options={durationOptions} />
         </Form.Item>
-        <Form.Item label="Status" name="status">
+        <Form.Item
+          label="Status"
+          name="status"
+        >
           <Space>
             <Switch
               defaultChecked={powerPlant.live}
@@ -183,7 +191,11 @@ export function PowerPlantSettings() {
             >
               Cancel
             </Button>
-            <Button type="primary" htmlType="submit" onClick={handleSave}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              onClick={handleSave}
+            >
               Save
             </Button>
           </Space>

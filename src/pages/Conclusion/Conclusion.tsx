@@ -9,20 +9,20 @@ import {
   InputNumber,
   Checkbox,
   Result,
-} from "antd";
-import { RightOutlined, LeftOutlined } from "@ant-design/icons";
-import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { ContractDetails } from "../../components";
+} from 'antd';
+import { RightOutlined, LeftOutlined } from '@ant-design/icons';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { ContractDetails } from '../../components';
 import {
   EnergyTypes,
   PowerPlantOffer,
   PpaContractDetails,
   UserData,
-} from "../../types";
+} from '../../types';
 
 const { Step } = Steps;
-const LINK_CONSUMER_DASHBOARD = "/offers";
+const LINK_CONSUMER_DASHBOARD = '/offers';
 
 type RadioOptions = {
   label: string;
@@ -31,17 +31,18 @@ type RadioOptions = {
 };
 
 const radioOptionConf: RadioOptions[] = [
-  { label: "5 Years", value: 5 },
-  { label: "10 Years", value: 10 },
-  { label: "15 Years", value: 15 },
+  { label: '5 Years', value: 5 },
+  { label: '10 Years', value: 10 },
+  { label: '15 Years', value: 15 },
 ];
 
 const configuredFilter = {
   amount: 1500,
-  duration: 5
-}
+  duration: 5,
+};
 
-//Filters based on given number array the options a user can choose during ppa negotiation
+// Filters based on given number
+// array the options a user can choose during ppa negotiation
 const setPossibleDurations = (durations: number[]) => {
   const possibleDurations: RadioOptions[] = radioOptionConf.map((e) => {
     if (durations.includes(e.value)) {
@@ -54,22 +55,23 @@ const setPossibleDurations = (durations: number[]) => {
   return possibleDurations;
 };
 
-//Get next possible starting date for ppa !!Never use this date in backend for ppa contract - user input!!
+// Get next possible starting date
+// for ppa !!Never use this date in backend for ppa contract - user input!!
 const getStartDate = () => {
   const date = new Date();
   return new Date(date.getFullYear(), date.getMonth() + 1, 1);
-}
+};
 
-//Fetches Power Plant props from backend - since using dummy backend some data is added manualy e.g. duration
+// Fetches Power Plant props from backend - since
+// using dummy backend some data is added manualy e.g. duration
 const fetchPlantDetails = async (id: any) => {
   const powerplant = await fetch(
-    `https://62a44ae6259aba8e10e5a1d8.mockapi.io/deals/${id}`
+    `https://62a44ae6259aba8e10e5a1d8.mockapi.io/deals/${id}`,
   );
   const ppJSON = await powerplant.json();
-  const energyTypes: EnergyTypes[] = ["wind", "solar", "hydro"];
+  const energyTypes: EnergyTypes[] = ['wind', 'solar', 'hydro'];
   const duration = [5, 15];
   const energyType = energyTypes[1];
-  const maxCapacity = 20000;
   const remainingCapacity = 2000;
   return {
     ...ppJSON,
@@ -81,10 +83,10 @@ const fetchPlantDetails = async (id: any) => {
 
 // fetch user data from backend - right now just dummy data TODO
 const fetchUserData = async () => {
-  return { companyName: "Energiesucher GmbH", companyId: 2 };
+  return { companyName: 'Energiesucher GmbH', companyId: 2 };
 };
 
-//Init Contract Details with fetched data
+// Init Contract Details with fetched data
 const initPpaDetails = (ppo: PowerPlantOffer, buyerInfo: UserData) => {
   const ppaDetails: PpaContractDetails = {
     supplier: ppo.companyName,
@@ -101,7 +103,8 @@ const initPpaDetails = (ppo: PowerPlantOffer, buyerInfo: UserData) => {
   return ppaDetails;
 };
 
-// In order to set filter values as default handover of this parameters is necessary
+// In order to set filter values as
+// default handover of this parameters is necessary
 export function Conclusion() {
   const [step, setStep] = useState(0);
   const [ppaForm] = Form.useForm();
@@ -115,53 +118,54 @@ export function Conclusion() {
   useEffect(() => {
     fetchPlantDetails(id)
       .then((details) => {
-        console.log("Got PP Details", details);
-        setPpDetails(details)
+        console.log('Got PP Details', details);
+        setPpDetails(details);
         setDurationOptions(setPossibleDurations(details.duration));
       })
       .catch((info) => {
-        console.log("Fetching of Plant Data failed", info);
+        console.log('Fetching of Plant Data failed', info);
       });
   }, []);
 
   // Fetch User Data an init contract details
   useEffect(() => {
     fetchUserData()
-    .then((uData) => {
-      console.log(ppDetails)
-      setPpaProps(initPpaDetails(ppDetails!, uData));
-    })
-    .catch((info) => {
-        console.log("Fetching of User Data and Initial PPA Setup failed", info)
-    })
-  }, [ppDetails])
+      .then((uData) => {
+        console.log(ppDetails);
+        setPpaProps(initPpaDetails(ppDetails!, uData));
+      })
+      .catch((info) => {
+        console.log('Fetching of User Data and Initial PPA Setup failed', info);
+      });
+  }, [ppDetails]);
 
   const handleNext = () => {
     ppaForm
       .validateFields()
       .then((values) => {
-        console.log("Form Values ", values);
+        console.log('Form Values ', values);
         setStep((prev) => prev + 1);
         setPpaProps((prev) => Object.assign(prev!, values));
       })
       .catch((info) => {
-        console.log("Validate failed: ", info);
+        console.log('Validate failed: ', info);
       });
   };
 
-  // Use this function to init payment process in the backend + store newly created ppa in db
+  // Use this function to init payment
+  // process in the backend + store newly created ppa in db
   const handleBuy = () => {
     paymentForm
       .validateFields()
       .then((values) => {
         setPpaProps((prev) => Object.assign(prev!, values));
-        console.log("PPA Contract Details: ", ppaProps);
+        console.log('PPA Contract Details: ', ppaProps);
         setStep((prev) => prev + 1);
         ppaForm.resetFields();
         paymentForm.resetFields();
       })
       .catch((info) => {
-        console.log("Validation failed: ", info);
+        console.log('Validation failed: ', info);
       });
   };
 
@@ -173,12 +177,18 @@ export function Conclusion() {
       return (
         <>
           <Row justify="center">
-            <Col offset={6} span={12}>
+            <Col
+              offset={6}
+              span={12}
+            >
               <h2>PPA Properties</h2>
             </Col>
           </Row>
           <Row justify="center">
-            <Col offset={6} span={12}>
+            <Col
+              offset={6}
+              span={12}
+            >
               <Form
                 name="ppa_props"
                 layout="vertical"
@@ -191,7 +201,7 @@ export function Conclusion() {
                   label="Duration"
                   name="duration"
                   rules={[
-                    { required: true, message: "Please select duration" },
+                    { required: true, message: 'Please select duration' },
                   ]}
                 >
                   <Radio.Group
@@ -202,15 +212,16 @@ export function Conclusion() {
                 </Form.Item>
 
                 <Form.Item
-                  label={`Amount per Year in kWh (at max ${ppDetails.remainingCapacity} kWh)`}
+                  label={`Amount per Year in kWh 
+                  (at max ${ppDetails.remainingCapacity} kWh)`}
                   name="amount"
                   rules={[
-                    { required: true, message: "Please specify amount!" },
+                    { required: true, message: 'Please specify amount!' },
                   ]}
                 >
                   <InputNumber
                     type="number"
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                     min={0}
                     max={ppDetails.remainingCapacity}
                     addonAfter="kWh/year"
@@ -220,16 +231,25 @@ export function Conclusion() {
             </Col>
           </Row>
           <Row>
-            <Col span={4} offset={4}>
+            <Col
+              span={4}
+              offset={4}
+            >
               <Link to={LINK_CONSUMER_DASHBOARD}>
                 <Button type="text">
                   <LeftOutlined /> Listing
                 </Button>
               </Link>
             </Col>
-            <Col span={4} offset={12}>
-              <Button type="text" onClick={handleNext}>
-                {" "}
+            <Col
+              span={4}
+              offset={12}
+            >
+              <Button
+                type="text"
+                onClick={handleNext}
+              >
+                {' '}
                 Next <RightOutlined />
               </Button>
             </Col>
@@ -240,12 +260,18 @@ export function Conclusion() {
       return (
         <>
           <Row justify="center">
-            <Col offset={6} span={12}>
+            <Col
+              offset={6}
+              span={12}
+            >
               <h2>Confirm Contract Details</h2>
             </Col>
           </Row>
           <Row justify="center">
-            <Col offset={6} span={12}>
+            <Col
+              offset={6}
+              span={12}
+            >
               <ContractDetails
                 ppaData={ppaProps}
                 labelWidth={8}
@@ -254,13 +280,25 @@ export function Conclusion() {
             </Col>
           </Row>
           <Row>
-            <Col span={4} offset={4}>
-              <Button type="text" onClick={() => setStep((prev) => prev - 1)}>
+            <Col
+              span={4}
+              offset={4}
+            >
+              <Button
+                type="text"
+                onClick={() => setStep((prev) => prev - 1)}
+              >
                 <LeftOutlined /> Back
               </Button>
             </Col>
-            <Col span={4} offset={12}>
-              <Button type="text" onClick={handleNext}>
+            <Col
+              span={4}
+              offset={12}
+            >
+              <Button
+                type="text"
+                onClick={handleNext}
+              >
                 Confirm <RightOutlined />
               </Button>
             </Col>
@@ -271,12 +309,18 @@ export function Conclusion() {
       return (
         <>
           <Row justify="center">
-            <Col offset={6} span={12}>
+            <Col
+              offset={6}
+              span={12}
+            >
               <h2>Payment Details</h2>
             </Col>
           </Row>
           <Row justify="center">
-            <Col offset={6} span={12}>
+            <Col
+              offset={6}
+              span={12}
+            >
               <Form
                 name="payment"
                 layout="vertical"
@@ -289,7 +333,7 @@ export function Conclusion() {
                   label="Account Owner"
                   name="owner"
                   rules={[
-                    { required: true, message: "Please input account owner!" },
+                    { required: true, message: 'Please input account owner!' },
                   ]}
                 >
                   <Input />
@@ -297,7 +341,7 @@ export function Conclusion() {
                 <Form.Item
                   label="IBAN"
                   name="iban"
-                  rules={[{ required: true, message: "Please input IBAN!" }]}
+                  rules={[{ required: true, message: 'Please input IBAN!' }]}
                 >
                   <Input />
                 </Form.Item>
@@ -307,13 +351,13 @@ export function Conclusion() {
                   rules={[
                     {
                       validator: (_, value) =>
-                        value
-                          ? Promise.resolve()
-                          : Promise.reject(
-                              new Error(
-                                "Please accept monthly payments via direct debit"
-                              )
+                        value ?
+                          Promise.resolve() :
+                          Promise.reject(
+                            new Error(
+                              'Please accept monthly payments via direct debit',
                             ),
+                          ),
                     },
                   ]}
                 >
@@ -325,14 +369,26 @@ export function Conclusion() {
             </Col>
           </Row>
           <Row>
-            <Col span={4} offset={4}>
-              <Button type="text" onClick={() => setStep((prev) => prev - 1)}>
+            <Col
+              span={4}
+              offset={4}
+            >
+              <Button
+                type="text"
+                onClick={() => setStep((prev) => prev - 1)}
+              >
                 <LeftOutlined /> Back
               </Button>
             </Col>
-            <Col span={4} offset={12}>
-              <Button type="text" onClick={handleBuy}>
-                {" "}
+            <Col
+              span={4}
+              offset={12}
+            >
+              <Button
+                type="text"
+                onClick={handleBuy}
+              >
+                {' '}
                 Buy <RightOutlined />
               </Button>
             </Col>
@@ -344,8 +400,10 @@ export function Conclusion() {
         <Result
           status="success"
           title="Successfully concluded PPA!"
-          subTitle="Congratulations your PPA has been concluded. You will find a corresponding acknowledement E-mail in your postbox"
+          subTitle={`Congratulations your PPA has been concluded. 
+          You will find a corresponding acknowledement E-mail in your postbox`}
           extra={[
+            // eslint-disable-next-line react/jsx-key
             <Link to={LINK_CONSUMER_DASHBOARD}>
               <Button type="primary">Back to PPA Listing</Button>
             </Link>,
@@ -358,7 +416,10 @@ export function Conclusion() {
   return (
     <>
       <Row>
-        <Col span={12} offset={6}>
+        <Col
+          span={12}
+          offset={6}
+        >
           <Steps current={step}>
             <Step title="PPA Properties" />
             <Step title="Confirm" />
@@ -368,7 +429,10 @@ export function Conclusion() {
         </Col>
       </Row>
       <Row>
-        <Col span={12} offset={6}>
+        <Col
+          span={12}
+          offset={6}
+        >
           {conclusionForm}
         </Col>
       </Row>

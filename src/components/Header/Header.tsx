@@ -1,13 +1,13 @@
-import { Menu, Avatar, Dropdown, PageHeader, Space, Button } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import { dispatch, useStoreState } from "../../state";
+import { Menu, Avatar, Dropdown, PageHeader, Space, Button } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import { dispatch, useStoreState } from '../../state';
 
 const menu = (
   <Menu
     items={[
       {
-        key: "1",
+        key: '1',
         label: (
           <Link to="/login">
             <div>Login</div>
@@ -15,7 +15,7 @@ const menu = (
         ),
       },
       {
-        key: "2",
+        key: '2',
         label: (
           <Link to="/">
             <div>Dashboard</div>
@@ -23,7 +23,7 @@ const menu = (
         ),
       },
       {
-        key: "3",
+        key: '3',
         label: (
           <Link to="/user-settings">
             <div>User Settings</div>
@@ -31,12 +31,13 @@ const menu = (
         ),
       },
       {
-        key: "4",
+        key: '4',
         label: (
+          // eslint-disable-next-line
           <div
             onClick={() =>
               dispatch({
-                type: "logout",
+                type: 'logout',
               })
             }
           >
@@ -49,32 +50,36 @@ const menu = (
 );
 
 export function Header() {
-  const loggedIn = useStoreState("loggedIn");
+  const loggedIn = useStoreState('loggedIn');
   return (
     <PageHeader
-      /* 
+      /*
       Fixed page header:
-      style={{ position: "fixed", zIndex: 1, width: "100%" }} 
+      style={{ position: "fixed", zIndex: 1, width: "100%" }}
       */
       title={<Link to="/">GreenMatch</Link>}
       subTitle="... where your PPA is just one click away!"
       extra={[
-        /* If user is not logged in, show landing page header, else show avatar dropdown menu */
+        /* If user is not logged in, show landing page header,
+        else show avatar dropdown menu */
         !loggedIn ? (
           <Space>
             <a href="#introduction">Introduction</a>
             <a href="#about">About</a>
             <a href="#team">Team</a>
-            <Button size={"middle"}>
+            <Button size={'middle'}>
               <Link to="/login">Login</Link>
             </Button>
           </Space>
         ) : (
           <Dropdown overlay={menu}>
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid*/}
+            {/* eslint-disable-next-line */}
             <a onClick={(e) => e.preventDefault()}>
               <Space>
-                <Avatar size="large" icon={<UserOutlined />} />
+                <Avatar
+                  size="large"
+                  icon={<UserOutlined />}
+                />
               </Space>
             </a>
           </Dropdown>

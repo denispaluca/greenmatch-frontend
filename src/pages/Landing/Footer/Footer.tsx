@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "./Footer.module.scss";
+import React from 'react';
+import styles from './Footer.module.scss';
 
 const Footer: React.FC = () => {
   return (
@@ -8,13 +8,13 @@ const Footer: React.FC = () => {
         <p>GreenMatch</p>
         <ul>
           <li className="nav-item">
-            <a>Imprint</a>
+            <a href='#imprint'>Imprint</a>
           </li>
           <li className="nav-item">
-            <a>Privacy Policy</a>
+            <a href='#privacy'>Privacy Policy</a>
           </li>
           <li className="nav-item">
-            <a>Terms of Use</a>
+            <a href='#terms'>Terms of Use</a>
           </li>
         </ul>
       </div>

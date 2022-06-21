@@ -14,17 +14,23 @@ export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
 
   return (
     <Card
-      style={{ borderRadius: "20px", overflow: "hidden" }}
+      style={{ borderRadius: '20px', overflow: 'hidden' }}
       hoverable
-      onClick={() => {navigate('/ppa-overview/' + powerPlant.id)}}
+      onClick={() => {
+        navigate('/ppa-overview/' + powerPlant.id);
+      }}
       title={powerPlant.name}
       actions={[
-        <Link to={`powerplant/${powerPlant.id}/edit`}><SettingOutlined /></Link>,
-        <StatusDisplay live={powerPlant.live}/>
+        // eslint-disable-next-line react/jsx-key
+        <Link to={`powerplant/${powerPlant.id}/edit`}>
+          <SettingOutlined />
+        </Link>,
+        // eslint-disable-next-line react/jsx-key
+        <StatusDisplay live={powerPlant.live} />,
       ]}
     >
       <p>Location: {powerPlant.location}</p>
       <p>Type: {EnergyTypeEnum[powerPlant.type]}</p>
     </Card>
-  )
+  );
 }

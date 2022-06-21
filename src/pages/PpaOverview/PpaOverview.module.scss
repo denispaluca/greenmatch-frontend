@@ -1,14 +1,14 @@
-.revenueCardContainer{
-    padding: 1rem 3rem;
+.revenueCardContainer {
+  padding: 1rem 3rem;
 }
 
-.ppaInfo{
-    padding: 0 1.25rem;
+.ppaInfo {
+  padding: 0 1.25rem;
 }
 
-//media query trigger smaller than 420px width
-@media screen and (max-width: 420px){
-    .revenueCardContainer{
-        padding: 1rem 1rem;
-    }
+// media query trigger smaller than 420px width
+@media screen and (max-width: 420px) {
+  .revenueCardContainer {
+    padding: 1rem;
+  }
 }

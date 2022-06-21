@@ -1,7 +1,7 @@
-import { Button, Modal, Input, Form, Cascader, List } from "antd";
-import { useEffect, useState } from "react";
-import { PowerPlantCard } from "../../components";
-import { PowerPlantType, EnergyTypeEnum } from "../../types";
+import { Button, Modal, Input, Form, Cascader, List } from 'antd';
+import { useEffect, useState } from 'react';
+import { PowerPlantCard } from '../../components';
+import { PowerPlantType, EnergyTypeEnum } from '../../types';
 
 interface Option {
   value: EnergyTypeEnum;
@@ -11,15 +11,15 @@ interface Option {
 const optionArray: Option[] = [
   {
     value: EnergyTypeEnum.Solar,
-    label: "Solar",
+    label: 'Solar',
   },
   {
     value: EnergyTypeEnum.Wind,
-    label: "Wind",
+    label: 'Wind',
   },
   {
     value: EnergyTypeEnum.Hydro,
-    label: "Hydro",
+    label: 'Hydro',
   },
 ];
 
@@ -34,7 +34,7 @@ export function Dashboard() {
 
   const fetchPowerPlants = async () => {
     const powerplants = await fetch(
-      "https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants"
+      'https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants',
     );
     const ppJson = await powerplants.json();
     const cpp = ppJson.map((p: any) => {
@@ -55,12 +55,12 @@ export function Dashboard() {
     form
       .validateFields()
       .then((values) => {
-        console.log("Received values of form: ", values);
+        console.log('Received values of form: ', values);
         form.resetFields();
         onCreate(values);
       })
       .catch((info) => {
-        console.log("Validate Failed:", info);
+        console.log('Validate Failed:', info);
       });
   };
 
@@ -88,20 +88,21 @@ export function Dashboard() {
   async function postPP(values: any) {
     try {
       const response = await fetch(
-        "https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants",
+        'https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants',
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify({
             name: values.name,
             location: values.location,
-            energyType: "XY",
-            live: false, // initially every newly added power plant should be offline
+            energyType: 'XY',
+            live: false,
+            // initially every newly added power plant should be offline
           }),
           headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -109,11 +110,11 @@ export function Dashboard() {
       }
     } catch (error) {
       if (error instanceof Error) {
-        console.log("error message: ", error.message);
+        console.log('error message: ', error.message);
         return error.message;
       } else {
-        console.log("unexpected error: ", error);
-        return "An unexpected error occurred";
+        console.log('unexpected error: ', error);
+        return 'An unexpected error occurred';
       }
     }
   }
@@ -132,7 +133,7 @@ export function Dashboard() {
           form={form}
           layout="vertical"
           name="form_in_modal"
-          initialValues={{ modifier: "public" }}
+          initialValues={{ modifier: 'public' }}
         >
           <Form.Item
             name="name"
@@ -140,7 +141,7 @@ export function Dashboard() {
             rules={[
               {
                 required: true,
-                message: "Please input the name of the power plant!",
+                message: 'Please input the name of the power plant!',
               },
             ]}
           >
@@ -152,7 +153,7 @@ export function Dashboard() {
             rules={[
               {
                 required: true,
-                message: "Please input the location of the power plant!",
+                message: 'Please input the location of the power plant!',
               },
             ]}
           >
@@ -164,11 +165,14 @@ export function Dashboard() {
             rules={[
               {
                 required: true,
-                message: "Please input the type of the power plant!",
+                message: 'Please input the type of the power plant!',
               },
             ]}
           >
-            <Cascader placeholder="Please select" options={optionArray} />
+            <Cascader
+              placeholder="Please select"
+              options={optionArray}
+            />
           </Form.Item>
         </Form>
       </Modal>

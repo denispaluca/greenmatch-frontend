@@ -10,80 +10,116 @@ interface PpaCardProps {
   onCancel?: MouseEventHandler<HTMLElement>;
 }
 
-const PpaCard: FunctionComponent<PpaCardProps> = ({ ppa, onClick, onCancel }) => {
-  const { Title, Text } = Typography;
+const PpaCard: FunctionComponent<PpaCardProps> =
+  ({ ppa, onClick, onCancel }) => {
+    const { Title, Text } = Typography;
 
-  // Get a string date as input and compare with
-  // the current date and return true if there is less than one month difference
-  const currentDate = new Date();
-  const inputDate = new Date(ppa.endDate);
-  const diff = Math.abs(currentDate.getTime() - inputDate.getTime());
-  const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
-  const lessThanOneMonth = diffDays < 30;
+    // Get a string date as input and compare with
+    // the current date and return true
+    // if there is less than one month difference
+    const currentDate = new Date();
+    const inputDate = new Date(ppa.endDate);
+    const diff = Math.abs(currentDate.getTime() - inputDate.getTime());
+    const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+    const lessThanOneMonth = diffDays < 30;
 
-  return (
-    <div className={styles.ppaCard} onClick={onClick}>
-      <Title level={2}>
-        PPA: {ppa.id}
-        <Divider />
-      </Title>
-      <Row>
-        <Col span={10} className={styles.rowGutter}>
-          <Text type="secondary">Price: &nbsp;</Text>
-        </Col>
-        <Col span={14} className={styles.rowGutter}>
-          <Text>{ppa.price}</Text>
-        </Col>
-        <Col span={10} className={styles.rowGutter}>
-          <Text type="secondary">Volume: &nbsp;</Text>
-        </Col>
-        <Col span={14} className={styles.rowGutter}>
-          <Text>{ppa.volume}</Text>
-        </Col>
-        <Col span={10} className={styles.rowGutter}>
-          <Text type="secondary">Cancelled: &nbsp;</Text>
-        </Col>
-        <Col span={14} className={styles.rowGutter}>
-          <Text type={ppa.cancelled ? 'danger' : 'success'}>
-            {ppa.cancelled ? 'Yes' : 'No'}
-          </Text>
-        </Col>
-        <Col span={10} className={styles.rowGutter}>
-          <Text type="secondary">Start Date: &nbsp;</Text>
-        </Col>
-        <Col span={14} className={styles.rowGutter}>
-          <Text>{ppa.startDate}</Text>
-        </Col>
-        <Col span={10} className={styles.rowGutter}>
-          <Text type="secondary">End Date: &nbsp;</Text>
-        </Col>
-        <Col span={14} className={styles.rowGutter}>
-          <Text type={lessThanOneMonth ? 'danger' : undefined}>
-            <Space>
-              {ppa.endDate}
-              {lessThanOneMonth && (
-                <ExclamationCircleOutlined style={{ color: 'red' }} />
-              )}
-            </Space>
-          </Text>
-        </Col>
-      </Row>
-      <Button 
-        type='primary'
-        className={styles.ppaCardButton}
-        danger
-        onClick={(e)=>{
-          e.preventDefault();
-          e.stopPropagation();
-          onCancel && onCancel(e); 
-        }} 
-        block
+    return (
+      // eslint-disable-next-line
+      <div
+        className={styles.ppaCard}
+        onClick={onClick}
       >
-        Cancel
-      </Button>
-    </div>
-  );
-};
+        <Title level={2}>
+          PPA: {ppa.id}
+          <Divider />
+        </Title>
+        <Row>
+          <Col
+            span={10}
+            className={styles.rowGutter}
+          >
+            <Text type="secondary">Price: &nbsp;</Text>
+          </Col>
+          <Col
+            span={14}
+            className={styles.rowGutter}
+          >
+            <Text>{ppa.price}</Text>
+          </Col>
+          <Col
+            span={10}
+            className={styles.rowGutter}
+          >
+            <Text type="secondary">Volume: &nbsp;</Text>
+          </Col>
+          <Col
+            span={14}
+            className={styles.rowGutter}
+          >
+            <Text>{ppa.volume}</Text>
+          </Col>
+          <Col
+            span={10}
+            className={styles.rowGutter}
+          >
+            <Text type="secondary">Cancelled: &nbsp;</Text>
+          </Col>
+          <Col
+            span={14}
+            className={styles.rowGutter}
+          >
+            <Text type={ppa.cancelled ? 'danger' : 'success'}>
+              {ppa.cancelled ? 'Yes' : 'No'}
+            </Text>
+          </Col>
+          <Col
+            span={10}
+            className={styles.rowGutter}
+          >
+            <Text type="secondary">Start Date: &nbsp;</Text>
+          </Col>
+          <Col
+            span={14}
+            className={styles.rowGutter}
+          >
+            <Text>{ppa.startDate}</Text>
+          </Col>
+          <Col
+            span={10}
+            className={styles.rowGutter}
+          >
+            <Text type="secondary">End Date: &nbsp;</Text>
+          </Col>
+          <Col
+            span={14}
+            className={styles.rowGutter}
+          >
+            <Text type={lessThanOneMonth ? 'danger' : undefined}>
+              <Space>
+                {ppa.endDate}
+                {lessThanOneMonth && (
+                  <ExclamationCircleOutlined style={{ color: 'red' }} />
+                )}
+              </Space>
+            </Text>
+          </Col>
+        </Row>
+        <Button
+          type='primary'
+          className={styles.ppaCardButton}
+          danger
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onCancel && onCancel(e);
+          }}
+          block
+        >
+          Cancel
+        </Button>
+      </div>
+    );
+  };
 
 export default PpaCard;
 export { PpaCard };

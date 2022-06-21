@@ -1,20 +1,20 @@
 .footer {
   width: 100%;
-  background-color: rgb(255, 255, 255);
   padding: 3rem 1rem;
+  background-color: rgb(255 255 255);
 }
 
 .footer .container {
+  display: block;
   max-width: 1240px;
   margin: auto;
   text-align: center;
-  display: block;
 }
 
 .footer p {
+  color: rgb(90 90 90);
   font-size: 1rem;
   font-weight: 700;
-  color: rgb(90, 90, 90);
 }
 
 .footer ul {
@@ -28,5 +28,5 @@
 }
 
 .footer li a {
-  color: rgb(90, 90, 90);
+  color: rgb(90 90 90);
 }

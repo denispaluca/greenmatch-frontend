@@ -1,19 +1,19 @@
 .ppaCard {
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  margin: 1em;
-  padding: 0.5em 0.75em;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  height: 90%;
   position: relative;
   top: 0;
+  height: 90%;
+  padding: 0.5em 0.75em;
+  margin: 1em;
+  border-radius: 0.5rem;
+  box-shadow: rgb(0 0 0 / 24%) 0 3px 8px;
+  cursor: pointer;
   transition: top ease 0.5s;
 
   &:hover {
     top: -10px;
   }
 
-  &Button{
+  &Button {
     margin: 1rem 0;
   }
 }

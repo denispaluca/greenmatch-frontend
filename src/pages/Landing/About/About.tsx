@@ -1,10 +1,13 @@
-import { Card, Row } from "antd";
-import React from "react";
-import styles from "./About.module.scss";
+import { Card, Row } from 'antd';
+import React from 'react';
+import styles from './About.module.scss';
 
 const About: React.FC = () => {
   return (
-    <div className={styles.about} id="about">
+    <div
+      className={styles.about}
+      id="about"
+    >
       <div className={styles.content}>
         <h2>About</h2>
         <ul>
@@ -14,14 +17,15 @@ const About: React.FC = () => {
         </ul>
         <Row justify="center">
           <Card
-            style={{ marginTop: 40, width: 600, border: "0px" }}
+            style={{ marginTop: 40, width: 600, border: '0px' }}
             cover={
               <img
                 alt="PPA Deal"
-                src={require("../../../assets/images/landing/deal.png")}
+                src={require('../../../assets/images/landing/deal.png')}
               />
             }
-          ></Card>
+          >
+          </Card>
         </Row>
       </div>
     </div>

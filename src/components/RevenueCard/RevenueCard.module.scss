@@ -1,34 +1,35 @@
-.revenueCard{
-    width: 100%;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    height: 160px;
+.revenueCard {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 160px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgb(100 100 111 / 20%) 0 7px 29px 0;
+  white-space: nowrap;
+
+  h1 {
+    margin: 0 !important;
+  }
+
+  svg {
+    font-size: 32px !important;
+  }
+
+  &--revenue {
+    color: #52c41a;
+  }
+
+  &--cost {
+    color: #ff4d4f;
+  }
+
+  &__info {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 100%;
     align-items: center;
-    overflow: hidden;
-    white-space: nowrap;
-
-    h1{
-        margin: 0 !important;
-    }
-    svg{
-        font-size: 32px !important;
-    }
-
-    &--revenue{
-        color: #52c41a;
-    }
-
-    &--cost{
-        color: #ff4d4f;
-    }
-
-    &__info{
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-        align-items: center;
-    }
+    justify-content: center;
+    gap: 0.5rem;
+  }
 }

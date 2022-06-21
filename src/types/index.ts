@@ -50,15 +50,17 @@ export interface PpaContractDetails {
   start: Date;
   owner?: string;
   iban?: string;
+}
+
 export type Ppa = {
-    id: number;
-    duration: number;
-    startDate: string;
-    endDate: string;
-    cancelled: boolean;
-    price: number;
-    volume: number;
-    description: string;
-    powerplantId: number;
-  }
+  id: number;
+  duration: number;
+  startDate: string;
+  endDate: string;
+  cancelled: boolean;
+  price: number;
+  volume: number;
+  description: string;
+  powerplantId: number;
+}
 
