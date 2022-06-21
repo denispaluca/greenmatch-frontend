@@ -63,9 +63,9 @@ export function PowerPlantSettings() {
     }
     form
       .validateFields()
-      .then((values) => {
+      .then(async (values) => {
         console.log("Received values of form: ", values);
-        putPP(values);
+        await putPP(values);
         navigate("/");
       })
       .catch((info) => {
