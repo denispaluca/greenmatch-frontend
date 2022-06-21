@@ -1,5 +1,5 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Divider, Space, Typography, Col, Row } from 'antd';
+import { Divider, Space, Typography, Col, Row, Button } from 'antd';
 import { FunctionComponent, MouseEventHandler } from 'react';
 import { Ppa } from '../../types';
 import styles from './PpaCard.module.scss';
@@ -7,9 +7,10 @@ import styles from './PpaCard.module.scss';
 interface PpaCardProps {
   ppa: Ppa;
   onClick?: MouseEventHandler<HTMLDivElement>;
+  onCancel?: MouseEventHandler<HTMLElement>;
 }
 
-const PpaCard: FunctionComponent<PpaCardProps> = ({ ppa, onClick }) => {
+const PpaCard: FunctionComponent<PpaCardProps> = ({ ppa, onClick, onCancel }) => {
   const { Title, Text } = Typography;
 
   // Get a string date as input and compare with
@@ -67,6 +68,19 @@ const PpaCard: FunctionComponent<PpaCardProps> = ({ ppa, onClick }) => {
           </Text>
         </Col>
       </Row>
+      <Button 
+        type='primary'
+        className={styles.ppaCardButton}
+        danger
+        onClick={(e)=>{
+          e.preventDefault();
+          e.stopPropagation();
+          onCancel && onCancel(e); 
+        }} 
+        block
+      >
+        Cancel
+      </Button>
     </div>
   );
 };

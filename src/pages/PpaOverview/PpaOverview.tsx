@@ -4,7 +4,9 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import {Ppa} from "../../types";
 import PpaCard from "../../components/PpaCard/PpaCard";
-import {Button, Modal, Typography} from "antd";
+import {Button, Col, Modal, Row, Typography} from "antd";
+import { RevenueCard } from "../../components";
+import styles from './PpaOverview.module.scss';
 
 const responsive = {
   superLargeDesktop: {
@@ -13,16 +15,28 @@ const responsive = {
     items: 8
   },
   desktop: {
-    breakpoint: { max: 3000, min: 1024 },
+    breakpoint: { max: 3000, min: 1365 },
     items: 6
   },
+  miniDesktop:{
+    breakpoint: { max: 1365, min: 1138 },
+    items: 5
+  },
   tablet: {
-    breakpoint: { max: 1024, min: 464 },
+    breakpoint: { max: 1138, min: 910 },
     items: 4
   },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
+  miniTablet:{
+    breakpoint: { max: 910, min: 685 },
     items: 3
+  },
+  mobile: {
+    breakpoint: { max: 685, min: 450 },
+    items: 2
+  },
+  miniMobile: {
+    breakpoint: { max: 450, min: 0 },
+    items: 1
   }
 };
 
@@ -193,6 +207,13 @@ const PPAOverView: FunctionComponent = () => {
 
   const [selectedPpa, setSelectedPpa] = useState<Ppa>();
 
+  const [ppaToCancel, setPpaToCancel] = useState<Ppa>();
+
+  const handleCancelation = (ppa: Ppa) => {
+    console.log("cancelling ppa", ppa);
+   // Send request here... 
+  }
+
     // Fetch actual data from the backend here later.
     useEffect(()=>{
       console.log(params.id);
@@ -205,9 +226,8 @@ const PPAOverView: FunctionComponent = () => {
           title="PPA Terms of Agreement"
           visible={selectedPpa !== undefined}
           onCancel={() => setSelectedPpa(undefined)}
-          onOk={() => setSelectedPpa(undefined)}
           footer={[
-          <Button key="back" onClick={() => setSelectedPpa(undefined)}>
+          <Button key="backInfo" onClick={() => setSelectedPpa(undefined)}>
             Close
           </Button>,
           ]}
@@ -216,15 +236,57 @@ const PPAOverView: FunctionComponent = () => {
             {selectedPpa?.description}
           </Typography.Text>
         </Modal>
+        <Modal 
+          title={`PPA ${ppaToCancel?.id} Cancellation`}
+          visible={ppaToCancel !== undefined}
+          onCancel={() => setPpaToCancel(undefined)}
+          footer={[
+          <Button key="back" onClick={() => setPpaToCancel(undefined)}>
+            Close
+          </Button>,
+          <Button key="ok" 
+              htmlType="submit" 
+              danger
+              onClick={() => {
+                ppaToCancel && handleCancelation(ppaToCancel);
+                setPpaToCancel(undefined);
+              }}>
+            Cancel PPA
+          </Button>,
+          ]}
+        >
+          <Typography.Text>
+            Are you sure you want to cancel this PPA?
+          </Typography.Text>
+        </Modal>
+          <Typography.Text 
+            type="warning" 
+            ellipsis 
+            className={styles.ppaInfo}>
+            Click on any of the PPAs to view the details.
+          </Typography.Text>
           <Carousel responsive={responsive}>
             {ppas.map(ppa => (
               <PpaCard 
                 ppa={ppa} 
                 key={ppa.id} 
                 onClick={()=>setSelectedPpa(ppa)}
+                onCancel={()=>setPpaToCancel(ppa)}
               /> 
               ))}
             </Carousel>
+            <Row>
+              <Col xs={24} sm={24} md={12} 
+              className={styles.revenueCardContainer}
+              >
+                <RevenueCard type="revenue" value={50}/>
+              </Col>
+              <Col xs={24} sm={24} md={12}
+              className={styles.revenueCardContainer}
+              >
+                <RevenueCard type="cost" value={120}/>
+              </Col>
+            </Row>
         </div>
     );
 }

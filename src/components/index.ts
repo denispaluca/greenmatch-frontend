@@ -5,3 +5,4 @@ export { Layout } from './Layout/Layout';
 export * from './OffersTable/OffersTable';
 export { ContractDetails } from './ContractDetails/ContractDetails';
 export { PpaCard } from './PpaCard/PpaCard';
+export { RevenueCard } from './RevenueCard/RevenueCard';
