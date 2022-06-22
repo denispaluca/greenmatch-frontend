@@ -114,7 +114,7 @@ export function PowerPlantSettings() {
 
   return (
     <>
-      <h1>Power Plant ID: {id}</h1>
+      <h1>{powerPlant.name}</h1>
       <Form
         {...layout}
         form={form}
