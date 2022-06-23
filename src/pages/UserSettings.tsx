@@ -1,9 +1,9 @@
 export function UserSettings() {
-    return (
-        <div>
+  return (
+    <div>
             To Do
-        </div>
-    )
+    </div>
+  );
 }
 
 export default UserSettings;

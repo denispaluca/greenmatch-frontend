@@ -5,3 +5,5 @@ export * from './UserSettings';
 export * from './Conclusion/Conclusion';
 export * from './ConsumerDashboard/ConsumerDashboard';
 export * from './SupplierRegistration/SupplierRegistration';
+export * from './Landing/Landing';
+export * from './PpaOverview/PpaOverview';

@@ -1,12 +1,13 @@
-import {createStore} from "react-hooks-global-state";
+/* eslint-disable indent */
+import { createStore } from 'react-hooks-global-state';
 
 type State = {
   loginType?: 'Consumer' | 'Supplier';
   loggedIn: boolean;
 }
 
-type Action = { type: 'setLoginType'; loginType: 'Consumer' | 'Supplier'}
- | { type: 'logout' };
+type Action = { type: 'setLoginType'; loginType: 'Consumer' | 'Supplier' }
+  | { type: 'logout' };
 
 const defaultState: State = {
   loginType: undefined,
@@ -16,18 +17,22 @@ const defaultState: State = {
 const LOCAL_STORAGE_KEY = 'my_local_storage_key';
 
 const stateFromStorage = (localStorage.getItem(LOCAL_STORAGE_KEY));
-const initialState: State = stateFromStorage === null ? defaultState : JSON.parse(stateFromStorage);
+const initialState: State = stateFromStorage === null ?
+  defaultState : JSON.parse(stateFromStorage);
 
-const reducer = (state:State, action:Action) => {
+const reducer = (state: State, action: Action) => {
   switch (action.type) {
-    case 'setLoginType':{
-      const newState = { ...state, LoginType: action.loginType, loggedIn: true };
+    case 'setLoginType': {
+      const newState = {
+        ...state, LoginType: action.loginType,
+        loggedIn: true,
+      };
       console.log(newState);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newState));
       return newState;
     }
-    case 'logout':{
-      const newState = {...state, LoginType: undefined, loggedIn: false};
+    case 'logout': {
+      const newState = { ...state, LoginType: undefined, loggedIn: false };
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newState));
       return newState;
     }

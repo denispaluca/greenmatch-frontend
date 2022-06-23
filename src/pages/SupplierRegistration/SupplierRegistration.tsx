@@ -1,9 +1,9 @@
-import { Row, Col, Card, Form, Input, Button, Steps, FormInstance } from "antd";
-import { useState } from "react";
-import { BankDetails } from "../../types";
-import styles from "./SupplierRegistration.module.scss";
-import { useNavigate } from "react-router-dom";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Row, Col, Card, Form, Input, Button, Steps } from 'antd';
+import { useState } from 'react';
+import { BankDetails } from '../../types';
+import styles from './SupplierRegistration.module.scss';
+import { useNavigate } from 'react-router-dom';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
 const { Step } = Steps;
 
@@ -22,9 +22,9 @@ interface RegistrationFormValues {
   companyWebsite: string;
 }
 
-//Query Backend and ask whether uname i.e. email is still available
+// Query Backend and ask whether uname i.e. email is still available
 const checkUsernameAvailability = async (uname: string) => {
-  if (uname === "test.test@tum.de") {
+  if (uname === 'test.test@tum.de') {
     return false;
   } else {
     return true;
@@ -33,7 +33,7 @@ const checkUsernameAvailability = async (uname: string) => {
 
 // Register new Supplier in Backend
 const registerSupplier = async (values: RegistrationFormValues) => {
-  console.log("Add supllier with values", values);
+  console.log('Add supllier with values', values);
 };
 
 export function SupplierRegistration() {
@@ -52,17 +52,15 @@ export function SupplierRegistration() {
       .then((values) => {
         console.log(values);
         setBasicData(values);
-        setTimeout(() => {
-          setStep((prev) => prev + 1);
-        }, 100);
+        setStep((prev) => prev + 1);
       })
       .catch((info) => {
-        console.log("Validation failed", info);
+        console.log('Validation failed', info);
       });
   };
 
   const handleBankData = () => {
-    console.log("handle bank data");
+    console.log('handle bank data');
     bankForm
       .validateFields()
       .then((values) => {
@@ -73,7 +71,7 @@ export function SupplierRegistration() {
         }, 100);
       })
       .catch((info) => {
-        console.log("Validation failed", info);
+        console.log('Validation failed', info);
       });
   };
 
@@ -83,27 +81,34 @@ export function SupplierRegistration() {
       .then((values) => {
         console.log(values);
         setLoginData(values);
+        console.log(loginData);
         return registerSupplier(Object.assign(basicData!, bankData, values));
       })
       .then(() => {
-        console.log("Sucess");
-        navigate("/login");
+        console.log('Sucess');
+        navigate('/login');
       })
       .catch((info) => {
-        console.log("registration failed", info);
+        console.log('registration failed', info);
       });
   };
 
   const basic = () => {
     return (
-      <div style={{ display: step === 0 ? "block" : "none" }}>
+      <div style={{ display: step === 0 ? 'block' : 'none' }}>
         <Row justify="center">
-          <Col offset={1} span={22}>
+          <Col
+            offset={1}
+            span={22}
+          >
             <h2>Company Information</h2>
           </Col>
         </Row>
         <Row justify="center">
-          <Col offset={1} span={22}>
+          <Col
+            offset={1}
+            span={22}
+          >
             <Form
               name="basic"
               form={basicForm}
@@ -116,7 +121,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Company Name!",
+                    message: 'Please input your Company Name!',
                   },
                 ]}
               >
@@ -129,7 +134,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Trade Register Number!",
+                    message: 'Please input your Trade Register Number!',
                   },
                 ]}
               >
@@ -139,7 +144,7 @@ export function SupplierRegistration() {
               <Form.Item
                 label="City"
                 name="city"
-                rules={[{ required: true, message: "Please input your City!" }]}
+                rules={[{ required: true, message: 'Please input your City!' }]}
               >
                 <Input />
               </Form.Item>
@@ -150,7 +155,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Zipcode!",
+                    message: 'Please input your Zipcode!',
                   },
                 ]}
               >
@@ -163,7 +168,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Street!",
+                    message: 'Please input your Street!',
                   },
                 ]}
               >
@@ -176,7 +181,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Number!",
+                    message: 'Please input your Number!',
                   },
                 ]}
               >
@@ -189,7 +194,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Country!",
+                    message: 'Please input your Country!',
                   },
                 ]}
               >
@@ -202,7 +207,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Image URL!",
+                    message: 'Please input your Image URL!',
                   },
                 ]}
               >
@@ -215,7 +220,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Company Website!",
+                    message: 'Please input your Company Website!',
                   },
                 ]}
               >
@@ -226,13 +231,22 @@ export function SupplierRegistration() {
         </Row>
         <Row>
           <Col span={4}>
-            <Button type="text" onClick={() => setStep((prev) => prev - 1)}>
+            <Button
+              type="text"
+              onClick={() => setStep((prev) => prev - 1)}
+            >
               <LeftOutlined /> Back
             </Button>
           </Col>
-          <Col span={4} offset={16}>
-            <Button type="text" onClick={handleBasicData}>
-              {" "}
+          <Col
+            span={4}
+            offset={16}
+          >
+            <Button
+              type="text"
+              onClick={handleBasicData}
+            >
+              {' '}
               Next <RightOutlined />
             </Button>
           </Col>
@@ -243,14 +257,20 @@ export function SupplierRegistration() {
 
   const bank = () => {
     return (
-      <div style={{ display: step === 1 ? "block" : "none" }}>
+      <div style={{ display: step === 1 ? 'block' : 'none' }}>
         <Row justify="center">
-          <Col offset={1} span={22}>
+          <Col
+            offset={1}
+            span={22}
+          >
             <h2>Bank Data</h2>
           </Col>
         </Row>
         <Row justify="center">
-          <Col offset={1} span={22}>
+          <Col
+            offset={1}
+            span={22}
+          >
             <Form
               name="bank"
               form={bankForm}
@@ -263,7 +283,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Account Owner!",
+                    message: 'Please input your Account Owner!',
                   },
                 ]}
               >
@@ -272,7 +292,7 @@ export function SupplierRegistration() {
               <Form.Item
                 label="IBAN"
                 name="iban"
-                rules={[{ required: true, message: "Please input your IBAN!" }]}
+                rules={[{ required: true, message: 'Please input your IBAN!' }]}
               >
                 <Input />
               </Form.Item>
@@ -281,13 +301,22 @@ export function SupplierRegistration() {
         </Row>
         <Row>
           <Col span={4}>
-            <Button type="text" onClick={() => setStep((prev) => prev - 1)}>
+            <Button
+              type="text"
+              onClick={() => setStep((prev) => prev - 1)}
+            >
               <LeftOutlined /> Back
             </Button>
           </Col>
-          <Col span={4} offset={16}>
-            <Button type="text" onClick={handleBankData}>
-              {" "}
+          <Col
+            span={4}
+            offset={16}
+          >
+            <Button
+              type="text"
+              onClick={handleBankData}
+            >
+              {' '}
               Next <RightOutlined />
             </Button>
           </Col>
@@ -298,14 +327,20 @@ export function SupplierRegistration() {
 
   const login = () => {
     return (
-      <div style={{ display: step === 2 ? "block" : "none" }}>
+      <div style={{ display: step === 2 ? 'block' : 'none' }}>
         <Row justify="center">
-          <Col offset={1} span={22}>
+          <Col
+            offset={1}
+            span={22}
+          >
             <h2>Login Data</h2>
           </Col>
         </Row>
         <Row justify="center">
-          <Col offset={1} span={22}>
+          <Col
+            offset={1}
+            span={22}
+          >
             <Form
               name="login"
               layout="vertical"
@@ -324,7 +359,7 @@ export function SupplierRegistration() {
                         return Promise.resolve();
                       } else {
                         return Promise.reject(
-                          new Error("E-Mail address is already in use")
+                          new Error('E-Mail address is already in use'),
                         );
                       }
                     },
@@ -340,7 +375,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your password!",
+                    message: 'Please input your password!',
                   },
                 ]}
               >
@@ -351,13 +386,22 @@ export function SupplierRegistration() {
         </Row>
         <Row>
           <Col span={4}>
-            <Button type="text" onClick={() => setStep((prev) => prev - 1)}>
+            <Button
+              type="text"
+              onClick={() => setStep((prev) => prev - 1)}
+            >
               <LeftOutlined /> Back
             </Button>
           </Col>
-          <Col span={4} offset={16}>
-            <Button type="text" onClick={handleLoginData}>
-              {" "}
+          <Col
+            span={4}
+            offset={16}
+          >
+            <Button
+              type="text"
+              onClick={handleLoginData}
+            >
+              {' '}
               Register <RightOutlined />
             </Button>
           </Col>
@@ -368,15 +412,31 @@ export function SupplierRegistration() {
 
   return (
     <Row className={styles.register}>
-      <Col xs={0} sm={12} md={14} lg={16} />
-      <Col xs={24} sm={12} md={10} lg={8}>
-        <Card className={styles.registerCard} bordered={false}>
+      <Col
+        xs={0}
+        sm={12}
+        md={14}
+        lg={16}
+      />
+      <Col
+        xs={24}
+        sm={12}
+        md={10}
+        lg={8}
+      >
+        <Card
+          className={styles.registerCard}
+          bordered={false}
+        >
           <Steps current={step}>
             <Step title="Basic Information" />
             <Step title="Bank Details" />
             <Step title="Login Data" />
           </Steps>
-          <Col offset={3} span={18}>
+          <Col
+            offset={3}
+            span={18}
+          >
             {basic()}
             {bank()}
             {login()}
@@ -386,3 +446,4 @@ export function SupplierRegistration() {
     </Row>
   );
 }
+

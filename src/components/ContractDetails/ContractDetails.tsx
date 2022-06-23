@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Col, Row } from 'antd';
 
 export function ContractDetails(props: any) {
   return (
