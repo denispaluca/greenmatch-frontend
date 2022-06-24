@@ -23,12 +23,17 @@ interface RegistrationFormValues {
 }
 
 // Query Backend and ask whether uname i.e. email is still available
-const checkUsernameAvailability = async (uname: string) => {
-  if (uname === 'test.test@tum.de') {
-    return false;
-  } else {
-    return true;
-  }
+const checkUsernameAvailability = async (email: string) => {
+  const available = await fetch(`http://localhost:8080/api/username/${email}`,
+    {
+      method: 'GET',
+      mode: 'cors',
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    });
+
+  const respJson = await available.json();
+  console.log('email', email, 'avail', respJson.available);
+  return respJson.available;
 };
 
 // Register new Supplier in Backend
@@ -354,13 +359,20 @@ export function SupplierRegistration() {
                   {
                     required: true,
                     validator: async (_, value) => {
-                      const check = await checkUsernameAvailability(value);
-                      if (check === true) {
+                      if (value === undefined) {
+                        return Promise.reject(new Error(
+                          'Please enter an Email Adresss',
+                        ));
+                      }
+
+                      const res = await checkUsernameAvailability(value);
+
+                      if (res === true) {
                         return Promise.resolve();
                       } else {
-                        return Promise.reject(
-                          new Error('E-Mail address is already in use'),
-                        );
+                        return Promise.reject(new Error(
+                          'Email already in use',
+                        ));
                       }
                     },
                   },
