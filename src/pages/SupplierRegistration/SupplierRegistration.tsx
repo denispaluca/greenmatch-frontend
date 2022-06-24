@@ -32,7 +32,6 @@ const checkUsernameAvailability = async (email: string) => {
     });
 
   const respJson = await available.json();
-  console.log('email', email, 'avail', respJson.available);
   return respJson.available;
 };
 
