@@ -4,10 +4,8 @@ import {
   Col,
   Steps,
   Form,
-  Input,
   Radio,
   InputNumber,
-  Checkbox,
   Result,
 } from 'antd';
 import { RightOutlined, LeftOutlined } from '@ant-design/icons';
@@ -20,6 +18,7 @@ import {
   PpaContractDetails,
   UserData,
 } from '../../types';
+import StripeContainer from '../../components/StripeContainer';
 
 const { Step } = Steps;
 const LINK_CONSUMER_DASHBOARD = '/offers';
@@ -108,7 +107,7 @@ const initPpaDetails = (ppo: PowerPlantOffer, buyerInfo: UserData) => {
 export function Conclusion() {
   const [step, setStep] = useState(0);
   const [ppaForm] = Form.useForm();
-  const [paymentForm] = Form.useForm();
+  // const [paymentForm] = Form.useForm();
   const [ppaProps, setPpaProps] = useState<PpaContractDetails>();
   const { id } = useParams();
   const [ppDetails, setPpDetails] = useState<PowerPlantOffer>();
@@ -154,7 +153,7 @@ export function Conclusion() {
 
   // Use this function to init payment
   // process in the backend + store newly created ppa in db
-  const handleBuy = () => {
+  /* const handleBuy = () => {
     paymentForm
       .validateFields()
       .then((values) => {
@@ -167,7 +166,7 @@ export function Conclusion() {
       .catch((info) => {
         console.log('Validation failed: ', info);
       });
-  };
+  }; */
 
   // Returns the corresponding form element depending on the step
   const conclusionForm = useMemo(() => {
@@ -308,66 +307,7 @@ export function Conclusion() {
     } else if (step === 2) {
       return (
         <>
-          <Row justify="center">
-            <Col
-              offset={6}
-              span={12}
-            >
-              <h2>Payment Details</h2>
-            </Col>
-          </Row>
-          <Row justify="center">
-            <Col
-              offset={6}
-              span={12}
-            >
-              <Form
-                name="payment"
-                layout="vertical"
-                form={paymentForm}
-                wrapperCol={{ span: 18 }}
-                initialValues={{ amount: 1000 }}
-                autoComplete="off"
-              >
-                <Form.Item
-                  label="Account Owner"
-                  name="owner"
-                  rules={[
-                    { required: true, message: 'Please input account owner!' },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  label="IBAN"
-                  name="iban"
-                  rules={[{ required: true, message: 'Please input IBAN!' }]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  name="agreement"
-                  valuePropName="checked"
-                  rules={[
-                    {
-                      validator: (_, value) =>
-                        value ?
-                          Promise.resolve() :
-                          Promise.reject(
-                            new Error(
-                              'Please accept monthly payments via direct debit',
-                            ),
-                          ),
-                    },
-                  ]}
-                >
-                  <Checkbox>
-                    I agree to get charged a monthly fee by via direct debit
-                  </Checkbox>
-                </Form.Item>
-              </Form>
-            </Col>
-          </Row>
+          <StripeContainer />
           <Row>
             <Col
               span={4}
@@ -386,9 +326,7 @@ export function Conclusion() {
             >
               <Button
                 type="text"
-                onClick={handleBuy}
               >
-                {' '}
                 Buy <RightOutlined />
               </Button>
             </Col>

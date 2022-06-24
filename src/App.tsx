@@ -9,6 +9,7 @@ import {
   ConsumerDasboard,
   Landing,
   PPAOverView,
+  Payment,
 } from './pages';
 
 export function App() {
@@ -18,6 +19,10 @@ export function App() {
         <Route
           path="/"
           element={<Dashboard />}
+        />
+        <Route
+          path="/payment"
+          element={<Payment />}
         />
         <Route
           path="powerplant/:id/edit"
