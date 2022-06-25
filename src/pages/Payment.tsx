@@ -41,8 +41,8 @@ const IBAN_ELEMENT_OPTIONS = {
 export function Payment() {
   const stripe = useStripe();
   const elements = useElements();
-  const [name, setName] = useState('Jenny Rosen');
-  const [email, setEmail] = useState('jenny.rosen@example.com');
+  const [name, setName] = useState('Jane Doe');
+  const [email, setEmail] = useState('jane@example.com');
   // helper for displaying status messages.
   const [messages, setMessages] = useState<any[]>([]);
   const addMessage = (message: any) => {
@@ -51,7 +51,7 @@ export function Payment() {
 
   const getClientSecret = async () => {
     const response = await fetch(
-      'http://localhost:8080/api/pay',
+      'http://localhost:8080/api/stripe/subscribe',
     );
     const data = await response.json();
     return data.client_secret;
@@ -89,7 +89,7 @@ export function Payment() {
       // Show error to your customer.
       console.log(result.error.message);
     } else {
-      console.log('Payment Succeeded');
+      console.log('Paid');
     }
   };
 
@@ -102,7 +102,7 @@ export function Payment() {
               Name
               <input
                 name="accountholder-name"
-                placeholder="Jenny Rosen"
+                placeholder="Jane Doe"
                 required
               />
             </label>
@@ -114,7 +114,7 @@ export function Payment() {
               <input
                 name="email"
                 type="email"
-                placeholder="jenny.rosen@example.com"
+                placeholder="jane@example.com"
                 required
               />
             </label>
