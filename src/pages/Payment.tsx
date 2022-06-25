@@ -49,10 +49,16 @@ export function Payment() {
     setMessages((messages) => [...messages, message]);
   };
 
+  // Customer_id will be stored in DB and can be accessed through global state
   const getClientSecret = async () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ customer: 'cus_Lvgp9qes1LHMR3' }),
+    };
     const response = await fetch(
-      'http://localhost:8080/api/stripe/subscribe',
-    );
+      'http://localhost:8080/api/stripe/clientSecret',
+      requestOptions);
     const data = await response.json();
     return data.client_secret;
   };
@@ -69,13 +75,13 @@ export function Payment() {
       return;
     }
 
-    // const clientSecret = await getClientSecret();
     const iban = elements.getElement(IbanElement);
     const accountholderName: string = e.target['accountholder-name'].value;
     const email: string = e.target.email.value;
     const clientSecret = await getClientSecret();
 
-    const result = await stripe.confirmSepaDebitPayment(clientSecret, {
+    // Create setup intent for recurring payments
+    const result = await stripe.confirmSepaDebitSetup(clientSecret, {
       payment_method: {
         sepa_debit: iban!,
         billing_details: {
@@ -89,7 +95,9 @@ export function Payment() {
       // Show error to your customer.
       console.log(result.error.message);
     } else {
-      console.log('Paid');
+      console.log('SEPA Payment Intent Created');
+      console.log('Payment Method: ' + result.setupIntent.payment_method);
+      // TODO: Send POST request to backend to initiate subscription
     }
   };
 
