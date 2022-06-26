@@ -1,14 +1,9 @@
-/* eslint-disable max-len */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/**
-* Use the CSS tab above to style your Element's container.
-*/
-import React from 'react';
-import { IbanElement } from '@stripe/react-stripe-js';
-import './IbanFormStyles.css';
+import { IbanElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { Alert, Button, Col, Form, Input, Row } from 'antd';
+import './SepaPayment.css';
 
-const warning =
+// Mandate acknowledgement text
+const mandateAcknowledgement =
   < div >
     By providing your payment information and confirming this payment,
     you authorise (A) GreenMatch and Stripe, our payment service
@@ -54,14 +49,93 @@ const IBAN_ELEMENT_OPTIONS = {
   style: IBAN_STYLE,
 };
 
-export default function IbanForm({ onSubmit, disabled }: any) {
+// creates setup intent and returns client secret
+const createSetupIntent = async (custId: string) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ customer: custId }),
+  };
+  const response = await fetch(
+    'http://localhost:8080/api/stripe/setupIntent',
+    requestOptions);
+  const data = await response.json();
+  return data.client_secret;
+};
+
+// creates subscription
+const createSubscription = async (
+  customer: string,
+  cancelAt: string,
+  price: string,
+  anchor: string,
+  paymentMethod: string,
+) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      customer: customer,
+      price,
+      cancel_at: cancelAt,
+      billing_cycle_anchor: anchor,
+      default_payment_method: paymentMethod,
+    }),
+  };
+  await fetch(
+    'http://localhost:8080/api/stripe/subscribe',
+    requestOptions);
+  console.log('Subscription created!');
+};
+
+export default function SepaPayment({ onSubmit, disabled }: any) {
   const [paymentForm] = Form.useForm();
+  const stripe = useStripe();
+  const elements = useElements();
+
+  // the following data have to be loaded from the DB
+  const customer: string = 'cus_Lvgp9qes1LHMR3';
+  const price: string = 'price_1LDTWwLY3fwx8Mq4aQkG4GfA';
+  const cancelAt: string = '1662019200';
+  const anchor: string = '1656662400';
 
   const handleBuy = () => {
     paymentForm
       .validateFields()
-      .then((values) => {
-        console.log('Details: ', values);
+      .then(async (values) => {
+        /*
+        * Stripe.js has not yet loaded.
+        * Make sure to disable form submission until Stripe.js has loaded.
+        */
+        if (!stripe || !elements) {
+          return;
+        }
+
+        const email: string = values.email;
+        const owner: string = values.owner;
+        const iban = elements.getElement(IbanElement);
+        const clientSecret = await createSetupIntent(customer);
+
+        // confirm setup intent and store iban information from customer
+        const result = await stripe.confirmSepaDebitSetup(clientSecret, {
+          payment_method: {
+            sepa_debit: iban!,
+            billing_details: {
+              name: owner,
+              email: email,
+            },
+          },
+        });
+
+        if (result.error) {
+          // error when confirming setup intent
+          console.log(result.error.message);
+        } else {
+          console.log('SEPA direct debit setup intent created!');
+          console.log('Payment method added to setup intent!');
+          const paymentMethod = String(result.setupIntent.payment_method);
+          createSubscription(customer, cancelAt, price, anchor, paymentMethod);
+        }
         paymentForm.resetFields();
       })
       .catch((info) => {
@@ -97,8 +171,7 @@ export default function IbanForm({ onSubmit, disabled }: any) {
               rules={[{ required: true, message: 'Please input your E-Mail!' }]}
             >
               <Input
-                name="accountholder-name"
-                placeholder="jenny.rosen@example.com"
+                placeholder="jane@example.com"
                 required
               />
             </Form.Item>
@@ -110,8 +183,7 @@ export default function IbanForm({ onSubmit, disabled }: any) {
               ]}
             >
               <Input
-                name="accountholder-name"
-                placeholder="Jenny Rosen"
+                placeholder="Jane Doe"
                 required
               />
             </Form.Item>
@@ -122,9 +194,8 @@ export default function IbanForm({ onSubmit, disabled }: any) {
             >
               <IbanElement options={IBAN_ELEMENT_OPTIONS} />
             </Form.Item>
-            {/* Display mandate acceptance text. */}
             <Alert
-              message={warning}
+              message={mandateAcknowledgement}
               type="warning"
             />
             <Button onClick={handleBuy}>

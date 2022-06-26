@@ -18,7 +18,8 @@ import {
   PpaContractDetails,
   UserData,
 } from '../../types';
-import StripeContainer from '../../components/StripeContainer';
+// eslint-disable-next-line max-len
+import SepaPayment from '../../components/SepaPayment/SepaPayment';
 
 const { Step } = Steps;
 const LINK_CONSUMER_DASHBOARD = '/offers';
@@ -307,7 +308,7 @@ export function Conclusion() {
     } else if (step === 2) {
       return (
         <>
-          <StripeContainer />
+          <SepaPayment />
           <Row>
             <Col
               span={4}

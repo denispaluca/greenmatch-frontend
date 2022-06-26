@@ -6,4 +6,3 @@ export * from './Conclusion/Conclusion';
 export * from './ConsumerDashboard/ConsumerDashboard';
 export * from './Landing/Landing';
 export * from './PpaOverview/PpaOverview';
-export * from './Payment';
