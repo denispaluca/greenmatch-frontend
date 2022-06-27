@@ -88,13 +88,13 @@ const createSubscription = async (
   console.log('Subscription created!');
 };
 
-export default function SepaPayment({ onSubmit, disabled }: any) {
+export default function SepaPayment() {
   const [paymentForm] = Form.useForm();
   const stripe = useStripe();
   const elements = useElements();
 
-  // the following data have to be loaded from the DB
-  const customer: string = 'cus_Lvgp9qes1LHMR3';
+  // the following data are needed to create subscription
+  const customer: string = 'cus_LxBRW8QEgDnOIn';
   const price: string = 'price_1LDTWwLY3fwx8Mq4aQkG4GfA';
   const cancelAt: string = '1662019200';
   const anchor: string = '1656662400';
@@ -199,7 +199,7 @@ export default function SepaPayment({ onSubmit, disabled }: any) {
               type="warning"
             />
             <Button onClick={handleBuy}>
-              OK
+              Confirm Payment
             </Button>
           </Form>
         </Col>
