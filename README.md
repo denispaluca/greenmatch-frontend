@@ -9,4 +9,4 @@
 /offers -> Listing of filtered PPAs
 /offers/:id -> Conclusion of PPA
 
-
+/register -> Registration page for new supplier

@@ -31,6 +31,14 @@ export enum EnergyTypeEnum {
   Hydro
 }
 
+export type Address = {
+  city: string,
+  zipCode: number,
+  street: string,
+  number: number,
+  country: string,
+}
+
 export type UserData = {
   companyName: string,
   companyId: number,
@@ -64,3 +72,7 @@ export type Ppa = {
   powerplantId: number;
 }
 
+export type BankDetails = {
+  iban: string,
+  owner: string,
+}
