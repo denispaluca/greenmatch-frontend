@@ -1,3 +1,4 @@
+import { decode } from 'punycode';
 import { RegistrationFormValues } from '../../types';
 
 interface AuthRes {
@@ -76,4 +77,18 @@ export const register = async (values: RegistrationFormValues)
     ok: false,
     error: (await res.json()).message,
   };
+};
+
+export const isAuthenticated = (token: string): boolean => {
+  if (token) {
+    const decoded:any = decode(token);
+    if (decoded) {
+      const exp = decoded.exp;
+      const now = new Date().getTime() / 1000;
+      if (exp > now) {
+        return true;
+      }
+    }
+  }
+  return false;
 };
