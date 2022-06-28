@@ -1,39 +1,46 @@
 /* eslint-disable indent */
 import { createStore } from 'react-hooks-global-state';
+import Cookies from 'universal-cookie';
 
 type State = {
   loginType?: 'Consumer' | 'Supplier';
-  loggedIn: boolean;
+  token: string;
 }
 
-type Action = { type: 'setLoginType'; loginType: 'Consumer' | 'Supplier' }
+type Action =
+  { type: 'setLogin'; loginType: 'Consumer' | 'Supplier'; token: string }
   | { type: 'logout' };
 
 const defaultState: State = {
   loginType: undefined,
-  loggedIn: false,
+  token: '',
 };
 
-const LOCAL_STORAGE_KEY = 'my_local_storage_key';
+const cookieKey = 'cookie_key';
 
-const stateFromStorage = (localStorage.getItem(LOCAL_STORAGE_KEY));
-const initialState: State = stateFromStorage === null ?
-  defaultState : JSON.parse(stateFromStorage);
+const cookies = new Cookies();
+
+const stateFromCookies = cookies.get(cookieKey);
+
+const initialState: State = stateFromCookies === undefined ?
+  defaultState : stateFromCookies;
 
 const reducer = (state: State, action: Action) => {
   switch (action.type) {
-    case 'setLoginType': {
+    case 'setLogin': {
       const newState = {
         ...state, LoginType: action.loginType,
-        loggedIn: true,
+        token: action.token,
       };
       console.log(newState);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newState));
+      cookies.set(cookieKey,
+        JSON.stringify(newState), { secure: true, sameSite: 'strict' });
       return newState;
     }
     case 'logout': {
-      const newState = { ...state, LoginType: undefined, loggedIn: false };
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newState));
+      const newState = { ...state, LoginType: undefined, token: '' };
+      cookies.set(cookieKey,
+        JSON.stringify(newState), { secure: true, sameSite: 'strict' });
       return newState;
     }
     default: return state;

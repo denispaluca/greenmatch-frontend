@@ -4,7 +4,7 @@ import { useStoreState } from '../../state';
 import { Header } from '../Header/Header';
 
 export function Layout() {
-  const loggedIn = useStoreState('loggedIn');
+  const loggedIn = useStoreState('token') !== '';
   const navigate = useNavigate();
   const location = useLocation();
 

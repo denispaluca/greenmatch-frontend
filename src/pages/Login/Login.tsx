@@ -8,6 +8,7 @@ import {
   Col } from 'antd';
 import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../../services';
 import { dispatch, useStoreState } from '../../state';
 import styles from './Login.module.scss';
 const { TabPane } = Tabs;
@@ -21,9 +22,10 @@ interface LoginFormValues{
 }
 
 export function Login() {
-  const loggedIn = useStoreState('loggedIn');
+  const loggedIn = useStoreState('token') !== '';
   const navigate = useNavigate();
   const [loginType, setLoginType] = useState<LoginType>('Supplier');
+  const [form] = Form.useForm();
 
   // User already logged in, redirect to dashboard
   useEffect(()=>{
@@ -32,19 +34,29 @@ export function Login() {
     }
   }, [loggedIn, navigate]);
 
-  const submitForm = (values: LoginFormValues) => {
+  const submitForm = async (values: LoginFormValues) => {
     console.log(values); // Check if values are correct etc.
     console.log(loginType);
-    dispatch({
-      type: 'setLoginType',
-      loginType: loginType,
-    });
-    // Redirect to dashboard using react router v6
-    navigate('/');
+    const res = await login(values.username, values.password, loginType);
+    if (!res.ok) {
+      form.setFields([
+        { name: 'username', errors: [res.error || 'Something went wrong'] },
+        { name: 'password', errors: [res.error || 'Something went wrong'] },
+      ]);
+    } else {
+      dispatch({
+        type: 'setLogin',
+        loginType: loginType,
+        token: res.token || '',
+      });
+      console.log('yey');
+      navigate('/');
+    }
   };
   const loginForm = useMemo(()=>
     <Form
       name="basic"
+      form={form}
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 8 }}
       initialValues={{ remember: true }}

@@ -50,7 +50,7 @@ const menu = (
 );
 
 export function Header() {
-  const loggedIn = useStoreState('loggedIn');
+  const loggedIn = useStoreState('token') !== '';
   return (
     <PageHeader
       /*
