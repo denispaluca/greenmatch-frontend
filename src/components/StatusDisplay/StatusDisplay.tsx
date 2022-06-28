@@ -12,10 +12,10 @@ export function StatusDisplay({ live }: StatusProps) {
     <>
       {
         (live === true) ?
-          <Space style={{ color: '#6fbf84' }}>
+          <Space style={{ color: '#53c41b' }}>
             <CheckCircleFilled />Online
           </Space> :
-          <Space style={{ color: '#ff8178' }}>
+          <Space style={{ color: '#ff4d50' }}>
             <CloseCircleFilled />Offline
           </Space>
       }
