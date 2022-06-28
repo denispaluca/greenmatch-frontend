@@ -308,7 +308,7 @@ export function Conclusion() {
     } else if (step === 2) {
       return (
         <>
-          <SepaPayment />
+          <SepaPayment onHandleBuy={() => setStep((prev) => prev + 1)} />
           <Row>
             <Col
               span={4}

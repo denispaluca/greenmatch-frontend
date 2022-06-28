@@ -89,13 +89,17 @@ const createSubscription = async (
   console.log('Subscription created!');
 };
 
-export default function SepaPayment() {
+type props = {
+  onHandleBuy: () => void;
+}
+
+export default function SepaPayment(props: props) {
   const [paymentForm] = Form.useForm();
   const stripe = useStripe();
   const elements = useElements();
 
   // the following data are needed to create subscription
-  const customer: string = 'cus_LxBRW8QEgDnOIn';
+  const customer: string = 'cus_LxdND2EECX1eIf';
   const price: string = 'price_1LDTWwLY3fwx8Mq4aQkG4GfA';
   const cancelAt: string = '1662019200';
   const anchor: string = '1656662400';
@@ -137,6 +141,7 @@ export default function SepaPayment() {
           console.log(result);
           const paymentMethod = String(result.setupIntent.payment_method);
           createSubscription(customer, anchor, cancelAt, price, paymentMethod);
+          props.onHandleBuy();
         }
         // paymentForm.resetFields();
       })
