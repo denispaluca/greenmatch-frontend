@@ -76,3 +76,19 @@ export type BankDetails = {
   iban: string,
   owner: string,
 }
+
+export interface RegistrationFormValues {
+  companyName: string;
+  email: string;
+  city: string;
+  zipCode: number;
+  street: string;
+  number: number;
+  country: string;
+  hrb: string;
+  iban: string;
+  owner: string;
+  password: string;
+  companyImage: string;
+  companyWebsite: string;
+}

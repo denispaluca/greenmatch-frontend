@@ -4,41 +4,12 @@ import { BankDetails } from '../../types';
 import styles from './SupplierRegistration.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { register } from '../../services';
+import { dispatch } from '../../state';
+// import { checkUsernameAvailability } from '../../services';
 
 const { Step } = Steps;
 
-interface RegistrationFormValues {
-  companyName: string;
-  email: string;
-  city: string;
-  zipCode: number;
-  street: string;
-  number: number;
-  country: string;
-  hrb: string;
-  iban: string;
-  owner: string;
-  companyImage: string;
-  companyWebsite: string;
-}
-
-// Query Backend and ask whether uname i.e. email is still available
-const checkUsernameAvailability = async (email: string) => {
-  const available = await fetch(`http://localhost:8080/api/username/${email}`,
-    {
-      method: 'GET',
-      mode: 'cors',
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    });
-
-  const respJson = await available.json();
-  return respJson.available;
-};
-
-// Register new Supplier in Backend
-const registerSupplier = async (values: RegistrationFormValues) => {
-  console.log('Add supllier with values', values);
-};
 
 export function SupplierRegistration() {
   const [step, setStep] = useState(0);
@@ -48,7 +19,6 @@ export function SupplierRegistration() {
   const navigate = useNavigate();
   const [basicData, setBasicData] = useState();
   const [bankData, setBankData] = useState<BankDetails>();
-  const [loginData, setLoginData] = useState();
 
   const handleBasicData = () => {
     basicForm
@@ -79,22 +49,22 @@ export function SupplierRegistration() {
       });
   };
 
-  const handleLoginData = () => {
-    loginForm
-      .validateFields()
-      .then((values) => {
-        console.log(values);
-        setLoginData(values);
-        console.log(loginData);
-        return registerSupplier(Object.assign(basicData!, bankData, values));
-      })
-      .then(() => {
-        console.log('Sucess');
-        navigate('/login');
-      })
-      .catch((info) => {
-        console.log('registration failed', info);
+  const handleLoginData = async () => {
+    const loginValues = await loginForm.validateFields();
+    const values = Object.assign(basicData!, bankData, loginValues);
+    console.log(values);
+
+    const registerRes = await register(values);
+    console.log(registerRes);
+
+    if (registerRes.ok && registerRes.token) {
+      dispatch({
+        type: 'setLogin',
+        loginType: 'Supplier',
+        token: registerRes.token,
       });
+      navigate('/');
+    }
   };
 
   const basic = () => {
@@ -364,7 +334,7 @@ export function SupplierRegistration() {
                         ));
                       }
 
-                      const res = await checkUsernameAvailability(value);
+                      /* const res = await checkUsernameAvailability(value);
 
                       if (res === true) {
                         return Promise.resolve();
@@ -372,7 +342,7 @@ export function SupplierRegistration() {
                         return Promise.reject(new Error(
                           'Email already in use',
                         ));
-                      }
+                      }*/
                     },
                   },
                 ]}
