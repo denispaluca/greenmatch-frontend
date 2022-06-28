@@ -2,19 +2,20 @@ import { IbanElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { Alert, Button, Col, Form, Input, Row } from 'antd';
 import './SepaPayment.css';
 
-// Mandate acknowledgement text
-const mandateAcknowledgement =
+// Mandate acceptance text
+const mandateAcceptance =
   < div >
-    By providing your payment information and confirming this payment,
-    you authorise (A) GreenMatch and Stripe, our payment service
-    provider, to send instructions to your bank to debit your account and
-    (B) your bank to debit your account in accordance with those
-    instructions. As part of your rights, you are entitled to a refund
-    from your bank under the terms and conditions of your agreement with
-    your bank. A refund must be claimed within 8 weeks starting from the
-    date on which your account was debited. Your rights are explained in
-    a statement that you can obtain from your bank. You agree to receive
-    notifications for future debits up to 2 days before they occur.
+    By providing your payment information and confirming this payment, you
+    authorise (A) GreenMatch and Stripe, our payment service provider
+    and/or PPRO, its local service provider, to send instructions to your
+    bank to debit your account and (B) your bank to debit your account in
+    accordance with those instructions. As part of your rights, you are
+    entitled to a refund from your bank under the terms and conditions of
+    your agreement with your bank. A refund must be claimed within 8 weeks
+    starting from the date on which your account was debited. Your rights
+    are explained in a statement that you can obtain from your bank. You
+    agree to receive notifications for future debits up to 2 days before
+    they occur.
   </div >;
 
 // Custom styling can be passed as options when creating an Element.
@@ -66,9 +67,9 @@ const createSetupIntent = async (custId: string) => {
 // creates subscription
 const createSubscription = async (
   customer: string,
+  anchor: string,
   cancelAt: string,
   price: string,
-  anchor: string,
   paymentMethod: string,
 ) => {
   const requestOptions = {
@@ -133,10 +134,11 @@ export default function SepaPayment() {
         } else {
           console.log('SEPA direct debit setup intent created!');
           console.log('Payment method added to setup intent!');
+          console.log(result);
           const paymentMethod = String(result.setupIntent.payment_method);
-          createSubscription(customer, cancelAt, price, anchor, paymentMethod);
+          createSubscription(customer, anchor, cancelAt, price, paymentMethod);
         }
-        paymentForm.resetFields();
+        // paymentForm.resetFields();
       })
       .catch((info) => {
         console.log('Validation failed: ', info);
@@ -195,7 +197,7 @@ export default function SepaPayment() {
               <IbanElement options={IBAN_ELEMENT_OPTIONS} />
             </Form.Item>
             <Alert
-              message={mandateAcknowledgement}
+              message={mandateAcceptance}
               type="warning"
             />
             <Button onClick={handleBuy}>
