@@ -12,7 +12,7 @@ import { dispatch, useStoreState } from '../../state';
 import styles from './Login.module.scss';
 const { TabPane } = Tabs;
 
-type LoginType = 'Supplier' | 'Consumer';
+type LoginType = 'Supplier' | 'Buyer';
 
 interface LoginFormValues{
   username: string;
@@ -118,8 +118,8 @@ export function Login() {
               {loginForm}
             </TabPane>
             <TabPane
-              tab="Consumer Login"
-              key={'Consumer'}
+              tab="Buyer Login"
+              key={'Buyer'}
             >
               {loginForm}
             </TabPane>

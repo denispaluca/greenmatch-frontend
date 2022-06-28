@@ -2,11 +2,11 @@
 import { createStore } from 'react-hooks-global-state';
 
 type State = {
-  loginType?: 'Consumer' | 'Supplier';
+  loginType?: 'Buyer' | 'Supplier';
   loggedIn: boolean;
 }
 
-type Action = { type: 'setLoginType'; loginType: 'Consumer' | 'Supplier' }
+type Action = { type: 'setLoginType'; loginType: 'Buyer' | 'Supplier' }
   | { type: 'logout' };
 
 const defaultState: State = {
