@@ -6,7 +6,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
 export function Layout() {
-  const loggedIn = useStoreState('loggedIn');
+  const loggedIn = useStoreState('token') !== '';
   const navigate = useNavigate();
   const location = useLocation();
   /*

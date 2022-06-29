@@ -9,6 +9,7 @@ import {
   ConsumerDasboard,
   Landing,
   PPAOverView,
+  SupplierRegistration,
 } from './pages';
 
 export function App() {
@@ -47,6 +48,10 @@ export function App() {
       <Route
         path="login"
         element={<Login />}
+      />
+      <Route
+        path="register"
+        element={<SupplierRegistration />}
       />
     </Routes>
   );
