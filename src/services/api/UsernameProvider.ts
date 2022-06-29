@@ -1,8 +1,8 @@
-import { get } from "./BaseProvider"
+import { get } from './BaseProvider';
 
-const RESOURCE = 'username'
-const OfferProvider = {
+const RESOURCE = 'username';
+const UsernameProvider = {
   get: (email: string) => get<{ available: boolean }>(RESOURCE, email),
-}
+};
 
-export default OfferProvider;
+export default UsernameProvider;

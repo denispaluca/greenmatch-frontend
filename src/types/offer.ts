@@ -1,4 +1,4 @@
-import { EnergyType, PowerPlant } from "./powerplant";
+import { EnergyType, PowerPlant } from './powerplant';
 
 
 export interface Offer extends PowerPlant {

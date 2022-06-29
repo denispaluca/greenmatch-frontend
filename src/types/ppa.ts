@@ -1,5 +1,5 @@
-import { MongoDocument } from "./document";
-import { SingleDuration } from "./offer";
+import { MongoDocument } from './document';
+import { SingleDuration } from './offer';
 
 export interface PPAQuery {
   buyerId?: string;

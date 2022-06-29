@@ -1,4 +1,4 @@
-import { MongoDocument } from "./document";
+import { MongoDocument } from './document';
 
 export enum EnergyType {
   Wind = 'wind',
