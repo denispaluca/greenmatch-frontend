@@ -47,6 +47,10 @@ const reducer = (state: State, action: Action) => {
   }
 };
 
+
+// TODO: Delete after moving to server cookies
+export const getCookie = () => cookies.get(cookieKey);
+
 export const { dispatch, useStoreState } = createStore(
   reducer,
   initialState,
