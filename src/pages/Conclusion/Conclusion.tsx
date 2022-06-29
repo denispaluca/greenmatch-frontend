@@ -1,3 +1,6 @@
+/* eslint-disable indent */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable max-len */
 import {
   Button,
   Row,
@@ -7,19 +10,21 @@ import {
   Radio,
   InputNumber,
   Result,
+  Alert,
+  Input,
 } from 'antd';
 import { RightOutlined, LeftOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ContractDetails } from '../../components';
+import { IbanElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import './SepaPayment.css';
 import {
   EnergyTypes,
   PowerPlantOffer,
   PpaContractDetails,
   UserData,
 } from '../../types';
-// eslint-disable-next-line max-len
-import SepaPayment from '../../components/SepaPayment/SepaPayment';
 
 const { Step } = Steps;
 const LINK_CONSUMER_DASHBOARD = '/offers';
@@ -103,16 +108,111 @@ const initPpaDetails = (ppo: PowerPlantOffer, buyerInfo: UserData) => {
   return ppaDetails;
 };
 
+// Mandate acceptance text
+const mandateAcceptance =
+  < div >
+    By providing your payment information and confirming this payment, you
+    authorise (A) GreenMatch and Stripe, our payment service provider
+    and/or PPRO, its local service provider, to send instructions to your
+    bank to debit your account and (B) your bank to debit your account in
+    accordance with those instructions. As part of your rights, you are
+    entitled to a refund from your bank under the terms and conditions of
+    your agreement with your bank. A refund must be claimed within 8 weeks
+    starting from the date on which your account was debited. Your rights
+    are explained in a statement that you can obtain from your bank. You
+    agree to receive notifications for future debits up to 2 days before
+    they occur.
+  </div >;
+
+// Custom styling can be passed as options when creating an Element.
+const IBAN_STYLE = {
+  base: {
+    'color': '#32325d',
+    'fontSize': '14px',
+    'fontWeight': '100',
+    '::placeholder': {
+      color: '#BFBFBF',
+    },
+    ':-webkit-autofill': {
+      color: '#32325d',
+    },
+  },
+  invalid: {
+    'color': '#fa755a',
+    'iconColor': '#fa755a',
+    ':-webkit-autofill': {
+      color: '#fa755a',
+    },
+  },
+};
+
+const IBAN_ELEMENT_OPTIONS = {
+  supportedCountries: ['SEPA'],
+  // Elements can use a placeholder as an example IBAN that reflects
+  // the IBAN format of your customer's country. If you know your
+  // customer's country, we recommend that you pass it to the Element as the
+  // placeholderCountry.
+  placeholderCountry: 'DE',
+  style: IBAN_STYLE,
+};
+
+// creates setup intent and returns client secret
+const createSetupIntent = async (custId: string) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ customer: custId }),
+  };
+  const response = await fetch(
+    'http://localhost:8080/api/stripe/setupIntent',
+    requestOptions);
+  const data = await response.json();
+  return data.client_secret;
+};
+
+// creates subscription
+const createSubscription = async (
+  customer: string,
+  anchor: string,
+  cancelAt: string,
+  price: string,
+  paymentMethod: string,
+) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      customer: customer,
+      price,
+      cancel_at: cancelAt,
+      billing_cycle_anchor: anchor,
+      default_payment_method: paymentMethod,
+    }),
+  };
+  await fetch(
+    'http://localhost:8080/api/stripe/subscribe',
+    requestOptions);
+  console.log('Subscription created!');
+};
+
 // In order to set filter values as
 // default handover of this parameters is necessary
 export function Conclusion() {
   const [step, setStep] = useState(0);
   const [ppaForm] = Form.useForm();
-  // const [paymentForm] = Form.useForm();
+  const [paymentForm] = Form.useForm();
   const [ppaProps, setPpaProps] = useState<PpaContractDetails>();
   const { id } = useParams();
   const [ppDetails, setPpDetails] = useState<PowerPlantOffer>();
   const [durationOptions, setDurationOptions] = useState<RadioOptions[]>();
+  const stripe = useStripe();
+  const elements = useElements();
+
+  // the following data are needed to create subscription
+  const customer: string = 'cus_LxdND2EECX1eIf';
+  const price: string = 'price_1LDTWwLY3fwx8Mq4aQkG4GfA';
+  const cancelAt: string = '1662019200';
+  const anchor: string = '1656662400';
 
   // Fetch Power Plant Details from backend
   useEffect(() => {
@@ -154,20 +254,50 @@ export function Conclusion() {
 
   // Use this function to init payment
   // process in the backend + store newly created ppa in db
-  /* const handleBuy = () => {
+  const handleBuy = () => {
     paymentForm
       .validateFields()
-      .then((values) => {
-        setPpaProps((prev) => Object.assign(prev!, values));
-        console.log('PPA Contract Details: ', ppaProps);
-        setStep((prev) => prev + 1);
-        ppaForm.resetFields();
-        paymentForm.resetFields();
+      .then(async (values) => {
+        /*
+        * Stripe.js has not yet loaded.
+        * Make sure to disable form submission until Stripe.js has loaded.
+        */
+        if (!stripe || !elements) {
+          return;
+        }
+
+        const email: string = values.email;
+        const owner: string = values.owner;
+        const iban = elements.getElement(IbanElement);
+        const clientSecret = await createSetupIntent(customer);
+
+        // confirm setup intent and store iban information from customer
+        const result = await stripe.confirmSepaDebitSetup(clientSecret, {
+          payment_method: {
+            sepa_debit: iban!,
+            billing_details: {
+              name: owner,
+              email: email,
+            },
+          },
+        });
+        if (result.error) {
+          // error when confirming setup intent
+          console.log(result.error.message);
+        } else {
+          console.log('IBAN added to setup intent');
+          ppaForm.resetFields();
+          paymentForm.resetFields();
+          console.log(result);
+          const paymentMethod = String(result.setupIntent.payment_method);
+          createSubscription(customer, anchor, cancelAt, price, paymentMethod);
+          setStep((prev) => prev + 1);
+        }
       })
       .catch((info) => {
         console.log('Validation failed: ', info);
       });
-  }; */
+  };
 
   // Returns the corresponding form element depending on the step
   const conclusionForm = useMemo(() => {
@@ -308,7 +438,62 @@ export function Conclusion() {
     } else if (step === 2) {
       return (
         <>
-          <SepaPayment onHandleBuy={() => setStep((prev) => prev + 1)} />
+          <Row justify="center">
+            <Col
+              offset={6}
+              span={12}
+            >
+              <h2>Payment Details</h2>
+            </Col>
+          </Row>
+          <Row justify="center">
+            <Col
+              offset={4}
+              span={16}
+            >
+              <Form
+                name="payment"
+                form={paymentForm}
+                layout="vertical"
+                wrapperCol={{ span: 18 }}
+                autoComplete="off"
+              >
+                <Form.Item
+                  label="E-Mail"
+                  name="email"
+                  rules={[{ required: true, message: 'Please input your E-Mail!' }]}
+                >
+                  <Input
+                    placeholder="jane@example.com"
+                    required
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="Account Owner"
+                  name="owner"
+                  rules={[
+                    { required: true, message: 'Please input the account owner!' },
+                  ]}
+                >
+                  <Input
+                    placeholder="Jane Doe"
+                    required
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="IBAN"
+                  name="iban"
+                  rules={[{ required: true, message: 'Please input your IBAN!' }]}
+                >
+                  <IbanElement options={IBAN_ELEMENT_OPTIONS} />
+                </Form.Item>
+                <Alert
+                  message={mandateAcceptance}
+                  type="warning"
+                />
+              </Form>
+            </Col>
+          </Row>
           <Row>
             <Col
               span={4}
@@ -327,6 +512,7 @@ export function Conclusion() {
             >
               <Button
                 type="text"
+                onClick={handleBuy}
               >
                 Buy <RightOutlined />
               </Button>
@@ -339,8 +525,8 @@ export function Conclusion() {
         <Result
           status="success"
           title="Successfully concluded PPA!"
-          subTitle={`Congratulations your PPA has been concluded. 
-          You will find a corresponding acknowledement E-mail in your postbox`}
+          subTitle={`Congratulations, your PPA has been concluded. 
+          You will find a corresponding acknowledgement E-Mail in your postbox`}
           extra={[
             // eslint-disable-next-line react/jsx-key
             <Link to={LINK_CONSUMER_DASHBOARD}>
