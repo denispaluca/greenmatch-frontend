@@ -24,8 +24,9 @@ export const request = async (resource: string, method: 'GET' | 'POST' | 'PATCH'
 }
 
 
-export const list = <T>(resource: string, params?: URLSearchParams): Promise<T[]> => {
-  return request(`${resource}?${params ? params.toString() : ''}`, 'GET');
+export const list = <T>(resource: string, query?: Record<string, string>): Promise<T[]> => {
+  const queryString = query ? new URLSearchParams(query).toString() : '';
+  return request(`${resource}?${queryString}`, 'GET');
 }
 
 export const create = <T>(resource: string, body: object): Promise<T> => {

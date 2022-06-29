@@ -1,13 +1,13 @@
-import { PowerPlantType } from "../../types"
+import { PowerPlant, PowerPlantCreate, PowerPlantUpdate } from "../../types/powerplant";
 import { get, list, update, create, remove } from "./BaseProvider"
 
 const RESOURCE = 'powerplants'
 const PowerPlantProvider = {
-  list: () => list<PowerPlantType>(RESOURCE),
-  create: (body: any) => create<PowerPlantType>(RESOURCE, body),
-  get: (id: string) => get<PowerPlantType>(RESOURCE, id),
-  update: (id: string, body: any) => update<PowerPlantType>(RESOURCE, id, body),
-  remove: (id: string) => remove<PowerPlantType>(RESOURCE, id)
+  list: () => list<PowerPlant>(RESOURCE),
+  create: (body: PowerPlantCreate) => create<PowerPlant>(RESOURCE, body),
+  get: (id: string) => get<PowerPlant>(RESOURCE, id),
+  update: (id: string, body: PowerPlantUpdate) => update<PowerPlant>(RESOURCE, id, body),
+  remove: (id: string) => remove<PowerPlant>(RESOURCE, id)
 }
 
 export default PowerPlantProvider;

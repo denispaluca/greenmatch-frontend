@@ -1,15 +1,15 @@
-import { PowerPlantType } from "../../types"
-import { get, list, update, create, remove } from "./BaseProvider"
+import { PPA, PPACreate } from "../../types/ppa";
+import { get, list, update, create } from "./BaseProvider"
 
 const RESOURCE = 'ppas'
 const PPAProvider = {
-  list: (powerplantId?: string) => list<PowerPlantType>(
+  list: (powerplantId?: string) => list<PPA>(
     RESOURCE,
-    powerplantId ? new URLSearchParams({ powerplantId }) : undefined),
+    powerplantId ? { powerplantId } : undefined),
 
-  create: (body: any) => create<PowerPlantType>(RESOURCE, body),
-  get: (id: string) => get<PowerPlantType>(RESOURCE, id),
-  cancel: (id: string) => update<PowerPlantType>(RESOURCE, id, {}),
+  create: (body: PPACreate) => create<PPA>(RESOURCE, body),
+  get: (id: string) => get<PPA>(RESOURCE, id),
+  cancel: (id: string) => update<PPA>(RESOURCE, id, {}),
 }
 
 export default PPAProvider;
