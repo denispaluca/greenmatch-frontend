@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import {
   Button,
   Card, Checkbox,
@@ -5,7 +6,8 @@ import {
   Input,
   Tabs,
   Row,
-  Col } from 'antd';
+  Col,
+} from 'antd';
 import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../services';
@@ -15,7 +17,7 @@ const { TabPane } = Tabs;
 
 type LoginType = 'Supplier' | 'Buyer';
 
-interface LoginFormValues{
+interface LoginFormValues {
   username: string;
   password: string;
   remember: boolean;
@@ -24,11 +26,11 @@ interface LoginFormValues{
 export function Login() {
   const loggedIn = useStoreState('token') !== '';
   const navigate = useNavigate();
-  const [loginType, setLoginType] = useState<LoginType>('Supplier');
+  const [loginType, setLoginType] = useState<LoginType>('Buyer');
   const [form] = Form.useForm();
 
   // User already logged in, redirect to dashboard
-  useEffect(()=>{
+  useEffect(() => {
     if (loggedIn) {
       navigate('/');
     }
@@ -47,13 +49,14 @@ export function Login() {
       dispatch({
         type: 'setLogin',
         loginType: loginType,
+        username: values.username,
         token: res.token || '',
       });
       console.log('yey');
       navigate('/');
     }
   };
-  const loginForm = useMemo(()=>
+  const loginForm = useMemo(() =>
     <Form
       name="basic"
       form={form}
@@ -61,7 +64,7 @@ export function Login() {
       wrapperCol={{ span: 8 }}
       initialValues={{ remember: true }}
       autoComplete="off"
-      onFinish={(values)=>submitForm(values)}
+      onFinish={(values) => submitForm(values)}
     >
       <Form.Item
         label="Username"
@@ -92,11 +95,11 @@ export function Login() {
           type="primary"
           htmlType="submit"
         >
-            Submit
+          Submit
         </Button>
       </Form.Item>
     </Form>
-  , []);
+    , []);
 
 
   return (
@@ -121,7 +124,7 @@ export function Login() {
             defaultActiveKey="1"
             centered
             type="card"
-            onTabClick={(e)=>setLoginType(e as LoginType)}
+            onTabClick={(e) => setLoginType(e as LoginType)}
           >
             <TabPane
               tab="Supplier Login"

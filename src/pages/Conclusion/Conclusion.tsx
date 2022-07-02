@@ -25,6 +25,10 @@ import {
   PpaContractDetails,
   UserData,
 } from '../../types';
+import { useStoreState } from '../../state';
+import { PPACreate } from '../../types/ppa';
+import PPAProvider from '../../services/api/PPAProvider';
+import { SetupIntentResult } from '@stripe/stripe-js';
 
 const { Step } = Steps;
 const LINK_CONSUMER_DASHBOARD = '/offers';
@@ -67,6 +71,11 @@ const getStartDate = () => {
   return new Date(date.getFullYear(), date.getMonth() + 1, 1);
 };
 
+const getEndDate = (duration: number) => {
+  const date = new Date();
+  return new Date(date.getFullYear() + duration, date.getMonth() + 1, 0);
+};
+
 // Fetches Power Plant props from backend - since
 // using dummy backend some data is added manualy e.g. duration
 const fetchPlantDetails = async (id: any) => {
@@ -95,7 +104,7 @@ const fetchUserData = async () => {
 const initPpaDetails = (ppo: PowerPlantOffer, buyerInfo: UserData) => {
   const ppaDetails: PpaContractDetails = {
     supplier: ppo.companyName,
-    supplierId: 1,
+    supplierId: 2,
     buyer: buyerInfo.companyName,
     buyerId: buyerInfo.companyId,
     type: ppo.energyType,
@@ -170,6 +179,40 @@ const createSetupIntent = async (custId: string) => {
   return data.client_secret;
 };
 
+// create PPA and return stripe priceId
+const createPPA = async (token: string, params: any) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token,
+    },
+    body: JSON.stringify({
+      powerplantId: '62bdb51ddf6c5670ce7a4162',
+      duration: 5,
+      amount: 5,
+    }),
+  };
+  const result = await fetch(
+    'http://localhost:8080/api/ppas',
+    requestOptions);
+  const ppa = await result.json();
+  return ppa.stripePriceId;
+};
+
+// return Stripe customerId
+const getCustId = async (token: string) => {
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Authorization': token },
+  };
+  const result = await fetch(
+    'http://localhost:8080/api/auth/me',
+    requestOptions);
+  const customer = await result.json();
+  return customer.stripeCustId;
+};
+
 // creates subscription
 const createSubscription = async (
   customer: string,
@@ -183,7 +226,7 @@ const createSubscription = async (
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       customer: customer,
-      price,
+      price: price,
       cancel_at: cancelAt,
       billing_cycle_anchor: anchor,
       default_payment_method: paymentMethod,
@@ -207,12 +250,8 @@ export function Conclusion() {
   const [durationOptions, setDurationOptions] = useState<RadioOptions[]>();
   const stripe = useStripe();
   const elements = useElements();
-
-  // the following data are needed to create subscription
-  const customer: string = 'cus_LxdND2EECX1eIf';
-  const price: string = 'price_1LDTWwLY3fwx8Mq4aQkG4GfA';
-  const cancelAt: string = '1662019200';
-  const anchor: string = '1656662400';
+  const username = useStoreState('username');
+  const token = useStoreState('token');
 
   // Fetch Power Plant Details from backend
   useEffect(() => {
@@ -239,13 +278,14 @@ export function Conclusion() {
       });
   }, [ppDetails]);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     ppaForm
       .validateFields()
       .then((values) => {
         console.log('Form Values ', values);
         setStep((prev) => prev + 1);
         setPpaProps((prev) => Object.assign(prev!, values));
+        console.log(ppaProps);
       })
       .catch((info) => {
         console.log('Validate failed: ', info);
@@ -266,32 +306,51 @@ export function Conclusion() {
           return;
         }
 
-        const email: string = values.email;
-        const owner: string = values.owner;
+        const params = {
+          powerplantId: '62bdb51ddf6c5670ce7a4162',
+          duration: ppaProps!.duration!,
+          amount: ppaProps!.amount!,
+        };
+
+        // create PPA
+        const stripePriceId: string = await createPPA(token, params);
+        console.log(stripePriceId);
+
+        // create setup intent
+        const stripeCustId: string = await getCustId(token);
+        const clientSecret: string = await createSetupIntent(stripeCustId);
+
+        // iban information
+        const owner = values.owner;
         const iban = elements.getElement(IbanElement);
-        const clientSecret = await createSetupIntent(customer);
 
         // confirm setup intent and store iban information from customer
-        const result = await stripe.confirmSepaDebitSetup(clientSecret, {
+        const stripeSetupIntent: SetupIntentResult = await stripe.confirmSepaDebitSetup(clientSecret, {
           payment_method: {
             sepa_debit: iban!,
             billing_details: {
               name: owner,
-              email: email,
+              email: username!,
             },
           },
         });
-        if (result.error) {
-          // error when confirming setup intent
-          console.log(result.error.message);
-        } else {
-          console.log('IBAN added to setup intent');
+
+        if (!stripeSetupIntent.error) {
+          const stripePaymentMethod: string = String(stripeSetupIntent.setupIntent.payment_method);
+          const anchorUnix: string = String(getStartDate().getTime() / 1000);
+          const cancelAtUnix = String(getEndDate(ppaProps!.duration!).getTime() / 1000);
+          createSubscription(
+            stripeCustId,
+            anchorUnix,
+            cancelAtUnix,
+            stripePriceId,
+            stripePaymentMethod);
           ppaForm.resetFields();
           paymentForm.resetFields();
-          console.log(result);
-          const paymentMethod = String(result.setupIntent.payment_method);
-          createSubscription(customer, anchor, cancelAt, price, paymentMethod);
           setStep((prev) => prev + 1);
+        } else {
+          // error when confirming setup intent
+          console.log(stripeSetupIntent.error.message);
         }
       })
       .catch((info) => {
@@ -458,16 +517,6 @@ export function Conclusion() {
                 wrapperCol={{ span: 18 }}
                 autoComplete="off"
               >
-                <Form.Item
-                  label="E-Mail"
-                  name="email"
-                  rules={[{ required: true, message: 'Please input your E-Mail!' }]}
-                >
-                  <Input
-                    placeholder="jane@example.com"
-                    required
-                  />
-                </Form.Item>
                 <Form.Item
                   label="Account Owner"
                   name="owner"

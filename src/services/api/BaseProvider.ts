@@ -1,4 +1,4 @@
-import { dispatch, getCookie } from '../../state';
+import { dispatch, useStoreState } from '../../state';
 
 // TODO Delete cookie getting after moving to server cookies
 export const request = async (
@@ -6,8 +6,9 @@ export const request = async (
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
   body?: any,
 ) => {
-  const cookie = getCookie();
-  if (!cookie) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const token = useStoreState('token');
+  if (!token) {
     dispatch({ type: 'logout' });
   }
 
@@ -16,7 +17,7 @@ export const request = async (
     body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': cookie.token,
+      'Authorization': token,
     },
   });
 
