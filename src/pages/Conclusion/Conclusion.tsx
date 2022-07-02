@@ -191,6 +191,7 @@ const createPPA = async (token: string, params: any) => {
       powerplantId: '62bdb51ddf6c5670ce7a4162',
       duration: 5,
       amount: 5,
+      stripePaymentMethod: 'pm_1LH40ULY3fwx8Mq429XXgTbs',
     }),
   };
   const result = await fetch(
@@ -211,31 +212,6 @@ const getCustId = async (token: string) => {
     requestOptions);
   const customer = await result.json();
   return customer.stripeCustId;
-};
-
-// creates subscription
-const createSubscription = async (
-  customer: string,
-  anchor: string,
-  cancelAt: string,
-  price: string,
-  paymentMethod: string,
-) => {
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      customer: customer,
-      price: price,
-      cancel_at: cancelAt,
-      billing_cycle_anchor: anchor,
-      default_payment_method: paymentMethod,
-    }),
-  };
-  await fetch(
-    'http://localhost:8080/api/stripe/subscribe',
-    requestOptions);
-  console.log('Subscription created!');
 };
 
 // In order to set filter values as
@@ -306,23 +282,15 @@ export function Conclusion() {
           return;
         }
 
-        const params = {
-          powerplantId: '62bdb51ddf6c5670ce7a4162',
-          duration: ppaProps!.duration!,
-          amount: ppaProps!.amount!,
-        };
-
-        // create PPA
-        const stripePriceId: string = await createPPA(token, params);
-        console.log(stripePriceId);
-
         // create setup intent
         const stripeCustId: string = await getCustId(token);
         const clientSecret: string = await createSetupIntent(stripeCustId);
+        console.log('create setup intent');
 
         // iban information
         const owner = values.owner;
         const iban = elements.getElement(IbanElement);
+        console.log('iban information');
 
         // confirm setup intent and store iban information from customer
         const stripeSetupIntent: SetupIntentResult = await stripe.confirmSepaDebitSetup(clientSecret, {
@@ -336,15 +304,20 @@ export function Conclusion() {
         });
 
         if (!stripeSetupIntent.error) {
+          // get payment method id
           const stripePaymentMethod: string = String(stripeSetupIntent.setupIntent.payment_method);
-          const anchorUnix: string = String(getStartDate().getTime() / 1000);
-          const cancelAtUnix = String(getEndDate(ppaProps!.duration!).getTime() / 1000);
-          createSubscription(
-            stripeCustId,
-            anchorUnix,
-            cancelAtUnix,
-            stripePriceId,
-            stripePaymentMethod);
+          console.log('get payment method id');
+
+          // create PPA
+          const params = {
+            powerplantId: '62bdb51ddf6c5670ce7a4162',
+            duration: ppaProps!.duration!,
+            amount: ppaProps!.amount!,
+            stripePaymentMethod: stripePaymentMethod,
+          };
+          const stripePriceId: string = await createPPA(token, params);
+          console.log(stripePriceId);
+
           ppaForm.resetFields();
           paymentForm.resetFields();
           setStep((prev) => prev + 1);
