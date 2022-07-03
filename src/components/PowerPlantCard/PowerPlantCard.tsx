@@ -1,6 +1,7 @@
-import { Card } from 'antd';
+/* eslint-disable react/jsx-key */
+import { Card, Space } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { StatusDisplay } from '../StatusDisplay/StatusDisplay';
 import { EnergyTypeEnum, PowerPlantType } from '../../types';
 
@@ -10,22 +11,25 @@ interface PowerPlantProps {
 }
 
 export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
+  const navigate = useNavigate();
   return (
     <Card
-      style={{ borderRadius: '20px', overflow: 'hidden', cursor: 'default' }}
+      style={{ borderRadius: '20px', overflow: 'hidden' }}
       hoverable
-      title={
-        <Link to={`/ppa-overview/${powerPlant.id}`}>
-          {powerPlant.name}
-        </Link>
-      }
+      onClick={(event) => {
+        navigate('/ppa-overview/' + powerPlant.id);
+      }}
+      title={powerPlant.name}
       actions={[
-        // eslint-disable-next-line react/jsx-key
-        <Link to={`powerplant/${powerPlant.id}/edit`}>
-          <SettingOutlined />
+        <Link
+          to={`powerplant/${powerPlant.id}/edit`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Space><SettingOutlined /><div>Settings</div></Space>
         </Link>,
-        // eslint-disable-next-line react/jsx-key
-        <StatusDisplay live={powerPlant.live} />,
+        <div style={{ cursor: 'default' }}>
+          <StatusDisplay live={powerPlant.live} />
+        </div>,
       ]}
     >
       <p>Location: {powerPlant.location}</p>

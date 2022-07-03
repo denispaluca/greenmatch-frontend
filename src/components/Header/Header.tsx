@@ -51,6 +51,7 @@ const menu = (
 
 export function Header() {
   const loggedIn = useStoreState('token') !== '';
+  const username = useStoreState('username');
   return (
     <PageHeader
       /*
@@ -76,6 +77,7 @@ export function Header() {
             {/* eslint-disable-next-line */}
             <a onClick={(e) => e.preventDefault()}>
               <Space>
+                <div>{username}</div>
                 <Avatar
                   size="large"
                   icon={<UserOutlined />}

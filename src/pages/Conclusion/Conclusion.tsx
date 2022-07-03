@@ -26,8 +26,6 @@ import {
   UserData,
 } from '../../types';
 import { useStoreState } from '../../state';
-import { PPACreate } from '../../types/ppa';
-import PPAProvider from '../../services/api/PPAProvider';
 import { SetupIntentResult } from '@stripe/stripe-js';
 
 const { Step } = Steps;
