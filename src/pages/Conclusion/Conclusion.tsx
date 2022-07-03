@@ -18,7 +18,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ContractDetails } from '../../components';
 import { IbanElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import './SepaPayment.css';
+import './IBANelement.css';
 import {
   EnergyTypes,
   PowerPlantOffer,
@@ -69,11 +69,6 @@ const getStartDate = () => {
   return new Date(date.getFullYear(), date.getMonth() + 1, 1);
 };
 
-const getEndDate = (duration: number) => {
-  const date = new Date();
-  return new Date(date.getFullYear() + duration, date.getMonth() + 1, 0);
-};
-
 // Fetches Power Plant props from backend - since
 // using dummy backend some data is added manualy e.g. duration
 const fetchPlantDetails = async (id: any) => {
@@ -115,7 +110,7 @@ const initPpaDetails = (ppo: PowerPlantOffer, buyerInfo: UserData) => {
   return ppaDetails;
 };
 
-// Mandate acceptance text
+// mandate acceptance text
 const mandateAcceptance =
   < div >
     By providing your payment information and confirming this payment, you
@@ -153,17 +148,19 @@ const IBAN_STYLE = {
   },
 };
 
+/*
+* Elements can use a placeholder as an example IBAN that reflects
+* the IBAN format of your customer's country. If you know your
+* customer's country, we recommend that you pass it to the Element as the
+* placeholderCountry.
+*/
 const IBAN_ELEMENT_OPTIONS = {
   supportedCountries: ['SEPA'],
-  // Elements can use a placeholder as an example IBAN that reflects
-  // the IBAN format of your customer's country. If you know your
-  // customer's country, we recommend that you pass it to the Element as the
-  // placeholderCountry.
   placeholderCountry: 'DE',
   style: IBAN_STYLE,
 };
 
-// creates setup intent and returns client secret
+// creates setup intent
 const createSetupIntent = async (token: string) => {
   const requestOptions = {
     method: 'GET',
@@ -175,11 +172,12 @@ const createSetupIntent = async (token: string) => {
   const response = await fetch(
     'http://localhost:8080/api/auth/setupIntent',
     requestOptions);
-  const data = await response.json();
-  return data.client_secret;
+  const setupIntent = await response.json();
+  console.log(setupIntent);
+  return setupIntent;
 };
 
-// create PPA and return stripe priceId
+// create PPA
 const createPPA = async (token: string, params: any) => {
   const requestOptions = {
     method: 'POST',
@@ -188,30 +186,17 @@ const createPPA = async (token: string, params: any) => {
       'Authorization': token,
     },
     body: JSON.stringify({
-      powerplantId: '62bdb51ddf6c5670ce7a4162',
-      duration: 5,
-      amount: 5,
-      stripePaymentMethod: 'pm_1LH40ULY3fwx8Mq429XXgTbs',
+      powerplantId: params.powerplantId,
+      duration: params.duration,
+      amount: params.amount,
+      stripePaymentMethod: params.stripePaymentMethod,
     }),
   };
   const result = await fetch(
     'http://localhost:8080/api/ppas',
     requestOptions);
   const ppa = await result.json();
-  return ppa.stripePriceId;
-};
-
-// return Stripe customerId
-const getCustId = async (token: string) => {
-  const requestOptions = {
-    method: 'GET',
-    headers: { 'Authorization': token },
-  };
-  const result = await fetch(
-    'http://localhost:8080/api/auth/me',
-    requestOptions);
-  const customer = await result.json();
-  return customer.stripeCustId;
+  return ppa;
 };
 
 // In order to set filter values as
@@ -255,7 +240,6 @@ export function Conclusion() {
   }, [ppDetails]);
 
   const handleNext = async () => {
-    console.log(token);
     ppaForm
       .validateFields()
       .then((values) => {
@@ -274,6 +258,7 @@ export function Conclusion() {
   const handleBuy = () => {
     paymentForm
       .validateFields()
+      // To do: error handling
       .then(async (values) => {
         /*
         * Stripe.js has not yet loaded.
@@ -284,17 +269,15 @@ export function Conclusion() {
         }
 
         // create setup intent
-        // const stripeCustId: string = await getCustId(token);
-        const clientSecret: string = await createSetupIntent(token);
-        console.log('create setup intent');
+        const setupIntent = await createSetupIntent(token);
+        console.log('Stripe client secret: ' + setupIntent.client_secret);
 
         // iban information
         const owner = values.owner;
         const iban = elements.getElement(IbanElement);
-        console.log('iban information');
 
         // confirm setup intent and store iban information from customer
-        const stripeSetupIntent: SetupIntentResult = await stripe.confirmSepaDebitSetup(clientSecret, {
+        const stripeSetupIntent: SetupIntentResult = await stripe.confirmSepaDebitSetup(setupIntent.client_secret, {
           payment_method: {
             sepa_debit: iban!,
             billing_details: {
@@ -303,21 +286,22 @@ export function Conclusion() {
             },
           },
         });
+        console.log('Confirmed setup intent: ' + stripeSetupIntent);
 
         if (!stripeSetupIntent.error) {
           // get payment method id
           const stripePaymentMethod: string = String(stripeSetupIntent.setupIntent.payment_method);
-          console.log('get payment method id');
+          console.log('Stripe payment method id: ' + stripePaymentMethod);
 
           // create PPA
           const params = {
+            // replace through 'powerplantId: ppaProps!.plantId' when dealing with real data
             powerplantId: '62bdb51ddf6c5670ce7a4162',
             duration: ppaProps!.duration!,
             amount: ppaProps!.amount!,
             stripePaymentMethod: stripePaymentMethod,
           };
-          const stripePriceId: string = await createPPA(token, params);
-          console.log(stripePriceId);
+          await createPPA(token, params);
 
           ppaForm.resetFields();
           paymentForm.resetFields();
@@ -499,7 +483,7 @@ export function Conclusion() {
                   ]}
                 >
                   <Input
-                    placeholder="Jane Doe"
+                    placeholder="Name"
                     required
                   />
                 </Form.Item>
