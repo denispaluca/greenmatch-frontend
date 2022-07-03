@@ -166,14 +166,16 @@ const IBAN_ELEMENT_OPTIONS = {
 };
 
 // creates setup intent and returns client secret
-const createSetupIntent = async (custId: string) => {
+const createSetupIntent = async (token: string) => {
   const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ customer: custId }),
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token,
+    },
   };
   const response = await fetch(
-    'http://localhost:8080/api/stripe/setupIntent',
+    'http://localhost:8080/api/auth/setupIntent',
     requestOptions);
   const data = await response.json();
   return data.client_secret;
@@ -255,6 +257,7 @@ export function Conclusion() {
   }, [ppDetails]);
 
   const handleNext = async () => {
+    console.log(token);
     ppaForm
       .validateFields()
       .then((values) => {
@@ -283,8 +286,8 @@ export function Conclusion() {
         }
 
         // create setup intent
-        const stripeCustId: string = await getCustId(token);
-        const clientSecret: string = await createSetupIntent(stripeCustId);
+        // const stripeCustId: string = await getCustId(token);
+        const clientSecret: string = await createSetupIntent(token);
         console.log('create setup intent');
 
         // iban information
