@@ -14,9 +14,9 @@ export const request = async (
   const response = await fetch(`${process.env.REACT_APP_API_URL}/${resource}`, {
     method,
     body: JSON.stringify(body),
+    credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': cookie.token,
+      'Content-Type': 'application/json'
     },
   });
 
