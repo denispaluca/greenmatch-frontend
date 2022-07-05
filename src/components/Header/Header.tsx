@@ -38,7 +38,6 @@ const menu = (
           <Link to='/login'
             onClick={async () =>{
               const res = await logout();
-              console.log(res);
               if (res.ok) {
                 console.log('ok logout');
                 dispatch({

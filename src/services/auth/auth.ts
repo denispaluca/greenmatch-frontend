@@ -27,10 +27,8 @@ Promise<AuthRes> => {
   );
 
   if (res.ok) {
-    console.log('login success', res);
     return res;
   }
-  console.log('bad login', res);
   return {
     ok: false,
     error: (await res.json()).message,
