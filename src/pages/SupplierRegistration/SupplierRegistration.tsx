@@ -62,7 +62,6 @@ export function SupplierRegistration() {
         type: 'setLogin',
         loginType: 'Supplier',
         username: loginValues.email,
-        token: registerRes.token,
       });
       navigate('/');
     }
