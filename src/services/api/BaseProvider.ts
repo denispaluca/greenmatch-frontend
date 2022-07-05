@@ -1,4 +1,4 @@
-import { dispatch, getCookie } from '../../state';
+import { dispatch } from '../../state';
 
 // TODO Delete cookie getting after moving to server cookies
 export const request = async (
@@ -6,11 +6,6 @@ export const request = async (
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
   body?: any,
 ) => {
-  const cookie = getCookie();
-  if (!cookie) {
-    dispatch({ type: 'logout' });
-  }
-
   const response = await fetch(`${process.env.REACT_APP_API_URL}/${resource}`, {
     method,
     body: JSON.stringify(body),
