@@ -61,7 +61,7 @@ export function SupplierRegistration() {
       dispatch({
         type: 'setLogin',
         loginType: 'Supplier',
-        token: registerRes.token,
+        username: loginValues.email,
       });
       navigate('/');
     }
