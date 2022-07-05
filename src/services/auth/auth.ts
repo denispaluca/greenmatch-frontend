@@ -1,4 +1,3 @@
-import { decode } from 'punycode';
 import { RegistrationFormValues } from '../../types';
 
 interface AuthRes {
@@ -22,16 +21,16 @@ Promise<AuthRes> => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(reqBody),
     },
   );
 
   if (res.ok) {
-    return {
-      ok: true,
-      token: (await res.json()).token,
-    };
+    console.log('login success', res);
+    return res;
   }
+  console.log('bad login', res);
   return {
     ok: false,
     error: (await res.json()).message,
@@ -60,6 +59,7 @@ export const register = async (values: RegistrationFormValues)
   const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/register`,
     {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -79,16 +79,21 @@ export const register = async (values: RegistrationFormValues)
   };
 };
 
-export const isAuthenticated = (token: string): boolean => {
-  if (token) {
-    const decoded:any = decode(token);
-    if (decoded) {
-      const exp = decoded.exp;
-      const now = new Date().getTime() / 1000;
-      if (exp > now) {
-        return true;
-      }
-    }
+export const logout = async () => {
+  const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`,
+    {
+      method: 'POST',
+      credentials: 'include',
+    },
+  );
+
+  if (res.ok) {
+    return {
+      ok: true,
+    };
   }
-  return false;
+  return {
+    ok: false,
+    error: (await res.json()).message,
+  };
 };

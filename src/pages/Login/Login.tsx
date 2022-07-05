@@ -6,10 +6,10 @@ import {
   Tabs,
   Row,
   Col } from 'antd';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../services';
-import { dispatch, useStoreState } from '../../state';
+import { dispatch } from '../../state';
 import styles from './Login.module.scss';
 const { TabPane } = Tabs;
 
@@ -22,17 +22,9 @@ interface LoginFormValues{
 }
 
 export function Login() {
-  const loggedIn = useStoreState('token') !== '';
   const navigate = useNavigate();
   const [loginType, setLoginType] = useState<LoginType>('Supplier');
   const [form] = Form.useForm();
-
-  // User already logged in, redirect to dashboard
-  useEffect(()=>{
-    if (loggedIn) {
-      navigate('/');
-    }
-  }, [loggedIn, navigate]);
 
   const submitForm = async (values: LoginFormValues) => {
     console.log(values); // Check if values are correct etc.
@@ -44,12 +36,12 @@ export function Login() {
         { name: 'password', errors: [res.error || 'Something went wrong'] },
       ]);
     } else {
+      console.log(values.username, 'username');
       dispatch({
         type: 'setLogin',
         loginType: loginType,
-        token: res.token || '',
+        username: values.username,
       });
-      console.log('yey');
       navigate('/');
     }
   };
