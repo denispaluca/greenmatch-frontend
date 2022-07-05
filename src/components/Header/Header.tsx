@@ -2,6 +2,7 @@ import { Menu, Avatar, Dropdown, PageHeader, Space, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { dispatch, useStoreState } from '../../state';
+import { logout } from '../../services';
 
 const menu = (
   <Menu
@@ -34,15 +35,26 @@ const menu = (
         key: '4',
         label: (
           // eslint-disable-next-line
-          <div
-            onClick={() =>
-              dispatch({
-                type: 'logout',
-              })
+          <Link to='/login'
+            onClick={async () =>{
+              const res = await logout();
+              if (res.ok) {
+                console.log('ok logout');
+                dispatch({
+                  type: 'logout',
+                });
+              }
+            }
             }
           >
+            <div
+              onKeyDown={()=>null}
+              role="button"
+              tabIndex={0}
+            >
             Logout
-          </div>
+            </div>
+          </Link>
         ),
       },
     ]}
@@ -50,7 +62,7 @@ const menu = (
 );
 
 export function Header() {
-  const loggedIn = useStoreState('token') !== '';
+  const loggedIn = useStoreState('username') !== undefined;
   return (
     <PageHeader
       /*
