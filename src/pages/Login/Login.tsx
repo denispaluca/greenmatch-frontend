@@ -6,7 +6,7 @@ import {
   Input,
   Tabs,
   Row,
-  Col
+  Col,
 } from 'antd';
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';

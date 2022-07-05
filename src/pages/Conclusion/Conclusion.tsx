@@ -27,6 +27,9 @@ import {
 } from '../../types';
 import { useStoreState } from '../../state';
 import { SetupIntentResult } from '@stripe/stripe-js';
+import { createSetupIntent } from '../../services/api/StripeProvider';
+import PPAProvider from '../../services/api/PPAProvider';
+import { SingleDuration } from '../../types/offer';
 
 const { Step } = Steps;
 const LINK_CONSUMER_DASHBOARD = '/offers';
@@ -160,45 +163,6 @@ const IBAN_ELEMENT_OPTIONS = {
   style: IBAN_STYLE,
 };
 
-// creates setup intent
-const createSetupIntent = async (token: string) => {
-  const requestOptions = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token,
-    },
-  };
-  const response = await fetch(
-    'http://localhost:8080/api/auth/setupIntent',
-    requestOptions);
-  const setupIntent = await response.json();
-  console.log(setupIntent);
-  return setupIntent;
-};
-
-// create PPA
-const createPPA = async (token: string, params: any) => {
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token,
-    },
-    body: JSON.stringify({
-      powerplantId: params.powerplantId,
-      duration: params.duration,
-      amount: params.amount,
-      stripePaymentMethod: params.stripePaymentMethod,
-    }),
-  };
-  const result = await fetch(
-    'http://localhost:8080/api/ppas',
-    requestOptions);
-  const ppa = await result.json();
-  return ppa;
-};
-
 // In order to set filter values as
 // default handover of this parameters is necessary
 export function Conclusion() {
@@ -212,7 +176,6 @@ export function Conclusion() {
   const stripe = useStripe();
   const elements = useElements();
   const username = useStoreState('username');
-  const token = useStoreState('token');
 
   // Fetch Power Plant Details from backend
   useEffect(() => {
@@ -269,7 +232,7 @@ export function Conclusion() {
         }
 
         // create setup intent
-        const setupIntent = await createSetupIntent(token);
+        const setupIntent = await createSetupIntent();
         console.log('Stripe client secret: ' + setupIntent.client_secret);
 
         // iban information
@@ -297,11 +260,11 @@ export function Conclusion() {
           const params = {
             // replace through 'powerplantId: ppaProps!.plantId' when dealing with real data
             powerplantId: '62bdb51ddf6c5670ce7a4162',
-            duration: ppaProps!.duration!,
+            duration: ppaProps!.duration! as SingleDuration,
             amount: ppaProps!.amount!,
             stripePaymentMethod: stripePaymentMethod,
           };
-          await createPPA(token, params);
+          await PPAProvider.create(params);
 
           ppaForm.resetFields();
           paymentForm.resetFields();
