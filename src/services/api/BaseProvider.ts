@@ -11,7 +11,7 @@ export const request = async (
     body: JSON.stringify(body),
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
   });
 

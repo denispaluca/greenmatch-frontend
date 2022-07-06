@@ -1,4 +1,13 @@
-import { Button, Modal, Input, Form, Cascader, List } from 'antd';
+import {
+  Button,
+  Modal,
+  Input,
+  Form,
+  Cascader,
+  List,
+  Typography,
+  Row,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import { PowerPlantCard } from '../../components';
 import { PowerPlantType, EnergyTypeEnum } from '../../types';
@@ -121,7 +130,17 @@ export function Dashboard() {
 
   return (
     <>
-      <Button onClick={showModal}>Add New Power Plant</Button>
+      <Row>
+        <Button onClick={showModal}>Add New Power Plant</Button>
+      </Row>
+      <Row>
+        <Typography.Text
+          type="warning"
+          ellipsis
+        >
+          Click on any of the power plant cards to view the details.
+        </Typography.Text>
+      </Row>
       {/* https://ant.design/components/form/#components-form-demo-form-in-modal */}
       <Modal
         title="Add New Power Plant"

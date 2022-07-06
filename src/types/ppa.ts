@@ -11,6 +11,7 @@ export interface PPACreate {
   powerplantId: string;
   duration: SingleDuration;
   amount: number;
+  stripePaymentMethod: string;
 }
 
 /**

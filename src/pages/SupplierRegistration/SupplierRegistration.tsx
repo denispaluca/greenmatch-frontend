@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { register } from '../../services';
 import { dispatch } from '../../state';
-// import { checkUsernameAvailability } from '../../services';
+// import { checkEmailAvailability } from '../../services';
 
 const { Step } = Steps;
 
@@ -61,7 +61,7 @@ export function SupplierRegistration() {
       dispatch({
         type: 'setLogin',
         loginType: 'Supplier',
-        username: loginValues.email,
+        email: loginValues.email,
       });
       navigate('/');
     }
@@ -334,7 +334,7 @@ export function SupplierRegistration() {
                         ));
                       }
 
-                      /* const res = await checkUsernameAvailability(value);
+                      /* const res = await checkEmailAvailability(value);
 
                       if (res === true) {
                         return Promise.resolve();

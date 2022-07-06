@@ -36,7 +36,7 @@ const menu = (
         label: (
           // eslint-disable-next-line
           <Link to='/login'
-            onClick={async () =>{
+            onClick={async () => {
               const res = await logout();
               if (res.ok) {
                 console.log('ok logout');
@@ -48,11 +48,11 @@ const menu = (
             }
           >
             <div
-              onKeyDown={()=>null}
+              onKeyDown={() => null}
               role="button"
               tabIndex={0}
             >
-            Logout
+              Logout
             </div>
           </Link>
         ),
@@ -62,7 +62,8 @@ const menu = (
 );
 
 export function Header() {
-  const loggedIn = useStoreState('username') !== undefined;
+  const email = useStoreState('email');
+  const loggedIn = email !== undefined;
   return (
     <PageHeader
       /*
@@ -88,6 +89,7 @@ export function Header() {
             {/* eslint-disable-next-line */}
             <a onClick={(e) => e.preventDefault()}>
               <Space>
+                <div>{email}</div>
                 <Avatar
                   size="large"
                   icon={<UserOutlined />}

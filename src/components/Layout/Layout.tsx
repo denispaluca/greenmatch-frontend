@@ -1,13 +1,27 @@
 import { Outlet } from 'react-router-dom';
 import { Header } from '../Header/Header';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 export function Layout() {
+  /*
+  * Set your secret key. Remember to switch to your live secret key
+  * in production. See your keys here: https://dashboard.stripe.com/apikeys
+  * Make sure to call `loadStripe` outside of a component’s render to avoid
+  * recreating the `Stripe` object on every render.
+  */
+  // eslint-disable-next-line max-len
+  const stripePromise = loadStripe('pk_test_51LDTGtLY3fwx8Mq44A7wpR1YFpeZmJQpxayq4JSR4FV46W11zHt8i0QDPMPaBJ3NTWFdEfVnTpuUOxoaxFUsEdpK00THi7Wfh9');
+
+
   return (
     <div>
-      <Header />
-      <main>
-        <Outlet />
-      </main>
+      <Elements stripe={stripePromise}>
+        <Header />
+        <main>
+          <Outlet />
+        </main>
+      </Elements>
     </div>
   );
 }

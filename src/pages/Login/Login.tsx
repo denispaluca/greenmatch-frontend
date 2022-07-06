@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import {
   Button,
   Card, Checkbox,
@@ -5,7 +6,8 @@ import {
   Input,
   Tabs,
   Row,
-  Col } from 'antd';
+  Col,
+} from 'antd';
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../services';
@@ -15,37 +17,37 @@ const { TabPane } = Tabs;
 
 type LoginType = 'Supplier' | 'Buyer';
 
-interface LoginFormValues{
-  username: string;
+interface LoginFormValues {
+  email: string;
   password: string;
   remember: boolean;
 }
 
 export function Login() {
   const navigate = useNavigate();
-  const [loginType, setLoginType] = useState<LoginType>('Supplier');
+  const [loginType, setLoginType] = useState<LoginType>('Buyer');
   const [form] = Form.useForm();
 
   const submitForm = async (values: LoginFormValues) => {
     console.log(values); // Check if values are correct etc.
     console.log(loginType);
-    const res = await login(values.username, values.password, loginType);
+    const res = await login(values.email, values.password, loginType);
     if (!res.ok) {
       form.setFields([
-        { name: 'username', errors: [res.error || 'Something went wrong'] },
+        { name: 'email', errors: [res.error || 'Something went wrong'] },
         { name: 'password', errors: [res.error || 'Something went wrong'] },
       ]);
     } else {
-      console.log(values.username, 'username');
+      console.log(values.email, 'email');
       dispatch({
         type: 'setLogin',
         loginType: loginType,
-        username: values.username,
+        email: values.email,
       });
       navigate('/');
     }
   };
-  const loginForm = useMemo(()=>
+  const loginForm = useMemo(() =>
     <Form
       name="basic"
       form={form}
@@ -53,12 +55,12 @@ export function Login() {
       wrapperCol={{ span: 8 }}
       initialValues={{ remember: true }}
       autoComplete="off"
-      onFinish={(values)=>submitForm(values)}
+      onFinish={(values) => submitForm(values)}
     >
       <Form.Item
-        label="Username"
-        name="username"
-        rules={[{ required: true, message: 'Please input your username!' }]}
+        label="Email"
+        name="email"
+        rules={[{ required: true, message: 'Please input your email!' }]}
       >
         <Input />
       </Form.Item>
@@ -84,11 +86,11 @@ export function Login() {
           type="primary"
           htmlType="submit"
         >
-            Submit
+          Submit
         </Button>
       </Form.Item>
     </Form>
-  , []);
+    , []);
 
 
   return (
@@ -113,7 +115,7 @@ export function Login() {
             defaultActiveKey="1"
             centered
             type="card"
-            onTabClick={(e)=>setLoginType(e as LoginType)}
+            onTabClick={(e) => setLoginType(e as LoginType)}
           >
             <TabPane
               tab="Supplier Login"
