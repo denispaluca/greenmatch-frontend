@@ -6,12 +6,12 @@ interface AuthRes {
   error?: string;
 }
 
-export const login = async (username: string,
+export const login = async (email: string,
   password: string,
   loginType: string):
-Promise<AuthRes> => {
+  Promise<AuthRes> => {
   const reqBody = {
-    username,
+    email,
     password,
     loginType,
   };
@@ -48,7 +48,7 @@ export const register = async (values: RegistrationFormValues)
   };
 
   const reqBody = {
-    username: values.email,
+    email: values.email,
     password: values.password,
     company,
     iban: values.iban,

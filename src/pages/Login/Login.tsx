@@ -18,7 +18,7 @@ const { TabPane } = Tabs;
 type LoginType = 'Supplier' | 'Buyer';
 
 interface LoginFormValues {
-  username: string;
+  email: string;
   password: string;
   remember: boolean;
 }
@@ -31,18 +31,18 @@ export function Login() {
   const submitForm = async (values: LoginFormValues) => {
     console.log(values); // Check if values are correct etc.
     console.log(loginType);
-    const res = await login(values.username, values.password, loginType);
+    const res = await login(values.email, values.password, loginType);
     if (!res.ok) {
       form.setFields([
-        { name: 'username', errors: [res.error || 'Something went wrong'] },
+        { name: 'email', errors: [res.error || 'Something went wrong'] },
         { name: 'password', errors: [res.error || 'Something went wrong'] },
       ]);
     } else {
-      console.log(values.username, 'username');
+      console.log(values.email, 'email');
       dispatch({
         type: 'setLogin',
         loginType: loginType,
-        username: values.username,
+        email: values.email,
       });
       navigate('/');
     }
@@ -58,9 +58,9 @@ export function Login() {
       onFinish={(values) => submitForm(values)}
     >
       <Form.Item
-        label="Username"
-        name="username"
-        rules={[{ required: true, message: 'Please input your username!' }]}
+        label="Email"
+        name="email"
+        rules={[{ required: true, message: 'Please input your email!' }]}
       >
         <Input />
       </Form.Item>

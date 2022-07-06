@@ -175,7 +175,7 @@ export function Conclusion() {
   const [durationOptions, setDurationOptions] = useState<RadioOptions[]>();
   const stripe = useStripe();
   const elements = useElements();
-  const username = useStoreState('username');
+  const email = useStoreState('email');
 
   // Fetch Power Plant Details from backend
   useEffect(() => {
@@ -245,7 +245,7 @@ export function Conclusion() {
             sepa_debit: iban!,
             billing_details: {
               name: owner,
-              email: username!,
+              email: email!,
             },
           },
         });
@@ -259,7 +259,7 @@ export function Conclusion() {
           // create PPA
           const params = {
             // replace through 'powerplantId: ppaProps!.plantId' when dealing with real data
-            powerplantId: '62bdb51ddf6c5670ce7a4162',
+            powerplantId: '62c57add995dd2a86d5075be',
             duration: ppaProps!.duration! as SingleDuration,
             amount: ppaProps!.amount!,
             stripePaymentMethod: stripePaymentMethod,

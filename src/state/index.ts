@@ -3,16 +3,16 @@ import { createStore } from 'react-hooks-global-state';
 
 type State = {
   loginType?: 'Buyer' | 'Supplier';
-  username: string;
+  email: string;
 }
 
 type Action =
-  { type: 'setLogin'; loginType: 'Buyer' | 'Supplier', username: string }
+  { type: 'setLogin'; loginType: 'Buyer' | 'Supplier', email: string }
   | { type: 'logout' };
 
 const defaultState: State = {
   loginType: undefined,
-  username: '',
+  email: '',
 };
 
 const LOCAL_STORAGE_KEY = 'my_local_storage_key';
@@ -25,14 +25,14 @@ const reducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'setLogin': {
       const newState = {
-        ...state, LoginType: action.loginType, username: action.username,
+        ...state, LoginType: action.loginType, email: action.email,
       };
       console.log(newState);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newState));
       return newState;
     }
     case 'logout': {
-      const newState = { ...state, LoginType: undefined, username: '' };
+      const newState = { ...state, LoginType: undefined, email: '' };
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newState));
       return newState;
     }
