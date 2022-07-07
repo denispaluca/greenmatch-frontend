@@ -25,7 +25,8 @@ interface LoginFormValues {
 
 export function Login() {
   const navigate = useNavigate();
-  const [loginType, setLoginType] = useState<LoginType>('Buyer');
+  // ToDo Switch between supplier and buyer does not work
+  const [loginType, setLoginType] = useState<LoginType>('Supplier');
   const [form] = Form.useForm();
 
   const submitForm = async (values: LoginFormValues) => {
@@ -115,7 +116,11 @@ export function Login() {
             defaultActiveKey="1"
             centered
             type="card"
-            onTabClick={(e) => setLoginType(e as LoginType)}
+            onChange={(e) => {
+              console.log(e);
+              setLoginType(e as LoginType);
+            }}
+          // onTabClick={(e) => setLoginType(e as LoginType)}
           >
             <TabPane
               tab="Supplier Login"
