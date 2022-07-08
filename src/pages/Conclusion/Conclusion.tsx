@@ -29,7 +29,12 @@ import { useStoreState } from '../../state';
 import { SetupIntentResult } from '@stripe/stripe-js';
 import { createSetupIntent } from '../../services/api/StripeProvider';
 import PPAProvider from '../../services/api/PPAProvider';
-import { SingleDuration } from '../../types/offer';
+import { Offer, SingleDuration } from '../../types/offer';
+import PowerPlantProvider from '../../services/api/PowerPlantProvider';
+import { PowerPlant, PPADurations } from '../../types/powerplant';
+import OfferProvider from '../../services/api/OfferProvider';
+import UserDetailsProvider from '../../services/api/userDetailsProvider';
+import { UserInformation } from '../../types/user';
 
 const { Step } = Steps;
 const LINK_CONSUMER_DASHBOARD = '/offers';
@@ -53,16 +58,31 @@ const configuredFilter = {
 
 // Filters based on given number
 // array the options a user can choose during ppa negotiation
-const setPossibleDurations = (durations: number[]) => {
-  const possibleDurations: RadioOptions[] = radioOptionConf.map((e) => {
-    if (durations.includes(e.value)) {
-      return e;
-    } else {
-      return { ...e, disabled: true };
-    }
-  });
+const setPossibleDurations = (durations: PPADurations) => {
+  const res: RadioOptions[] = [];
 
-  return possibleDurations;
+  // Five
+  if (durations.five) {
+    res.push({ label: '5 Years', value: 5 });
+  } else {
+    res.push({ label: '5 Years', value: 5, disabled: true });
+  }
+
+  // Ten
+  if (durations.ten) {
+    res.push({ label: '10 Years', value: 10 });
+  } else {
+    res.push({ label: '10 Years', value: 10, disabled: true });
+  }
+
+  // Fifteen
+  if (durations.fifteen) {
+    res.push({ label: '15 Years', value: 15 });
+  } else {
+    res.push({ label: '15 Years', value: 15, disabled: true });
+  }
+
+  return res;
 };
 
 // Get next possible starting date
@@ -72,40 +92,18 @@ const getStartDate = () => {
   return new Date(date.getFullYear(), date.getMonth() + 1, 1);
 };
 
-// Fetches Power Plant props from backend - since
-// using dummy backend some data is added manualy e.g. duration
-const fetchPlantDetails = async (id: any) => {
-  const powerplant = await fetch(
-    `https://62a44ae6259aba8e10e5a1d8.mockapi.io/deals/${id}`,
-  );
-  const ppJSON = await powerplant.json();
-  const energyTypes: EnergyTypes[] = ['wind', 'solar', 'hydro'];
-  const duration = [5, 15];
-  const energyType = energyTypes[1];
-  const remainingCapacity = 2000;
-  return {
-    ...ppJSON,
-    duration,
-    energyType,
-    remainingCapacity,
-  };
-};
-
-// fetch user data from backend - right now just dummy data TODO
-const fetchUserData = async () => {
-  return { companyName: 'Energiesucher GmbH', companyId: 2 };
-};
 
 // Init Contract Details with fetched data
-const initPpaDetails = (ppo: PowerPlantOffer, buyerInfo: UserData) => {
+const initPpaDetails = (ppo: Offer, buyerInfo: UserInformation) => {
   const ppaDetails: PpaContractDetails = {
-    supplier: ppo.companyName,
-    supplierId: 2,
-    buyer: buyerInfo.companyName,
-    buyerId: buyerInfo.companyId,
+    supplier: ppo.supplierName,
+    supplierId: ppo.supplierId,
+    buyer: buyerInfo.company.name,
+    buyerId: buyerInfo._id,
+    buyerEmail: buyerInfo.email,
     type: ppo.energyType,
-    plant: ppo.powerplantName,
-    plantId: Number(ppo.id),
+    plant: ppo.name,
+    plantId: ppo._id,
     price: ppo.price,
     start: getStartDate(),
   };
@@ -171,36 +169,32 @@ export function Conclusion() {
   const [paymentForm] = Form.useForm();
   const [ppaProps, setPpaProps] = useState<PpaContractDetails>();
   const { id } = useParams();
-  const [ppDetails, setPpDetails] = useState<PowerPlantOffer>();
+  const [offerDetails, setOfferDetails] = useState<Offer>();
   const [durationOptions, setDurationOptions] = useState<RadioOptions[]>();
   const stripe = useStripe();
   const elements = useElements();
   const email = useStoreState('email');
 
-  // Fetch Power Plant Details from backend
+  // Fetch PowerPlant Details
   useEffect(() => {
-    fetchPlantDetails(id)
-      .then((details) => {
-        console.log('Got PP Details', details);
-        setPpDetails(details);
-        setDurationOptions(setPossibleDurations(details.duration));
+    OfferProvider.get(id!)
+      .then((offer) => {
+        console.log('Loaded Offer Det', offer);
+        setOfferDetails(offer);
+        setDurationOptions(setPossibleDurations(offer.durations));
+        UserDetailsProvider.get()
+          .then((uData) => {
+            console.log('UData', uData);
+            setPpaProps(initPpaDetails(offer, uData));
+          })
+          .catch((error) => {
+            console.log('Failed to fetch User Data', error);
+          });
       })
-      .catch((info) => {
-        console.log('Fetching of Plant Data failed', info);
+      .catch((error) => {
+        console.log('Failed to fetch PP Details', error);
       });
-  }, []);
-
-  // Fetch User Data an init contract details
-  useEffect(() => {
-    fetchUserData()
-      .then((uData) => {
-        console.log(ppDetails);
-        setPpaProps(initPpaDetails(ppDetails!, uData));
-      })
-      .catch((info) => {
-        console.log('Fetching of User Data and Initial PPA Setup failed', info);
-      });
-  }, [ppDetails]);
+  }, [id]);
 
   const handleNext = async () => {
     ppaForm
@@ -245,7 +239,7 @@ export function Conclusion() {
             sepa_debit: iban!,
             billing_details: {
               name: owner,
-              email: email!,
+              email: ppaProps!.buyerEmail,
             },
           },
         });
@@ -258,8 +252,7 @@ export function Conclusion() {
 
           // create PPA
           const params = {
-            // replace through 'powerplantId: ppaProps!.plantId' when dealing with real data
-            powerplantId: '62c57add995dd2a86d5075be',
+            powerplantId: ppaProps!.plantId,
             duration: ppaProps!.duration! as SingleDuration,
             amount: ppaProps!.amount!,
             stripePaymentMethod: stripePaymentMethod,
@@ -281,7 +274,7 @@ export function Conclusion() {
 
   // Returns the corresponding form element depending on the step
   const conclusionForm = useMemo(() => {
-    if (!ppDetails || !durationOptions || !ppaProps) {
+    if (!offerDetails || !durationOptions || !ppaProps) {
       return <div>Loading</div>;
     } else if (step === 0) {
       return (
@@ -323,7 +316,7 @@ export function Conclusion() {
 
                 <Form.Item
                   label={`Amount per Year in kWh 
-                  (at max ${ppDetails.remainingCapacity} kWh)`}
+                  (at max ${offerDetails.availableCapacity} kWh)`}
                   name="amount"
                   rules={[
                     { required: true, message: 'Please specify amount!' },
@@ -333,7 +326,7 @@ export function Conclusion() {
                     type="number"
                     style={{ width: '100%' }}
                     min={0}
-                    max={ppDetails.remainingCapacity}
+                    max={offerDetails.availableCapacity}
                     addonAfter="kWh/year"
                   />
                 </Form.Item>
@@ -506,7 +499,7 @@ export function Conclusion() {
         />
       );
     }
-  }, [step, ppDetails, durationOptions, ppaProps]);
+  }, [step, offerDetails, durationOptions, ppaProps]);
 
   return (
     <>

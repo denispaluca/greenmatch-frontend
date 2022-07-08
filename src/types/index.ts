@@ -1,3 +1,4 @@
+import { StringDecoder } from 'string_decoder';
 
 export type EnergyTypes = 'wind' | 'solar' | 'hydro';
 export type PPADuration = 5 | 10 | 15;
@@ -46,18 +47,19 @@ export type UserData = {
 
 export interface PpaContractDetails {
   supplier: string;
-  supplierId: number;
+  supplierId: string;
   buyer: string;
-  buyerId: number
+  buyerId: string,
   type: string;
   plant: string;
-  plantId: number,
+  plantId: string,
   duration?: number;
   amount?: number;
   price: number;
   start: Date;
   owner?: string;
   iban?: string;
+  buyerEmail: string;
 }
 
 export type Ppa = {
@@ -91,4 +93,12 @@ export interface RegistrationFormValues {
   password: string;
   companyImage: string;
   companyWebsite: string;
+}
+
+export interface Company {
+  country: string;
+  name: string;
+  website: string;
+  imageURL?: string;
+  hrb: string;
 }
