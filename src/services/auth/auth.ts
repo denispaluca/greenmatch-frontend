@@ -68,12 +68,12 @@ export const register = async (values: RegistrationFormValues)
   if (res.ok) {
     return {
       ok: true,
-      token: (await res.json()).token,
+      // token: (await res.json()).token,
     };
   }
   return {
     ok: false,
-    error: (await res.json()).message,
+    // error: (await res.json()).message,
   };
 };
 

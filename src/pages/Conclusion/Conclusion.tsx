@@ -262,7 +262,7 @@ export function Conclusion() {
           // create PPA
           const params = {
             // replace through 'powerplantId: ppaProps!.plantId' when dealing with real data
-            powerplantId: '62c57add995dd2a86d5075be',
+            powerplantId: '62c84ee5e7b2e1c0341a15f0',
             duration: ppaProps!.duration! as SingleDuration,
             amount: ppaProps!.amount!,
             stripePaymentMethod: stripePaymentMethod,
