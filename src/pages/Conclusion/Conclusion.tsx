@@ -177,7 +177,7 @@ export function Conclusion() {
   const stripe = useStripe();
   const elements = useElements();
   const email = useStoreState('email');
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Fetch Power Plant Details from backend
   useEffect(() => {
@@ -480,6 +480,7 @@ export function Conclusion() {
               <Button
                 type="text"
                 onClick={() => setStep((prev) => prev - 1)}
+                disabled={isLoading}
               >
                 <LeftOutlined /> Back
               </Button>
@@ -491,6 +492,7 @@ export function Conclusion() {
               <Button
                 type="text"
                 onClick={handleBuy}
+                disabled={isLoading}
               >
                 Buy <RightOutlined />
               </Button>
