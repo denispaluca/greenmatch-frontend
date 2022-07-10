@@ -131,7 +131,7 @@ const ConsumerDasboard: React.FC = () => {
     setDuration(undefined);
     setPriceStart(undefined);
     setPriceEnd(undefined);
-    setAcceptedEnergyTypes([]);
+    setAcceptedEnergyTypes(['solar', 'wind', 'hydro']);
     setNrEmpolyees(10);
     setYearlyConsumption(0);
   };

@@ -51,8 +51,8 @@ const PPAOverView: FunctionComponent = () => {
 
   const [ppaToCancel, setPpaToCancel] = useState<PPA>();
 
-  const [revenues, setRevenues] = useState<number>();
-  const [costs, setCosts] = useState<number>();
+  const [revenues, setRevenues] = useState<number>(0);
+  const [costs, setCosts] = useState<number>(0);
 
   const handleCancelation = (ppa: PPA) => {
     PPAProvider.cancel(ppa._id)
@@ -71,9 +71,16 @@ const PPAOverView: FunctionComponent = () => {
       .then((ppaList) => {
         console.log('Ppas of Powerplant', ppaList);
         setPpas(ppaList);
-        const rev = ppaList.reduce((accumulator, object) => {
-          return accumulator + ((object.amount) * (object.price / 100) *
-            object.duration);
+
+        // Calculate PPA revenues and costs per powerplant
+        let rev = 0;
+        rev = ppaList.reduce((accumulator, object) => {
+          if (!object.canceled) {
+            return accumulator + ((object.amount) * (object.price / 100) *
+              object.duration);
+          } else {
+            return accumulator;
+          }
         }, 0);
         setCosts(rev * GREENMATCH_FEE);
         setRevenues(rev * (1 - GREENMATCH_FEE));
@@ -83,9 +90,6 @@ const PPAOverView: FunctionComponent = () => {
       });
   }, [params]);
 
-  if (!costs || !revenues) {
-    return (<div>Loading...</div>);
-  }
   return (
     <div>
       <Modal

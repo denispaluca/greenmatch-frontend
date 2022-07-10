@@ -91,7 +91,7 @@ export function Login() {
         </Button>
       </Form.Item>
     </Form>
-    , []);
+    , [loginType]);
 
 
   return (
@@ -116,11 +116,7 @@ export function Login() {
             defaultActiveKey="1"
             centered
             type="card"
-            onChange={(e) => {
-              console.log(e);
-              setLoginType(e as LoginType);
-            }}
-          // onTabClick={(e) => setLoginType(e as LoginType)}
+            onTabClick={(e) => setLoginType(e as LoginType)}
           >
             <TabPane
               tab="Supplier Login"
