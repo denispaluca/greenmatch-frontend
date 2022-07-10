@@ -73,8 +73,7 @@ const PPAOverView: FunctionComponent = () => {
         setPpas(ppaList);
 
         // Calculate PPA revenues and costs per powerplant
-        let rev = 0;
-        rev = ppaList.reduce((accumulator, object) => {
+        const rev = ppaList.reduce((accumulator, object) => {
           if (!object.canceled) {
             return accumulator + ((object.amount) * (object.price / 100) *
               object.duration);
