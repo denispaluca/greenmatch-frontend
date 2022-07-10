@@ -63,6 +63,7 @@ const columns: ColumnType<PowerPlantOffer>[] = [
 const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
   const navigate = useNavigate();
   const buttonCol: ColumnType<PowerPlantOffer> = {
+    title: 'PPA Conclusion',
     render: (value, offer) => {
       return (
         <Button
