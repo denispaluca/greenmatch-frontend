@@ -10,6 +10,7 @@ interface OffersTableProps {
 
 const columns: ColumnType<PowerPlantOffer>[] = [
   {
+    title: 'Logo',
     dataIndex: 'companyLogo',
     render: (value) => <img
       src={value}
@@ -18,6 +19,9 @@ const columns: ColumnType<PowerPlantOffer>[] = [
     />,
   },
   {
+    title: 'Company Infos',
+    dataIndex: 'companyName',
+    sorter: (a, b) => a.companyName.localeCompare(b.companyName),
     render: (v, offer) =>
       <>
         <h3>{offer.companyName} - {offer.powerplantName}</h3>
@@ -28,6 +32,7 @@ const columns: ColumnType<PowerPlantOffer>[] = [
   },
   {
     width: 300,
+    title: 'Capacity',
     render: (v, offer) =>
       <>
         <Progress
@@ -42,6 +47,10 @@ const columns: ColumnType<PowerPlantOffer>[] = [
       </>,
   },
   {
+    title: 'Price',
+    dataIndex: 'price',
+    defaultSortOrder: 'ascend',
+    sorter: (a, b) => a.price - b.price,
     render: (v, offer) =>
       <>
         {offer.energyType}
@@ -64,11 +73,13 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
       );
     },
   };
-  return (<Table
-    columns={columns.concat(buttonCol)}
-    showHeader={false}
-    dataSource={offers}
-  />);
+  return (
+    <Table
+      columns={columns.concat(buttonCol)}
+      showHeader={true}
+      dataSource={offers}
+    />
+  );
 };
 
 export { OffersTable };
