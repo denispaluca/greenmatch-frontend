@@ -21,4 +21,5 @@ export interface PPA extends Required<PPAQuery>, PPACreate, MongoDocument {
   price: number;
   startDate: Date;
   canceled: boolean;
+  contractURL: string;
 }

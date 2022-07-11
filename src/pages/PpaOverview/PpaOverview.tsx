@@ -52,6 +52,7 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
   },
   {
     id: 2,
@@ -65,6 +66,7 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
   },
   {
     id: 3,
@@ -78,6 +80,8 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
+
   },
   {
     id: 4,
@@ -91,6 +95,8 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
+
   },
   {
     id: 5,
@@ -104,6 +110,8 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
+
   },
   {
     id: 6,
@@ -117,6 +125,8 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
+
   },
   {
     id: 7,
@@ -130,6 +140,8 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
+
   },
   {
     id: 8,
@@ -143,6 +155,8 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
+
   },
   {
     id: 9,
@@ -156,6 +170,8 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
+
   },
   {
     id: 10,
@@ -169,6 +185,8 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
+
   },
   {
     id: 11,
@@ -182,6 +200,8 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
+
   },
   {
     id: 12,
@@ -195,6 +215,8 @@ const tempPpaList: Ppa[] = [
     consectetur adipiscing elit, sed do eiusmod tempor
     incididunt ut labore et dolore magna aliqua`,
     powerplantId: 1,
+    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
+
   },
 ];
 
@@ -233,9 +255,14 @@ const PPAOverView: FunctionComponent = () => {
           </Button>,
         ]}
       >
-        <Typography.Text>
-          {selectedPpa?.description}
-        </Typography.Text>
+        <iframe
+          title='contract'
+          src={selectedPpa?.contractURL}
+          width="100%"
+          height="400"
+        >
+        </iframe>
+
       </Modal>
       <Modal
         title={`PPA ${ppaToCancel?.id} Cancellation`}
