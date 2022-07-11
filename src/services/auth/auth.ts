@@ -77,7 +77,7 @@ export const register = async (values: RegistrationFormValues)
 export const logout = async () => {
   const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/logout`,
     {
-      method: 'POST',
+      method: 'GET',
       credentials: 'include',
     },
   );
