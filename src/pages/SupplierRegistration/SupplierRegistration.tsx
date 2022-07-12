@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { register } from '../../services';
 import { dispatch } from '../../state';
-import UsernameProvider from '../../services/api/UsernameProvider';
+import EmailProvider from '../../services/api/EmailProvider';
 
 const { Step } = Steps;
 
@@ -334,7 +334,7 @@ export function SupplierRegistration() {
                         ));
                       }
 
-                      const res = await UsernameProvider.get(value);
+                      const res = await EmailProvider.get(value);
 
                       if (res.available === true) {
                         return Promise.resolve();
