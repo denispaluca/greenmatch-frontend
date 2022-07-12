@@ -25,7 +25,7 @@ interface LoginFormValues {
 
 export function Login() {
   const navigate = useNavigate();
-  const [loginType, setLoginType] = useState<LoginType>('Buyer');
+  const [loginType, setLoginType] = useState<LoginType>('Supplier');
   const [form] = Form.useForm();
 
   const submitForm = async (values: LoginFormValues) => {
@@ -47,6 +47,7 @@ export function Login() {
       navigate('/');
     }
   };
+
   const loginForm = useMemo(() =>
     <Form
       name="basic"
@@ -90,7 +91,7 @@ export function Login() {
         </Button>
       </Form.Item>
     </Form>
-    , []);
+    , [loginType]);
 
 
   return (

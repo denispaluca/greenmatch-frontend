@@ -259,7 +259,9 @@ const ConsumerDasboard: React.FC = () => {
         <Button type="primary">Find</Button>
       </Row>
       <Divider />
-
+      <div>
+        <p>Showing {offers.length} PPA offerings</p>
+      </div>
       <OffersTable offers={offers} />
     </>);
 };
