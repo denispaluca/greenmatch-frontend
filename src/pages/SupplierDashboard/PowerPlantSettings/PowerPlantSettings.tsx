@@ -11,7 +11,12 @@ import {
 } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { PowerPlantType, EnergyTypeEnum } from '../../../types';
+import PowerPlantProvider from '../../../services/api/PowerPlantProvider';
+import {
+  PowerPlant,
+  PowerPlantUpdate,
+  PPADurations,
+} from '../../../types/powerplant';
 
 const layout = {
   labelCol: { span: 2 },
@@ -28,29 +33,56 @@ const durationOptions: CheckboxOptionType[] = [
   { label: '15 Years', value: 15 },
 ];
 
+
+const encodeDurations = (numberDurations: number[]) => {
+  const res: PPADurations = { five: false, ten: false, fifteen: false };
+  numberDurations.forEach((element) => {
+    if (element === 5) {
+      res.five = true;
+    }
+    if (element === 10) {
+      res.ten = true;
+    }
+    if (element === 15) {
+      res.fifteen = true;
+    }
+  });
+
+  return res;
+};
+
+const decodeDurations = (ppaDurations: PPADurations) => {
+  const res: number[] = [];
+  if (ppaDurations.five) {
+    res.push(5);
+  }
+  if (ppaDurations.ten) {
+    res.push(10);
+  }
+  if (ppaDurations.fifteen) {
+    res.push(15);
+  }
+
+  return res;
+};
+
 export function PowerPlantSettings() {
   const { id } = useParams(); // ID of the power plant in URL
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [powerPlant, setPowerPlant] = useState<PowerPlantType>();
+  const [powerPlant, setPowerPlant] = useState<PowerPlant>();
+
 
   useEffect(() => {
-    fetchPowerPlant();
+    PowerPlantProvider.get(id!)
+      .then((pp) => {
+        setPowerPlant(pp);
+      })
+      .catch((error) => {
+        console.log('Failed to fetch Power Plant', error);
+      });
   }, []);
 
-  const fetchPowerPlant = async () => {
-    const powerplants = await fetch(
-      `https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants/${id}`,
-    );
-    console.log(powerplants);
-    const ppJson = await powerplants.json();
-    console.log(ppJson);
-    const cpp = {
-      ...ppJson,
-      type: EnergyTypeEnum.Wind,
-    };
-    setPowerPlant(cpp);
-  };
 
   if (!powerPlant) {
     return <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} />} />;
@@ -66,51 +98,19 @@ export function PowerPlantSettings() {
       .validateFields()
       .then(async (values) => {
         console.log('Received values of form: ', values);
-        await putPP(values);
+        const powerPlantUpdate: PowerPlantUpdate = {
+          live: values.status,
+          capacity: values.capacity,
+          price: values.currentPrice,
+          durations: encodeDurations(values.duration),
+        };
+        await PowerPlantProvider.update(id!, powerPlantUpdate);// putPP(values);
         navigate('/');
       })
       .catch((info) => {
         console.log('Validate Failed:', info);
       });
   };
-
-  // send PUT request and edit power plant
-  async function putPP(values: any) {
-    try {
-      const response = await fetch(
-        `https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants/${id}`,
-        {
-          method: 'PUT',
-          body: JSON.stringify({
-            name: powerPlant?.name,
-            location: powerPlant?.location,
-            energyType: 'XY',
-            live: values.status,
-            currentPrice: values.currentPrice,
-            capacity: values.capacity,
-            duration: values.duration,
-            id: powerPlant?.type,
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-        },
-      );
-
-      if (!response.ok) {
-        throw new Error(`Error! status: ${response.status}`);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log('error message: ', error.message);
-        return error.message;
-      } else {
-        console.log('unexpected error: ', error);
-        return 'An unexpected error occurred';
-      }
-    }
-  }
 
   return (
     <>
@@ -141,7 +141,7 @@ export function PowerPlantSettings() {
         <Form.Item
           label="Current Price"
           name="currentPrice"
-          initialValue={powerPlant.currentPrice}
+          initialValue={powerPlant.price}
           rules={[
             {
               required: true,
@@ -159,7 +159,7 @@ export function PowerPlantSettings() {
         <Form.Item
           label="PPA Duration"
           name="duration"
-          initialValue={powerPlant.duration}
+          initialValue={decodeDurations(powerPlant.durations)}
           rules={[
             {
               required: true,

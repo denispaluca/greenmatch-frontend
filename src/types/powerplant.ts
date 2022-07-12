@@ -30,4 +30,6 @@ export interface PowerPlant
   extends PowerPlantCreate, Required<PowerPlantUpdate>, MongoDocument {
   supplierId: string;
   availableCapacity: number;
+  _id: string;
+  price: number;
 }

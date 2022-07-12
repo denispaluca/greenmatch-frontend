@@ -10,7 +10,9 @@ import {
 import React, { useState, useEffect } from 'react';
 import { TeamOutlined, UserOutlined } from '@ant-design/icons';
 import { OffersTable } from '../../components';
-import { EnergyTypes, PowerPlantOffer, PPADuration } from '../../types';
+import { EnergyTypes, PPADuration } from '../../types';
+import OfferProvider from '../../services/api/OfferProvider';
+import { EnergyOptions, Offer, OfferQuery } from '../../types/offer';
 
 const durationOptions: CheckboxOptionType[] = [
   { label: '5 years', value: 5 },
@@ -25,83 +27,95 @@ const energyOptions: CheckboxOptionType[] = [
   { label: 'Hydro', value: 'hydro' },
 ];
 
-function getRandomInt(min: number, max: number) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min);
-  // The maximum is exclusive and the minimum is inclusive
-}
+const encodeEnergyType = (acceptedTypes: EnergyTypes[]) => {
+  const res: EnergyOptions = { wind: false, solar: false, hydro: false };
+  acceptedTypes.forEach((element) => {
+    if (element === 'wind') {
+      res.wind = true;
+    }
+    if (element === 'solar') {
+      res.solar = true;
+    }
+    if (element === 'hydro') {
+      res.hydro = true;
+    }
+  });
 
+  return res;
+};
 
 const YEARLY_MWH_PER_EMPLOYEE = 4;
 
-const ConsumerDasboard: React.FC = () => {
+const ConsumerDashboard: React.FC = () => {
   const [duration, setDuration] = useState<PPADuration>();
   const [priceStart, setPriceStart] = useState<number>();
   const [priceEnd, setPriceEnd] = useState<number>();
   const [acceptedEnergyTypes, setAcceptedEnergyTypes] =
-    useState<EnergyTypes[]>([]);
+    useState<EnergyTypes[]>(['solar', 'wind', 'hydro']);
   const [nrEmpolyees, setNrEmpolyees] = useState(10);
   const [yearlyConsumption, setYearlyConsumption] = useState(0);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100);
   const [maxCapacity, setMaxCapacity] = useState(100000);
-  const [offers, setOffers] = useState<PowerPlantOffer[]>([]);
+  const [offers, setOffers] = useState<Offer[]>([]);
 
+  // Fetch offers based on filtering
+  const filterOffers = () => {
+    console.log('Accepted Types', acceptedEnergyTypes);
+    const query: OfferQuery = {
+      priceStart: priceStart,
+      priceEnd: priceEnd,
+      energyTypes: encodeEnergyType(acceptedEnergyTypes),
+      availableCapacity: yearlyConsumption,
+    };
+
+    // Filter for duration if checked
+    if (duration) {
+      query.duration = duration;
+    }
+
+    // Fetch filtered offers
+    OfferProvider.list(query)
+      .then((offers) => {
+        setOffers(offers);
+      })
+      .catch((error) => {
+        console.log('Failed to fetch filtered Offers', error);
+      });
+  };
 
   useEffect(() => {
-    fetchPriceRange();
-    fetchMaxCapacity();
-    fetchOffers();
+    fetchOffersSetRange();
   }, []);
 
-  const fetchPriceRange = async () => {
-    // const response = await fetch('/api/price-range');
-    const minPrice = getRandomInt(1, 50);
-    const maxPrice = getRandomInt(minPrice, 100);
-    setMinPrice(minPrice);
-    setMaxPrice(maxPrice);
-    setPriceStart(minPrice);
-    setPriceEnd(maxPrice);
-  };
 
-  const fetchMaxCapacity = async () => {
-    // const response = await fetch('/api/max-capacity');
-    const maxCapacity = getRandomInt(30000, 100000);
-    setMaxCapacity(maxCapacity);
-  };
-
-  const fetchOffers = async () => {
-    const offers = await fetch('https://62a44ae6259aba8e10e5a1d8.mockapi.io/deals');
-    const durations: PPADuration[] = [5, 10, 15];
-    const energyTYpes: EnergyTypes[] = ['wind', 'solar', 'hydro'];
-    const offersJson: PowerPlantOffer[] =
-      (await offers.json()).map((offer: PowerPlantOffer): PowerPlantOffer => {
-        const duration = durations[getRandomInt(0, durations.length)];
-        const energyType = energyTYpes[getRandomInt(0, energyTYpes.length)];
-        const maxCapacity = getRandomInt(30000, 100000);
-        const remainingCapacity = getRandomInt(0, maxCapacity);
-        return {
-          ...offer,
-          duration,
-          energyType,
-          maxCapacity,
-          remainingCapacity,
-        };
+  const fetchOffersSetRange = async () => {
+    OfferProvider.list()
+      .then((offers) => {
+        setOffers(offers);
+        const maxP = Math.max(...offers.map((o) => o.price));
+        const minP = Math.min(...offers.map((o) => o.price));
+        const maxC = Math.max(...offers.map((o) => o.capacity));
+        setMinPrice(minP);
+        setMaxPrice(maxP);
+        setPriceStart(minP);
+        setPriceEnd(maxP);
+        setMaxCapacity(maxC);
+      })
+      .catch((error) => {
+        console.log('Failed to fetch Offers', error);
       });
-
-    setOffers(offersJson);
   };
 
   const onChangePriceStart = (value: number) => {
-    if (priceEnd && value > priceEnd) {
+    if (priceEnd && value > maxPrice) {
       setPriceEnd(undefined);
     }
     setPriceStart(value);
   };
 
   const onChangePriceEnd = (value: number) => {
-    if (priceStart && value < priceStart) {
+    if (priceStart && value < minPrice) {
       setPriceStart(undefined);
     }
     setPriceEnd(value);
@@ -117,7 +131,7 @@ const ConsumerDasboard: React.FC = () => {
     setDuration(undefined);
     setPriceStart(undefined);
     setPriceEnd(undefined);
-    setAcceptedEnergyTypes([]);
+    setAcceptedEnergyTypes(['solar', 'wind', 'hydro']);
     setNrEmpolyees(10);
     setYearlyConsumption(0);
   };
@@ -161,6 +175,7 @@ const ConsumerDasboard: React.FC = () => {
                     value={priceStart}
                     onChange={onChangePriceStart}
                     addonAfter="Cent / kWh"
+                    step={1}
                   />
                 </Col>
               </Row>
@@ -243,7 +258,7 @@ const ConsumerDasboard: React.FC = () => {
                   max={maxCapacity}
                   value={yearlyConsumption}
                   onChange={setYearlyConsumption}
-                  addonAfter="MWh"
+                  addonAfter="kWh"
                 />
               </Row>
             </Col>
@@ -256,7 +271,12 @@ const ConsumerDasboard: React.FC = () => {
           onClick={reset}
         >Reset
         </Button>
-        <Button type="primary">Find</Button>
+        <Button
+          type="primary"
+          onClick={filterOffers}
+        >
+          Find
+        </Button>
       </Row>
       <Divider />
       <div>
@@ -266,4 +286,4 @@ const ConsumerDasboard: React.FC = () => {
     </>);
 };
 
-export { ConsumerDasboard };
+export { ConsumerDashboard };

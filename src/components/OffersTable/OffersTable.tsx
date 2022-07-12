@@ -2,16 +2,16 @@ import { Button, Progress, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PowerPlantOffer } from '../../types';
+import { Offer } from '../../types/offer';
 
 interface OffersTableProps {
-  offers: PowerPlantOffer[];
+  offers: Offer[];
 }
 
-const columns: ColumnType<PowerPlantOffer>[] = [
+const columns: ColumnType<Offer>[] = [
   {
     title: 'Logo',
-    dataIndex: 'companyLogo',
+    dataIndex: 'supplierImageUrl',
     render: (value) => <img
       src={value}
       width={100}
@@ -21,13 +21,13 @@ const columns: ColumnType<PowerPlantOffer>[] = [
   {
     title: 'Company Infos',
     dataIndex: 'companyName',
-    sorter: (a, b) => a.companyName.localeCompare(b.companyName),
+    sorter: (a, b) => a.supplierName.localeCompare(b.supplierName),
     render: (v, offer) =>
       <>
-        <h3>{offer.companyName} - {offer.powerplantName}</h3>
-        Website: <a href={offer.website}>{offer.website}</a>
+        <h3>{offer.supplierName} - {offer.name}</h3>
+        Website: <a href={offer.supplierWebsite}>{offer.supplierWebsite}</a>
         <br />
-        Power Plant Location: {offer.powerplantLocation}
+        Power Plant Location: {offer.location}
       </>,
   },
   {
@@ -41,9 +41,9 @@ const columns: ColumnType<PowerPlantOffer>[] = [
             '100%': '#87d068',
           }}
           percent={Math.round(
-            (1 - offer.remainingCapacity / offer.maxCapacity) * 10000) / 100}
+            (1 - offer.availableCapacity / offer.capacity) * 10000) / 100}
         />
-        {offer.remainingCapacity} kWh Left
+        {offer.availableCapacity} kWh Left
       </>,
   },
   {
@@ -62,13 +62,13 @@ const columns: ColumnType<PowerPlantOffer>[] = [
 
 const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
   const navigate = useNavigate();
-  const buttonCol: ColumnType<PowerPlantOffer> = {
+  const buttonCol: ColumnType<Offer> = {
     title: 'PPA Conclusion',
     render: (value, offer) => {
       return (
         <Button
           type="primary"
-          onClick={() => navigate(`/offers/${offer.id}`)}
+          onClick={() => navigate(`/offers/${offer._id}`)}
         >Continue
         </Button>
       );

@@ -10,51 +10,44 @@ import {
 } from 'antd';
 import { useEffect, useState } from 'react';
 import { PowerPlantCard } from '../../components';
-import { PowerPlantType, EnergyTypeEnum } from '../../types';
+import PowerPlantProvider from '../../services/api/PowerPlantProvider';
+import {
+  EnergyType,
+  PowerPlant,
+  PowerPlantCreate,
+} from '../../types/powerplant';
 
-interface Option {
-  value: EnergyTypeEnum;
-  label: string;
-}
 
-const optionArray: Option[] = [
+const optionArray = [
   {
-    value: EnergyTypeEnum.Solar,
+    value: EnergyType.Solar,
     label: 'Solar',
   },
   {
-    value: EnergyTypeEnum.Wind,
+    value: EnergyType.Wind,
     label: 'Wind',
   },
   {
-    value: EnergyTypeEnum.Hydro,
+    value: EnergyType.Hydro,
     label: 'Hydro',
   },
 ];
 
 export function Dashboard() {
-  const [powerPlants, setPowerPlants] = useState<PowerPlantType[]>([]);
+  const [powerPlants, setPowerPlants] = useState<PowerPlant[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    fetchPowerPlants();
-  }, []);
 
-  const fetchPowerPlants = async () => {
-    const powerplants = await fetch(
-      'https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants',
-    );
-    const ppJson = await powerplants.json();
-    const cpp = ppJson.map((p: any) => {
-      return {
-        ...p,
-        duration: [5, 10],
-        type: EnergyTypeEnum.Wind,
-      };
-    });
-    setPowerPlants(cpp);
-  };
+  useEffect(() => {
+    PowerPlantProvider.list()
+      .then((ppas) => {
+        setPowerPlants(ppas);
+      })
+      .catch((error) => {
+        console.log('Failed to fetch PowerPlants', error);
+      });
+  }, []);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -78,55 +71,24 @@ export function Dashboard() {
     setIsModalVisible(false);
   };
 
-  const onCreate = (values: any) => {
-    setPowerPlants([
-      ...powerPlants,
-      {
-        id: ++powerPlants[powerPlants.length - 1].id,
-        name: values.name,
-        location: values.location,
-        type: values.type,
-        live: false,
-      },
-    ]);
-    postPP(values);
+  const onCreate = async (values: any) => {
+    const newPowerPlant: PowerPlantCreate = {
+      name: values.name,
+      location: values.location,
+      energyType: values.type.pop(),
+    };
+    await PowerPlantProvider.create(newPowerPlant);
+    PowerPlantProvider.list()
+      .then((ppas) => {
+        console.log('PPas', ppas);
+        setPowerPlants(ppas);
+      })
+      .catch((error) => {
+        console.log('Failed to fetch PowerPlants', error);
+      });
     setIsModalVisible(false);
   };
 
-  // send POST request and create new power plant
-  async function postPP(values: any) {
-    try {
-      const response = await fetch(
-        'https://62a44ae6259aba8e10e5a1d8.mockapi.io/powerplants',
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            name: values.name,
-            location: values.location,
-            energyType: 'XY',
-            live: false,
-            // initially every newly added power plant should be offline
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-        },
-      );
-
-      if (!response.ok) {
-        throw new Error(`Error! status: ${response.status}`);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log('error message: ', error.message);
-        return error.message;
-      } else {
-        console.log('unexpected error: ', error);
-        return 'An unexpected error occurred';
-      }
-    }
-  }
 
   return (
     <>

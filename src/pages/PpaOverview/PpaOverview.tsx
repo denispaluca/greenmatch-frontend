@@ -2,11 +2,12 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { Ppa } from '../../types';
 import PpaCard from '../../components/PpaCard/PpaCard';
 import { Button, Col, Modal, Row, Typography } from 'antd';
 import { RevenueCard } from '../../components';
 import styles from './PpaOverview.module.scss';
+import PPAProvider from '../../services/api/PPAProvider';
+import { PPA } from '../../types/ppa';
 
 const responsive = {
   superLargeDesktop: {
@@ -39,205 +40,53 @@ const responsive = {
   },
 };
 
-const tempPpaList: Ppa[] = [
-  {
-    id: 1,
-    duration: 5,
-    startDate: '2022-07-01',
-    endDate: '2027-07-01',
-    cancelled: false,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-  },
-  {
-    id: 2,
-    duration: 5,
-    startDate: '2022-07-01',
-    endDate: '2027-07-01',
-    cancelled: true,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-  },
-  {
-    id: 3,
-    duration: 5,
-    startDate: '2017-07-01',
-    endDate: '2022-07-01',
-    cancelled: false,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-
-  },
-  {
-    id: 4,
-    duration: 5,
-    startDate: '2022-07-01',
-    endDate: '2027-07-01',
-    cancelled: false,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-
-  },
-  {
-    id: 5,
-    duration: 3,
-    startDate: '2019-07-01',
-    endDate: '2022-07-01',
-    cancelled: false,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-
-  },
-  {
-    id: 6,
-    duration: 5,
-    startDate: '2022-07-01',
-    endDate: '2027-07-01',
-    cancelled: false,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-
-  },
-  {
-    id: 7,
-    duration: 5,
-    startDate: '2022-07-01',
-    endDate: '2027-07-01',
-    cancelled: false,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-
-  },
-  {
-    id: 8,
-    duration: 5,
-    startDate: '2022-07-01',
-    endDate: '2027-07-01',
-    cancelled: false,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-
-  },
-  {
-    id: 9,
-    duration: 5,
-    startDate: '2022-07-01',
-    endDate: '2027-07-01',
-    cancelled: false,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-
-  },
-  {
-    id: 10,
-    duration: 5,
-    startDate: '2022-07-01',
-    endDate: '2027-07-01',
-    cancelled: false,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-
-  },
-  {
-    id: 11,
-    duration: 5,
-    startDate: '2022-07-01',
-    endDate: '2027-07-01',
-    cancelled: false,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-
-  },
-  {
-    id: 12,
-    duration: 5,
-    startDate: '2022-07-01',
-    endDate: '2027-07-01',
-    cancelled: false,
-    price: 0.76,
-    volume: 521,
-    description: `Lorem ipsum dolor sit amet,
-    consectetur adipiscing elit, sed do eiusmod tempor
-    incididunt ut labore et dolore magna aliqua`,
-    powerplantId: 1,
-    contractURL: 'https://drive.google.com/file/d/1pSi-MikNLUk84_WYVNEL3nV6ChzbiNWW/preview',
-
-  },
-];
+const GREENMATCH_FEE = 0.015;
 
 const PPAOverView: FunctionComponent = () => {
   const params = useParams();
 
-  const [ppas, setPpas] = useState<Ppa[]>([]);
+  const [ppas, setPpas] = useState<PPA[]>([]);
 
-  const [selectedPpa, setSelectedPpa] = useState<Ppa>();
+  const [selectedPpa, setSelectedPpa] = useState<PPA>();
 
-  const [ppaToCancel, setPpaToCancel] = useState<Ppa>();
+  const [ppaToCancel, setPpaToCancel] = useState<PPA>();
 
-  const handleCancelation = (ppa: Ppa) => {
-    console.log('cancelling ppa', ppa);
-    // Send request here...
+  const [revenues, setRevenues] = useState<number>(0);
+  const [costs, setCosts] = useState<number>(0);
+
+  const handleCancelation = (ppa: PPA) => {
+    PPAProvider.cancel(ppa._id)
+      .then(() => {
+        console.log('cancelling ppa', ppa);
+      })
+      .catch((error) => {
+        console.log('Failed to cancel PPA', error);
+      });
   };
 
   // Fetch actual data from the backend here later.
   useEffect(() => {
     console.log(params.id);
-    setPpas(tempPpaList);
+    PPAProvider.list(params.id!)
+      .then((ppaList) => {
+        console.log('Ppas of Powerplant', ppaList);
+        setPpas(ppaList);
+
+        // Calculate PPA revenues and costs per powerplant
+        const rev = ppaList.reduce((accumulator, object) => {
+          if (!object.canceled) {
+            return accumulator + ((object.amount) * (object.price / 100) *
+              object.duration);
+          } else {
+            return accumulator;
+          }
+        }, 0);
+        setCosts(rev * GREENMATCH_FEE);
+        setRevenues(rev * (1 - GREENMATCH_FEE));
+      })
+      .catch((error) => {
+        console.log('Failed to fetch PPA List of Powerplant', error);
+      });
   }, [params]);
 
   return (
@@ -265,7 +114,7 @@ const PPAOverView: FunctionComponent = () => {
 
       </Modal>
       <Modal
-        title={`PPA ${ppaToCancel?.id} Cancellation`}
+        title={`PPA ${ppaToCancel?._id} Cancellation`}
         visible={ppaToCancel !== undefined}
         onCancel={() => setPpaToCancel(undefined)}
         footer={[
@@ -303,7 +152,7 @@ const PPAOverView: FunctionComponent = () => {
         {ppas.map((ppa) => (
           <PpaCard
             ppa={ppa}
-            key={ppa.id}
+            key={ppa._id}
             onClick={() => setSelectedPpa(ppa)}
             onCancel={() => setPpaToCancel(ppa)}
           />
@@ -318,7 +167,7 @@ const PPAOverView: FunctionComponent = () => {
         >
           <RevenueCard
             type="revenue"
-            value={50}
+            value={revenues}
           />
         </Col>
         <Col
@@ -329,7 +178,7 @@ const PPAOverView: FunctionComponent = () => {
         >
           <RevenueCard
             type="cost"
-            value={120}
+            value={costs}
           />
         </Col>
       </Row>

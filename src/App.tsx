@@ -6,7 +6,7 @@ import {
   Login,
   Conclusion,
   PowerPlantSettings,
-  ConsumerDasboard,
+  ConsumerDashboard,
   Landing,
   PPAOverView,
   SupplierRegistration,
@@ -18,6 +18,10 @@ export function App() {
       <Route element={<Layout />}>
         <Route
           path="/"
+          element={<Landing />}
+        />
+        <Route
+          path="powerplants"
           element={<Dashboard />}
         />
         <Route
@@ -30,7 +34,7 @@ export function App() {
         />
         <Route
           path="offers"
-          element={<ConsumerDasboard />}
+          element={<ConsumerDashboard />}
         />
         <Route
           path="offers/:id"

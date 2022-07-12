@@ -3,11 +3,11 @@ import { Card, Space } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { StatusDisplay } from '../StatusDisplay/StatusDisplay';
-import { EnergyTypeEnum, PowerPlantType } from '../../types';
+import { PowerPlant } from '../../types/powerplant';
 
 
 interface PowerPlantProps {
-  powerPlant: PowerPlantType;
+  powerPlant: PowerPlant;
 }
 
 export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
@@ -17,12 +17,12 @@ export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
       style={{ borderRadius: '20px', overflow: 'hidden' }}
       hoverable
       onClick={(event) => {
-        navigate('/ppa-overview/' + powerPlant.id);
+        navigate('/ppa-overview/' + powerPlant._id);
       }}
       title={powerPlant.name}
       actions={[
         <Link
-          to={`powerplant/${powerPlant.id}/edit`}
+          to={`powerplant/${powerPlant._id}/edit`}
           onClick={(e) => e.stopPropagation()}
         >
           <Space><SettingOutlined /><div>Settings</div></Space>
@@ -33,7 +33,7 @@ export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
       ]}
     >
       <p>Location: {powerPlant.location}</p>
-      <p>Type: {EnergyTypeEnum[powerPlant.type]}</p>
+      <p>Type: {powerPlant.energyType}</p>
     </Card>
   );
 }

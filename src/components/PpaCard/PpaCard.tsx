@@ -1,11 +1,11 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Divider, Space, Typography, Col, Row, Button } from 'antd';
 import { FunctionComponent, MouseEventHandler } from 'react';
-import { Ppa } from '../../types';
+import { PPA } from '../../types/ppa';
 import styles from './PpaCard.module.scss';
 
 interface PpaCardProps {
-  ppa: Ppa;
+  ppa: PPA;
   onClick?: MouseEventHandler<HTMLDivElement>;
   onCancel?: MouseEventHandler<HTMLElement>;
 }
@@ -18,8 +18,10 @@ const PpaCard: FunctionComponent<PpaCardProps> =
     // the current date and return true
     // if there is less than one month difference
     const currentDate = new Date();
-    const inputDate = new Date(ppa.endDate);
-    const diff = Math.abs(currentDate.getTime() - inputDate.getTime());
+    const d = new Date(ppa.startDate);
+    const endDate = new Date(d.getFullYear() + ppa.duration,
+      d.getMonth(), d.getDay());
+    const diff = Math.abs(currentDate.getTime() - endDate.getTime());
     const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
     const lessThanOneMonth = diffDays < 30;
 
@@ -30,7 +32,7 @@ const PpaCard: FunctionComponent<PpaCardProps> =
         onClick={onClick}
       >
         <Title level={2}>
-          PPA: {ppa.id}
+          PPA: {ppa._id}
           <Divider />
         </Title>
         <Row>
@@ -56,7 +58,7 @@ const PpaCard: FunctionComponent<PpaCardProps> =
             span={14}
             className={styles.rowGutter}
           >
-            <Text>{ppa.volume}</Text>
+            <Text>{ppa.amount}</Text>
           </Col>
           <Col
             span={10}
@@ -68,8 +70,8 @@ const PpaCard: FunctionComponent<PpaCardProps> =
             span={14}
             className={styles.rowGutter}
           >
-            <Text type={ppa.cancelled ? 'danger' : 'success'}>
-              {ppa.cancelled ? 'Yes' : 'No'}
+            <Text type={ppa.canceled ? 'danger' : 'success'}>
+              {ppa.canceled ? 'Yes' : 'No'}
             </Text>
           </Col>
           <Col
@@ -96,10 +98,12 @@ const PpaCard: FunctionComponent<PpaCardProps> =
           >
             <Text type={lessThanOneMonth ? 'danger' : undefined}>
               <Space>
-                {ppa.endDate}
-                {lessThanOneMonth && (
-                  <ExclamationCircleOutlined style={{ color: 'red' }} />
-                )}
+                <>
+                  {endDate.toString()}
+                  {lessThanOneMonth && (
+                    <ExclamationCircleOutlined style={{ color: 'red' }} />
+                  )}
+                </>
               </Space>
             </Text>
           </Col>

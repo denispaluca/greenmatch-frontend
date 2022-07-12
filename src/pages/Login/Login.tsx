@@ -44,7 +44,11 @@ export function Login() {
         loginType: loginType,
         email: values.email,
       });
-      navigate('/');
+      if (loginType === 'Supplier') {
+        navigate('/powerplants');
+      } else {
+        navigate('/offers');
+      }
     }
   };
 

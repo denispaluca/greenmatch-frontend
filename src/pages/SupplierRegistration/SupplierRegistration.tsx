@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { register } from '../../services';
 import { dispatch } from '../../state';
-// import { checkEmailAvailability } from '../../services';
+import EmailProvider from '../../services/api/EmailProvider';
 
 const { Step } = Steps;
 
@@ -334,15 +334,15 @@ export function SupplierRegistration() {
                         ));
                       }
 
-                      /* const res = await checkEmailAvailability(value);
+                      const res = await EmailProvider.get(value);
 
-                      if (res === true) {
+                      if (res.available === true) {
                         return Promise.resolve();
                       } else {
                         return Promise.reject(new Error(
                           'Email already in use',
                         ));
-                      }*/
+                      }
                     },
                   },
                 ]}
