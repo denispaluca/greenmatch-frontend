@@ -5,7 +5,7 @@ import {
   CheckboxOptionType,
   InputNumber,
   Checkbox,
-  Divider, Slider, Button,
+  Divider, Slider, Button, Card,
 } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { TeamOutlined, UserOutlined } from '@ant-design/icons';
@@ -125,14 +125,12 @@ const ConsumerDasboard: React.FC = () => {
   return (
     <>
       <h2>Find a suitable PPA partner</h2>
-      <Row>
-        <Col span={12}>
-          <Row>
-            <Col span={12}>
-              <h3>PPA Duration</h3>
-            </Col>
+      <Card style={{ margin: 30 }}>
+        <Row justify='space-around'>
+          <Col span={8}>
+            <Row justify='space-between'>
+              <h3>Duration</h3>
 
-            <Col span={12}>
               <Radio.Group
                 options={durationOptions}
                 onChange={(e) => setDuration(e.target.value as PPADuration)}
@@ -140,116 +138,83 @@ const ConsumerDasboard: React.FC = () => {
                 optionType="button"
                 buttonStyle="solid"
               />
-            </Col>
-          </Row>
+            </Row>
 
-          <Row>
-            <Col span={12}>
+            <Row justify='space-between'>
               <h3>Price Range</h3>
-            </Col>
-
-            <Col span={12}>
-              <Row>
-                <Col span={12}>
-                  <h3>From</h3>
-                </Col>
-
-                <Col span={12}>
-                  <InputNumber
-                    min={minPrice}
-                    max={maxPrice}
-                    value={priceStart}
-                    onChange={onChangePriceStart}
-                    addonAfter="Cent / kWh"
-                  />
-                </Col>
-              </Row>
-
-              <Row>
-                <Col span={12}>
-                  <h3>To</h3>
-                </Col>
-
-                <Col span={12}>
-                  <InputNumber
-                    min={minPrice}
-                    max={maxPrice}
-                    value={priceEnd}
-                    onChange={onChangePriceEnd}
-                    addonAfter="Cent / kWh"
-                  />
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+              <div>
+                <InputNumber
+                  placeholder="From"
+                  min={minPrice}
+                  max={maxPrice}
+                  value={priceStart}
+                  onChange={onChangePriceStart}
+                />
+                <Divider type='vertical' />
+                <InputNumber
+                  placeholder='To'
+                  min={minPrice}
+                  max={maxPrice}
+                  value={priceEnd}
+                  onChange={onChangePriceEnd}
+                />
+                ¢ / KWh
+              </div>
+            </Row>
 
 
-          <Row>
-            <Col span={12}>
+            <Row justify='space-between'>
               <h3>Type</h3>
-            </Col>
 
-            <Col span={12}>
               <Checkbox.Group
                 options={energyOptions}
                 onChange={(e) => setAcceptedEnergyTypes(e as EnergyTypes[])}
                 value={acceptedEnergyTypes}
               />
-            </Col>
-          </Row>
-        </Col>
+            </Row>
+          </Col>
 
-        <Col span={12}>
-          <Row>
-            <Col span={12}>
-              <h3>Consumption</h3>
-            </Col>
-            <Col span={12}>
-              <Row>
-                <Col span={12}>
-                  <h3>Employees</h3>
-                </Col>
-                <Col span={12}>
-                  <InputNumber
-                    min={1}
-                    max={maxEmployees}
-                    value={nrEmpolyees}
-                    onChange={onChangeEmployees}
-                  />
-                </Col>
-              </Row>
-              <Row justify="space-between">
-                <Col>
-                  <UserOutlined style={{ fontSize: '150%' }} />
-                </Col>
-                <Col flex="auto">
-                  <Slider
-                    min={1}
-                    max={maxEmployees}
-                    value={nrEmpolyees}
-                    onChange={onChangeEmployees}
-                  />
-                </Col>
-                <Col >
-                  <TeamOutlined style={{ fontSize: '150%' }} />
-                </Col>
-              </Row>
-
-              <Divider> OR </Divider>
-              <Row justify="space-between">
-                Yearly Consumption
-                <InputNumber
-                  min={0}
-                  max={maxCapacity}
-                  value={yearlyConsumption}
-                  onChange={setYearlyConsumption}
-                  addonAfter="MWh"
+          <Col span={8}>
+            <Row justify='space-between'>
+              <h3>Employees</h3>
+              <InputNumber
+                min={1}
+                max={maxEmployees}
+                value={nrEmpolyees}
+                onChange={onChangeEmployees}
+              />
+            </Row>
+            <Row justify="space-between">
+              <Col>
+                <UserOutlined style={{ fontSize: '150%' }} />
+              </Col>
+              <Col flex="auto">
+                <Slider
+                  min={1}
+                  max={maxEmployees}
+                  value={nrEmpolyees}
+                  onChange={onChangeEmployees}
                 />
-              </Row>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+              </Col>
+              <Col >
+                <TeamOutlined style={{ fontSize: '150%' }} />
+              </Col>
+            </Row>
+
+            <Divider> OR </Divider>
+            <Row justify="space-between">
+              Yearly Consumption
+              <InputNumber
+                min={0}
+                max={maxCapacity}
+                value={yearlyConsumption}
+                onChange={setYearlyConsumption}
+                addonAfter="MWh"
+              />
+            </Row>
+          </Col>
+        </Row>
+      </Card>
       <Row justify="space-evenly">
         <Button
           type="primary"
