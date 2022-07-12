@@ -10,6 +10,7 @@ interface OffersTableProps {
 
 const columns: ColumnType<Offer>[] = [
   {
+    title: 'Logo',
     dataIndex: 'companyLogo',
     render: (value) => <img
       src={value}
@@ -18,6 +19,9 @@ const columns: ColumnType<Offer>[] = [
     />,
   },
   {
+    title: 'Company Infos',
+    dataIndex: 'companyName',
+    sorter: (a, b) => a.supplierName.localeCompare(b.supplierName),
     render: (v, offer) =>
       <>
         <h3>{offer.supplierName} - {offer.name}</h3>
@@ -28,6 +32,7 @@ const columns: ColumnType<Offer>[] = [
   },
   {
     width: 300,
+    title: 'Capacity',
     render: (v, offer) =>
       <>
         <Progress
@@ -42,6 +47,10 @@ const columns: ColumnType<Offer>[] = [
       </>,
   },
   {
+    title: 'Price',
+    dataIndex: 'price',
+    defaultSortOrder: 'ascend',
+    sorter: (a, b) => a.price - b.price,
     render: (v, offer) =>
       <>
         {offer.energyType}
@@ -54,6 +63,7 @@ const columns: ColumnType<Offer>[] = [
 const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
   const navigate = useNavigate();
   const buttonCol: ColumnType<Offer> = {
+    title: 'PPA Conclusion',
     render: (value, offer) => {
       return (
         <Button
@@ -64,11 +74,13 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
       );
     },
   };
-  return (<Table
-    columns={columns.concat(buttonCol)}
-    showHeader={false}
-    dataSource={offers}
-  />);
+  return (
+    <Table
+      columns={columns.concat(buttonCol)}
+      showHeader={true}
+      dataSource={offers}
+    />
+  );
 };
 
 export { OffersTable };

@@ -72,6 +72,7 @@ export type Ppa = {
   volume: number;
   description: string;
   powerplantId: number;
+  contractURL: string;
 }
 
 export type BankDetails = {

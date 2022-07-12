@@ -25,7 +25,6 @@ interface LoginFormValues {
 
 export function Login() {
   const navigate = useNavigate();
-  // ToDo Switch between supplier and buyer does not work
   const [loginType, setLoginType] = useState<LoginType>('Supplier');
   const [form] = Form.useForm();
 
@@ -48,6 +47,7 @@ export function Login() {
       navigate('/');
     }
   };
+
   const loginForm = useMemo(() =>
     <Form
       name="basic"

@@ -104,9 +104,14 @@ const PPAOverView: FunctionComponent = () => {
           </Button>,
         ]}
       >
-        <Typography.Text>
-          {'Lorem Ipsum..............'}
-        </Typography.Text>
+        <iframe
+          title='contract'
+          src={selectedPpa?.contractURL}
+          width="100%"
+          height="400"
+        >
+        </iframe>
+
       </Modal>
       <Modal
         title={`PPA ${ppaToCancel?._id} Cancellation`}

@@ -12,8 +12,9 @@ import {
   Result,
   Alert,
   Input,
+  Spin,
 } from 'antd';
-import { RightOutlined, LeftOutlined } from '@ant-design/icons';
+import { RightOutlined, LeftOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ContractDetails } from '../../components';
@@ -112,7 +113,7 @@ const initPpaDetails = (ppo: Offer, buyerInfo: UserInformation) => {
 };
 
 // mandate acceptance text
-const mandateAcceptance =
+const mandateAcceptanceText =
   < div >
     By providing your payment information and confirming this payment, you
     authorise (A) GreenMatch and Stripe, our payment service provider
@@ -173,7 +174,7 @@ export function Conclusion() {
   const [durationOptions, setDurationOptions] = useState<RadioOptions[]>();
   const stripe = useStripe();
   const elements = useElements();
-  const email = useStoreState('email');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Fetch PowerPlant Details
   useEffect(() => {
@@ -194,7 +195,7 @@ export function Conclusion() {
       .catch((error) => {
         console.log('Failed to fetch PP Details', error);
       });
-  }, [id]);
+  }, [offerDetails, isLoading]);
 
   const handleNext = async () => {
     ppaForm
@@ -217,6 +218,7 @@ export function Conclusion() {
       .validateFields()
       // To do: error handling
       .then(async (values) => {
+        setIsLoading(true);
         /*
         * Stripe.js has not yet loaded.
         * Make sure to disable form submission until Stripe.js has loaded.
@@ -261,6 +263,7 @@ export function Conclusion() {
 
           ppaForm.resetFields();
           paymentForm.resetFields();
+          setIsLoading(false);
           setStep((prev) => prev + 1);
         } else {
           // error when confirming setup intent
@@ -450,12 +453,16 @@ export function Conclusion() {
                 >
                   <IbanElement options={IBAN_ELEMENT_OPTIONS} />
                 </Form.Item>
-                <Alert
-                  message={mandateAcceptance}
-                  type="warning"
-                />
               </Form>
             </Col>
+          </Row>
+          <Row justify='center'>
+            {(isLoading) ? <Spin indicator={<LoadingOutlined style={{ fontSize: 40 }} />} /> :
+              <Alert
+                message={mandateAcceptanceText}
+                type="warning"
+                style={{ width: '80%' }}
+              />}
           </Row>
           <Row>
             <Col
@@ -465,6 +472,7 @@ export function Conclusion() {
               <Button
                 type="text"
                 onClick={() => setStep((prev) => prev - 1)}
+                disabled={isLoading}
               >
                 <LeftOutlined /> Back
               </Button>
@@ -476,6 +484,7 @@ export function Conclusion() {
               <Button
                 type="text"
                 onClick={handleBuy}
+                disabled={isLoading}
               >
                 Buy <RightOutlined />
               </Button>

@@ -57,7 +57,7 @@ export function SupplierRegistration() {
     const registerRes = await register(values);
     console.log(registerRes);
 
-    if (registerRes.ok && registerRes.token) {
+    if (registerRes.ok) {
       dispatch({
         type: 'setLogin',
         loginType: 'Supplier',
