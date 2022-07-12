@@ -46,7 +46,7 @@ const encodeEnergyType = (acceptedTypes: EnergyTypes[]) => {
 
 const YEARLY_MWH_PER_EMPLOYEE = 4;
 
-const ConsumerDasboard: React.FC = () => {
+const ConsumerDashboard: React.FC = () => {
   const [duration, setDuration] = useState<PPADuration>();
   const [priceStart, setPriceStart] = useState<number>();
   const [priceEnd, setPriceEnd] = useState<number>();
@@ -286,4 +286,4 @@ const ConsumerDasboard: React.FC = () => {
     </>);
 };
 
-export { ConsumerDasboard };
+export { ConsumerDashboard };
