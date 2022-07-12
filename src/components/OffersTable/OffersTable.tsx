@@ -11,7 +11,7 @@ interface OffersTableProps {
 const columns: ColumnType<Offer>[] = [
   {
     title: 'Logo',
-    dataIndex: 'companyLogo',
+    dataIndex: 'supplierImageUrl',
     render: (value) => <img
       src={value}
       width={100}

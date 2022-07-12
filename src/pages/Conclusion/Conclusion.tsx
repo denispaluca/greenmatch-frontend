@@ -195,7 +195,7 @@ export function Conclusion() {
       .catch((error) => {
         console.log('Failed to fetch PP Details', error);
       });
-  }, [offerDetails, isLoading]);
+  }, [id]);
 
   const handleNext = async () => {
     ppaForm
@@ -508,7 +508,7 @@ export function Conclusion() {
         />
       );
     }
-  }, [step, offerDetails, durationOptions, ppaProps]);
+  }, [step, offerDetails, durationOptions, ppaProps, isLoading]);
 
   return (
     <>
