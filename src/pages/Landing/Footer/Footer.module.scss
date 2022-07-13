@@ -1,7 +1,10 @@
 .footer {
   width: 100%;
   padding: 3rem 1rem;
-  background-color: rgb(255 255 255);
+  background:
+    url('../../../assets/images/landing/background.png') no-repeat
+    center center/cover;
+  background-color: aquamarine;
 }
 
 .footer .container {
