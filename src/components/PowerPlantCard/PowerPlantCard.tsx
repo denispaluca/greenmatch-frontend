@@ -22,7 +22,7 @@ export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
       title={powerPlant.name}
       actions={[
         <Link
-          to={`powerplant/${powerPlant._id}/edit`}
+          to={`/powerplants/${powerPlant._id}/edit`}
           onClick={(e) => e.stopPropagation()}
         >
           <Space><SettingOutlined /><div>Settings</div></Space>

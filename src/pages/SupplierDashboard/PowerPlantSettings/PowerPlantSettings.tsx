@@ -105,7 +105,7 @@ export function PowerPlantSettings() {
           durations: encodeDurations(values.duration),
         };
         await PowerPlantProvider.update(id!, powerPlantUpdate);// putPP(values);
-        navigate('/');
+        navigate('/powerplants');
       })
       .catch((info) => {
         console.log('Validate Failed:', info);

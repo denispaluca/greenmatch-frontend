@@ -25,7 +25,7 @@ export function App() {
           element={<Dashboard />}
         />
         <Route
-          path="powerplant/:id/edit"
+          path="powerplants/:id/edit"
           element={<PowerPlantSettings />}
         />
         <Route
