@@ -6,12 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { register } from '../../services';
 import { dispatch } from '../../state';
-import EmailProvider from '../../services/api/EmailProvider';
-import { electronicFormatIBAN } from 'ibantools';
+import { emailValidator } from '../../validators/email';
+import { ibanValidator } from '../../validators/iban';
+import { cityValidator, countryValidator } from '../../validators/address';
 
 const { Step } = Steps;
-const ibantools = require('ibantools');
-
 
 export function SupplierRegistration() {
   const [step, setStep] = useState(0);
@@ -120,7 +119,11 @@ export function SupplierRegistration() {
               <Form.Item
                 label="City"
                 name="city"
-                rules={[{ required: true, message: 'Please input your City!' }]}
+                rules={[{
+                  validator: (_, value) => {
+                    return cityValidator(value);
+                  },
+                }]}
               >
                 <Input />
               </Form.Item>
@@ -169,8 +172,9 @@ export function SupplierRegistration() {
                 name="country"
                 rules={[
                   {
-                    required: true,
-                    message: 'Please input your Country!',
+                    validator: (_, value) => {
+                      return countryValidator(value);
+                    },
                   },
                 ]}
               >
@@ -182,8 +186,9 @@ export function SupplierRegistration() {
                 name="companyImage"
                 rules={[
                   {
-                    required: true,
-                    message: 'Please input your Image URL!',
+                    validator: (_, value) => {
+                      return Promise.resolve();
+                    },
                   },
                 ]}
               >
@@ -195,8 +200,9 @@ export function SupplierRegistration() {
                 name="companyWebsite"
                 rules={[
                   {
-                    required: true,
-                    message: 'Please input your Company Website!',
+                    validator: (_, value) => {
+                      return Promise.resolve();
+                    },
                   },
                 ]}
               >
@@ -269,26 +275,10 @@ export function SupplierRegistration() {
                 label="IBAN"
                 name="iban"
                 rules={[
-                  { required: true, message: 'Please input your IBAN!' },
                   {
                     required: true,
-                    validator: async (_, value) => {
-                      if (value === undefined) {
-                        return Promise.reject(new Error(
-                          'Please enter an IBAN',
-                        ));
-                      }
-
-                      const iban = electronicFormatIBAN(value);
-                      const check = ibantools.isValidIBAN(iban);
-                      console.log('iban check', check);
-                      if (check === true) {
-                        return Promise.resolve();
-                      } else {
-                        return Promise.reject(new Error(
-                          'Please enter valid IBAN',
-                        ));
-                      }
+                    validator: (_, value) => {
+                      return ibanValidator(value);
                     },
                   },
                 ]}
@@ -356,22 +346,8 @@ export function SupplierRegistration() {
                     message: 'The input is not valid E-mail!',
                   },
                   {
-                    validator: async (_, value) => {
-                      if (value === undefined) {
-                        return Promise.reject(new Error(
-                          'Please enter an Email Adresss',
-                        ));
-                      }
-
-                      const res = await EmailProvider.get(value);
-
-                      if (res.available === true) {
-                        return Promise.resolve();
-                      } else {
-                        return Promise.reject(new Error(
-                          'Email already in use',
-                        ));
-                      }
+                    validator: (_, value) => {
+                      return emailValidator(value);
                     },
                   },
                 ]}
@@ -416,7 +392,7 @@ export function SupplierRegistration() {
             </Button>
           </Col>
         </Row>
-      </div>
+      </div >
     );
   };
 
