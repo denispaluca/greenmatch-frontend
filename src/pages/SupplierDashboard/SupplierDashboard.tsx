@@ -17,7 +17,6 @@ import {
   PowerPlantCreate,
 } from '../../types/powerplant';
 
-
 const optionArray = [
   {
     value: EnergyType.Solar,
