@@ -7,8 +7,10 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { register } from '../../services';
 import { dispatch } from '../../state';
 import EmailProvider from '../../services/api/EmailProvider';
+import { electronicFormatIBAN } from 'ibantools';
 
 const { Step } = Steps;
+const ibantools = require('ibantools');
 
 
 export function SupplierRegistration() {
@@ -266,7 +268,30 @@ export function SupplierRegistration() {
               <Form.Item
                 label="IBAN"
                 name="iban"
-                rules={[{ required: true, message: 'Please input your IBAN!' }]}
+                rules={[
+                  { required: true, message: 'Please input your IBAN!' },
+                  {
+                    required: true,
+                    validator: async (_, value) => {
+                      if (value === undefined) {
+                        return Promise.reject(new Error(
+                          'Please enter an IBAN',
+                        ));
+                      }
+
+                      const iban = electronicFormatIBAN(value);
+                      const check = ibantools.isValidIBAN(iban);
+                      console.log('iban check', check);
+                      if (check === true) {
+                        return Promise.resolve();
+                      } else {
+                        return Promise.reject(new Error(
+                          'Please enter valid IBAN',
+                        ));
+                      }
+                    },
+                  },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -295,7 +320,7 @@ export function SupplierRegistration() {
             </Button>
           </Col>
         </Row>
-      </div>
+      </div >
     );
   };
 
@@ -327,6 +352,10 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     required: true,
+                    type: 'email',
+                    message: 'The input is not valid E-mail!',
+                  },
+                  {
                     validator: async (_, value) => {
                       if (value === undefined) {
                         return Promise.reject(new Error(
