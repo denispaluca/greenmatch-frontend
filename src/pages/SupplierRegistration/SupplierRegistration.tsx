@@ -10,6 +10,7 @@ import { emailValidator } from '../../validators/email';
 import { ibanValidator } from '../../validators/iban';
 import { cityValidator, countryValidator } from '../../validators/address';
 import { ownerValidator } from '../../validators/accountOwner';
+import { urlValidator } from '../../validators/url';
 
 const { Step } = Steps;
 
@@ -188,7 +189,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     validator: (_, value) => {
-                      return Promise.resolve();
+                      return urlValidator(value);
                     },
                   },
                 ]}
@@ -202,7 +203,7 @@ export function SupplierRegistration() {
                 rules={[
                   {
                     validator: (_, value) => {
-                      return Promise.resolve();
+                      return urlValidator(value);
                     },
                   },
                 ]}
