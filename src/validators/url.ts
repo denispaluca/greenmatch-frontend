@@ -1,6 +1,5 @@
-// import url from 'node:url';
+// import { URL } from 'dom';
 export const a = 1;
-
 // export const urlValidator = (s: string) => {
 //   if (s.length === 0 || s === undefined) {
 //     return Promise.reject(new Error(
@@ -8,7 +7,7 @@ export const a = 1;
 //     ));
 //   }
 //   try {
-//     new url.URL(s);
+//     new URL(s);
 //     return Promise.resolve();
 //   } catch (err) {
 //     return Promise.reject(new Error(

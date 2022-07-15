@@ -9,6 +9,7 @@ import { dispatch } from '../../state';
 import { emailValidator } from '../../validators/email';
 import { ibanValidator } from '../../validators/iban';
 import { cityValidator, countryValidator } from '../../validators/address';
+import { ownerValidator } from '../../validators/accountOwner';
 
 const { Step } = Steps;
 
@@ -264,8 +265,9 @@ export function SupplierRegistration() {
                 name="owner"
                 rules={[
                   {
-                    required: true,
-                    message: 'Please input your Account Owner!',
+                    validator: (_, value) => {
+                      return ownerValidator(value);
+                    },
                   },
                 ]}
               >
