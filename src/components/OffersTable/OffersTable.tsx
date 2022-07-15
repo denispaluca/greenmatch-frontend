@@ -3,6 +3,7 @@ import { ColumnType } from 'antd/lib/table';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+import { EnergyTypeDisplay } from '../EnergyTypeDisplay/EnergyTypeDisplay';
 
 interface OffersTableProps {
   offers: Offer[];
@@ -19,7 +20,7 @@ const columns: ColumnType<Offer>[] = [
     />,
   },
   {
-    title: 'Company Infos',
+    title: 'Powerplant Infos',
     dataIndex: 'companyName',
     sorter: (a, b) => a.supplierName.localeCompare(b.supplierName),
     render: (v, offer) =>
@@ -53,9 +54,12 @@ const columns: ColumnType<Offer>[] = [
     sorter: (a, b) => a.price - b.price,
     render: (v, offer) =>
       <>
-        {offer.energyType}
-        <br />
         {offer.price} Cent/kWh
+        <br />
+        <EnergyTypeDisplay
+          type={offer.energyType}
+          size={'25'}
+        />
       </>,
   },
 ];

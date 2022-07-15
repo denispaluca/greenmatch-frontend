@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/jsx-key */
 import { Card, Space } from 'antd';
@@ -5,9 +6,7 @@ import Icon, { SettingOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { StatusDisplay } from '../StatusDisplay/StatusDisplay';
 import { PowerPlant } from '../../types/powerplant';
-import drop from '../../assets/images/icons/drop.png';
-import windmill from '../../assets/images/icons/windmill.png';
-import sun from '../../assets/images/icons/sun.png';
+import { EnergyTypeDisplay } from '../EnergyTypeDisplay/EnergyTypeDisplay';
 
 
 interface PowerPlantProps {
@@ -16,9 +15,11 @@ interface PowerPlantProps {
 
 export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
   const navigate = useNavigate();
+
   return (
     <Card
       style={{ borderRadius: '10px', overflow: 'hidden' }}
+      headStyle={{ fontWeight: '200' }}
       hoverable
       onClick={(event) => {
         navigate('/ppa-overview/' + powerPlant._id);
@@ -41,14 +42,10 @@ export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
         <span>Type:</span>
         <span />
         <span />
-        <Icon
-          component={() => (<img
-            width={'20px'}
-            src={sun}
-            alt="drop"
-          />)}
+        <EnergyTypeDisplay
+          type={powerPlant.energyType}
+          size={'20'}
         />
-        <span>{powerPlant.energyType}</span>
       </Space>
     </Card>
   );

@@ -1,3 +1,4 @@
+import { PlusOutlined } from '@ant-design/icons';
 import {
   Button,
   Modal,
@@ -95,7 +96,13 @@ export function Dashboard() {
     <>
       <div className={styles.supplierdashboard}>
         <Row>
-          <Button onClick={showModal}>Add New Power Plant</Button>
+          <Button
+            icon={<PlusOutlined />}
+            type='primary'
+            size='middle'
+            onClick={showModal}
+          >Add New Power Plant
+          </Button>
         </Row>
         <Row>
           <Typography.Text

@@ -1,9 +1,10 @@
+/* eslint-disable max-len */
 import { Button } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Introduction.module.scss';
 
-const Welcome: React.FC = () => {
+const Introduction: React.FC = () => {
   return (
     <div
       className={styles.introduction}
@@ -14,7 +15,7 @@ const Welcome: React.FC = () => {
         <p>A B2B marketplace for green, renewable energy PPAs</p>
         <Button
           size={'large'}
-          style={{ width: 300 }}
+          style={{ width: 300, height: 70, fontSize: '2rem' }}
           ghost
         >
           <Link to="/register">Register Now</Link>
@@ -24,4 +25,4 @@ const Welcome: React.FC = () => {
   );
 };
 
-export { Welcome };
+export { Introduction };
