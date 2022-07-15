@@ -13,6 +13,7 @@ import { OffersTable } from '../../components';
 import { EnergyTypes, PPADuration } from '../../types';
 import OfferProvider from '../../services/api/OfferProvider';
 import { EnergyOptions, Offer, OfferQuery } from '../../types/offer';
+import styles from './ConsumerDashboard.module.scss';
 
 const durationOptions: CheckboxOptionType[] = [
   { label: '5 years', value: 5 },
@@ -138,146 +139,139 @@ const ConsumerDashboard: React.FC = () => {
 
   return (
     <>
-      <h2>Find a suitable PPA partner</h2>
       <Row>
-        <Col span={12}>
+        <Col
+          offset={3}
+          span={18}
+        >
+          <h2>Find a suitable PPA partner</h2>
+          <Divider></Divider>
           <Row>
-            <Col span={12}>
-              <h3>PPA Duration</h3>
-            </Col>
-
-            <Col span={12}>
-              <Radio.Group
-                options={durationOptions}
-                onChange={(e) => setDuration(e.target.value as PPADuration)}
-                value={duration}
-                optionType="button"
-                buttonStyle="solid"
-              />
-            </Col>
-          </Row>
-
-          <Row>
-            <Col span={12}>
-              <h3>Price Range</h3>
-            </Col>
-
-            <Col span={12}>
-              <Row>
-                <Col span={12}>
-                  <h3>From</h3>
-                </Col>
-
-                <Col span={12}>
-                  <InputNumber
-                    min={minPrice}
-                    max={maxPrice}
-                    value={priceStart}
-                    onChange={onChangePriceStart}
-                    addonAfter="Cent / kWh"
-                    step={1}
+            <Col
+              span={12}
+            >
+              <Row className={styles.filter}>
+                <Col span={24}>
+                  <h3>PPA Duration</h3>
+                  <Radio.Group
+                    options={durationOptions}
+                    onChange={(e) => setDuration(e.target.value as PPADuration)}
+                    value={duration}
+                    optionType="button"
+                    buttonStyle="solid"
                   />
                 </Col>
               </Row>
-
-              <Row>
-                <Col span={12}>
-                  <h3>To</h3>
+              <Row className={styles.filter}>
+                <Col span={20}>
+                  <h3>Price Range</h3>
+                  <Row justify="space-between">
+                    <Col span={9}>
+                      <InputNumber
+                        min={minPrice}
+                        max={maxPrice}
+                        value={priceStart}
+                        onChange={onChangePriceStart}
+                        addonAfter="Cent / kWh"
+                        step={1}
+                      />
+                    </Col>
+                    <Col
+                      span={2}
+                    >
+                      <h3>to</h3>
+                    </Col>
+                    <Col
+                      span={9}
+                    >
+                      <InputNumber
+                        min={minPrice}
+                        max={maxPrice}
+                        value={priceEnd}
+                        onChange={onChangePriceEnd}
+                        addonAfter="Cent / kWh"
+                      />
+                    </Col>
+                  </Row>
                 </Col>
-
-                <Col span={12}>
-                  <InputNumber
-                    min={minPrice}
-                    max={maxPrice}
-                    value={priceEnd}
-                    onChange={onChangePriceEnd}
-                    addonAfter="Cent / kWh"
-                  />
+              </Row>
+              <Row className={styles.filter}>
+                <Col span={24}>
+                  <h3>Type</h3>
+                  <Row>
+                    <Col span={12}>
+                      <Checkbox.Group
+                        options={energyOptions}
+                        onChange={(e) =>
+                          setAcceptedEnergyTypes(e as EnergyTypes[])}
+                        value={acceptedEnergyTypes}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Col>
-          </Row>
-
-
-          <Row>
-            <Col span={12}>
-              <h3>Type</h3>
-            </Col>
-
-            <Col span={12}>
-              <Checkbox.Group
-                options={energyOptions}
-                onChange={(e) => setAcceptedEnergyTypes(e as EnergyTypes[])}
-                value={acceptedEnergyTypes}
-              />
-            </Col>
-          </Row>
-        </Col>
-
-        <Col span={12}>
-          <Row>
             <Col span={12}>
               <h3>Consumption</h3>
-            </Col>
-            <Col span={12}>
               <Row>
-                <Col span={12}>
-                  <h3>Employees</h3>
+                <Col span={24}>
+                  <Row justify="space-between">
+                    <Col>
+                      <UserOutlined style={{ fontSize: '150%' }} />
+                    </Col>
+                    <Col span={9}>
+                      <Slider
+                        min={1}
+                        max={maxEmployees}
+                        value={nrEmpolyees}
+                        onChange={onChangeEmployees}
+                      />
+                    </Col>
+                    <Col >
+                      <TeamOutlined style={{ fontSize: '150%' }} />
+                    </Col>
+                    <Col span={5}>
+                      <InputNumber
+                        min={1}
+                        max={maxEmployees}
+                        value={nrEmpolyees}
+                        onChange={onChangeEmployees}
+                        addonAfter="Employees"
+                      />
+                    </Col>
+                  </Row>
+                  <Divider> OR </Divider>
+                  <Row justify="space-between">
+                    Yearly Consumption
+                    <InputNumber
+                      min={0}
+                      max={maxCapacity}
+                      value={yearlyConsumption}
+                      onChange={setYearlyConsumption}
+                      addonAfter="kWh"
+                    />
+                  </Row>
                 </Col>
-                <Col span={12}>
-                  <InputNumber
-                    min={1}
-                    max={maxEmployees}
-                    value={nrEmpolyees}
-                    onChange={onChangeEmployees}
-                  />
-                </Col>
-              </Row>
-              <Row justify="space-between">
-                <Col>
-                  <UserOutlined style={{ fontSize: '150%' }} />
-                </Col>
-                <Col flex="auto">
-                  <Slider
-                    min={1}
-                    max={maxEmployees}
-                    value={nrEmpolyees}
-                    onChange={onChangeEmployees}
-                  />
-                </Col>
-                <Col >
-                  <TeamOutlined style={{ fontSize: '150%' }} />
-                </Col>
-              </Row>
-
-              <Divider> OR </Divider>
-              <Row justify="space-between">
-                Yearly Consumption
-                <InputNumber
-                  min={0}
-                  max={maxCapacity}
-                  value={yearlyConsumption}
-                  onChange={setYearlyConsumption}
-                  addonAfter="kWh"
-                />
               </Row>
             </Col>
           </Row>
+          <Divider></Divider>
+          <Row justify='space-evenly'>
+            <Button
+              type="primary"
+              onClick={reset}
+            >Reset
+            </Button>
+            <Button
+              type="primary"
+              onClick={filterOffers}
+            >
+              Find
+            </Button>
+          </Row>
         </Col>
       </Row>
-      <Row justify="space-evenly">
-        <Button
-          type="primary"
-          onClick={reset}
-        >Reset
-        </Button>
-        <Button
-          type="primary"
-          onClick={filterOffers}
-        >
-          Find
-        </Button>
-      </Row>
+
       <Divider />
       <div>
         <p>Showing {offers.length} PPA offerings</p>
