@@ -1,7 +1,6 @@
 export const ownerValidator = (name: string) => {
-  console.log('Check Owner');
   if (name === undefined || name.length < 3) {
-    return Promise.reject(new Error('Invalid Name'));
+    return Promise.reject(new Error('Please enter a valid name'));
   } else {
     return Promise.resolve();
   }

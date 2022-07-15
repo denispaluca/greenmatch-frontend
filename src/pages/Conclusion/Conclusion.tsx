@@ -36,6 +36,7 @@ import { PowerPlant, PPADurations } from '../../types/powerplant';
 import OfferProvider from '../../services/api/OfferProvider';
 import UserDetailsProvider from '../../services/api/userDetailsProvider';
 import { UserInformation } from '../../types/user';
+import { ownerValidator } from '../../validators/accountOwner';
 
 const { Step } = Steps;
 const LINK_CONSUMER_DASHBOARD = '/offers';
@@ -438,7 +439,11 @@ export function Conclusion() {
                   label="Account Owner"
                   name="owner"
                   rules={[
-                    { required: true, message: 'Please input the account owner!' },
+                    {
+                      validator: (_, value) => {
+                        return ownerValidator(value);
+                      },
+                    },
                   ]}
                 >
                   <Input
