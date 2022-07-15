@@ -1,4 +1,4 @@
-import { Button, Progress, Table } from 'antd';
+import { Button, Progress, Row, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -12,15 +12,20 @@ interface OffersTableProps {
 const columns: ColumnType<Offer>[] = [
   {
     title: 'Logo',
+    width: '10%',
     dataIndex: 'supplierImageUrl',
-    render: (value) => <img
-      src={value}
-      width={100}
-      alt="logo"
-    />,
+    render: (value) =>
+      <Row justify='center'>
+        <img
+          src={value}
+          width={100}
+          alt="logo"
+        />
+      </Row>,
   },
   {
     title: 'Powerplant Infos',
+    width: '30%',
     dataIndex: 'companyName',
     sorter: (a, b) => a.supplierName.localeCompare(b.supplierName),
     render: (v, offer) =>
@@ -32,7 +37,7 @@ const columns: ColumnType<Offer>[] = [
       </>,
   },
   {
-    width: 300,
+    width: '30%',
     title: 'Capacity',
     render: (v, offer) =>
       <>
@@ -42,25 +47,31 @@ const columns: ColumnType<Offer>[] = [
             '100%': '#87d068',
           }}
           percent={Math.round(
-            (1 - offer.availableCapacity / offer.capacity) * 10000) / 100}
+            (offer.availableCapacity / offer.capacity) * 10000) / 100}
         />
         {offer.availableCapacity} kWh Left
       </>,
   },
   {
     title: 'Price',
+    width: '15%',
     dataIndex: 'price',
     defaultSortOrder: 'ascend',
     sorter: (a, b) => a.price - b.price,
     render: (v, offer) =>
       <>
-        {offer.price} Cent/kWh
+        <Row justify='center'>
+          {offer.price} Cent/kWh
+        </Row>
         <br />
-        <EnergyTypeDisplay
-          type={offer.energyType}
-          size={'25'}
-        />
-      </>,
+        <Row justify='center'>
+          <EnergyTypeDisplay
+            type={offer.energyType}
+            size={'25'}
+          />
+        </Row>
+      </>
+    ,
   },
 ];
 
@@ -70,11 +81,13 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
     title: 'PPA Conclusion',
     render: (value, offer) => {
       return (
-        <Button
-          type="primary"
-          onClick={() => navigate(`/offers/${offer._id}`)}
-        >Continue
-        </Button>
+        <Row justify='center'>
+          <Button
+            type="primary"
+            onClick={() => navigate(`/offers/${offer._id}`)}
+          >Continue
+          </Button>
+        </Row>
       );
     },
   };
