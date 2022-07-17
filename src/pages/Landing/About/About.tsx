@@ -17,7 +17,7 @@ const About: React.FC = () => {
         </ul>
         <Row justify="center">
           <Card
-            style={{ marginTop: 40, width: 600, border: '0px' }}
+            style={{ marginTop: 40, width: 500, border: '0px' }}
             cover={
               <img
                 alt="PPA Deal"

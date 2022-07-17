@@ -21,21 +21,6 @@ const Footer: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [title, setTitle] = useState('');
 
-  const showImprintModal = () => {
-    setTitle('Imprint');
-    setIsModalVisible(true);
-  };
-
-  const showPrivacyModal = () => {
-    setTitle('Privacy Policy');
-    setIsModalVisible(true);
-  };
-
-  const showTermsModal = () => {
-    setTitle('Terms of Use');
-    setIsModalVisible(true);
-  };
-
   const handleOk = () => {
     setIsModalVisible(false);
   };
@@ -43,6 +28,11 @@ const Footer: React.FC = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  function showModal(title: string) {
+    setTitle(title);
+    setIsModalVisible(true);
+  }
 
   return (
     <>
@@ -60,21 +50,21 @@ const Footer: React.FC = () => {
           <ul>
             <li className="nav-item">
               <span
-                onClick={showImprintModal}
+                onClick={() => showModal('Imprint')}
               >
                 Imprint
               </span>
             </li>
             <li className="nav-item">
               <span
-                onClick={showPrivacyModal}
+                onClick={() => showModal('Privacy Policy')}
               >
                 Privacy Policy
               </span>
             </li>
             <li className="nav-item">
               <span
-                onClick={showTermsModal}
+                onClick={() => showModal('Terms of Use')}
               >
                 Terms of Use
               </span>

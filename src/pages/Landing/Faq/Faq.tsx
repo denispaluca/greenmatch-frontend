@@ -1,14 +1,39 @@
+/* eslint-disable max-len */
 import { Collapse } from 'antd';
 import React from 'react';
 import styles from './Faq.module.scss';
 
 const Faq: React.FC = () => {
   const { Panel } = Collapse;
-  const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
+  const ppaDefinition =
+    <div style={{ paddingLeft: 8 }}>
+      <ul>
+        <li>A way to directly sell energy between a power producer and a consumer</li>
+        <li>A long-term electricity supply agreement </li>
+        <li>A contract which defines the amount of electricity to be supplied, negotiated prices, accounting, and penalties for non-compliance</li>
+      </ul>
+    </div>
+    ;
+
+  const ppaAdvantage =
+    <div style={{ paddingLeft: 8 }}>
+      <ul>
+        <li>Protection against the risk of fluctuating energy prices through fixed electricity rates</li>
+        <li>One of the fastest ways to reach sustainability goals</li>
+        <li>PPAs add new renewable energy to the power grid.</li>
+      </ul>
+    </div>
+    ;
+
+  const greenmatchFees =
+    <div style={{ paddingLeft: 24, color: '#5A5A5A' }}>
+      Buyers will be charged monthly via SEPA direct debit by GreenMatch in
+      order to pay for their concluded PPA conctract. Upon receipt of payment,
+      GreenMatch will take a 1.5% fee for providing its service. Suppliers will
+      thus receive in total 98.5% of the PPAs transaction volume.
+    </div>
+    ;
+
   return (
     <div
       className={styles.faq}
@@ -19,29 +44,29 @@ const Faq: React.FC = () => {
         <Collapse
           defaultActiveKey={['1']}
           ghost
-          style={{ fontSize: '1rem', color: 'red' }}
+          style={{ fontSize: '1rem' }}
         >
           <Panel
-            header="What is a Power Purchase Agreement (PPA)?"
+            header={<div style={{ color: '#5A5A5A' }}>What is a Power Purchase Agreement (PPA)?</div>}
             key="1"
           >
-            <p>{text}</p>
+            <p>{ppaDefinition}</p>
           </Panel>
           <Panel
             // eslint-disable-next-line max-len
-            header="Why should I buy a PPA instead of closing a normal energy contract?"
+            header={<div style={{ color: '#5A5A5A' }}>Why should I buy a green energy PPA for my company?</div>}
             key="2"
           >
-            <p>{text}</p>
+            <p>{ppaAdvantage}</p>
           </Panel>
           <Panel
-            header="How is GreenMatch earning money?"
+            header={<div style={{ color: '#5A5A5A' }}>How is GreenMatch earning money?</div>}
             key="3"
           >
-            <p>{text}</p>
-          </Panel>
-        </Collapse>
-      </div>
+            <p>{greenmatchFees}</p>
+          </Panel >
+        </Collapse >
+      </div >
     </div >
   );
 };

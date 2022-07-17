@@ -38,18 +38,20 @@ const columns: ColumnType<Offer>[] = [
   },
   {
     width: '30%',
-    title: 'Capacity',
+    title: 'Remaining Capacity',
     render: (v, offer) =>
       <>
-        <Progress
-          strokeColor={{
-            '0%': '#108ee9',
-            '100%': '#87d068',
-          }}
-          percent={Math.round(
-            (offer.availableCapacity / offer.capacity) * 10000) / 100}
-        />
-        {offer.availableCapacity} kWh Left
+        <div style={{ width: '95%' }}>
+          <Progress
+            strokeColor={{
+              '0%': '#108ee9',
+              '100%': '#87d068',
+            }}
+            percent={Math.round(
+              (offer.availableCapacity / offer.capacity) * 10000) / 100}
+          />
+          {offer.availableCapacity} kWh Left
+        </div>
       </>,
   },
   {

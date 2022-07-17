@@ -460,7 +460,7 @@ export function Conclusion() {
             {(isLoading) ? <Spin indicator={<LoadingOutlined style={{ fontSize: 40 }} />} /> :
               <Alert
                 message={mandateAcceptanceText}
-                type="warning"
+                type="success"
                 style={{ width: '80%' }}
               />}
           </Row>
@@ -498,7 +498,7 @@ export function Conclusion() {
           status="success"
           title="Successfully concluded PPA!"
           subTitle={`Congratulations, your PPA has been concluded. 
-          You will find a corresponding acknowledgement E-Mail in your postbox`}
+          You will find a corresponding acknowledgement email in your postbox`}
           extra={[
             // eslint-disable-next-line react/jsx-key
             <Link to={LINK_CONSUMER_DASHBOARD}>

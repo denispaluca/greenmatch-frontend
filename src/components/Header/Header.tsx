@@ -5,71 +5,66 @@ import { Link, useLocation } from 'react-router-dom';
 import { dispatch, useStoreState } from '../../state';
 import { logout } from '../../services';
 
-const menu = (
-  <Menu
-    items={[
-      {
-        key: '1',
-        label: (
-          <Link to="/login">
-            <div>Login</div>
-          </Link>
-        ),
-      },
-      {
-        key: '2',
-        label: (
-          <Link to="/">
-            <div>Dashboard</div>
-          </Link>
-        ),
-      },
-      {
-        key: '3',
-        label: (
-          <Link to="/user-settings">
-            <div>User Settings</div>
-          </Link>
-        ),
-      },
-      {
-        key: '4',
-        label: (
-          // eslint-disable-next-line
-          <Link to='/login'
-            onClick={async () => {
-              const res = await logout();
-              if (res.ok) {
-                console.log('ok logout');
-                dispatch({
-                  type: 'logout',
-                });
-              }
-            }
-            }
-          >
-            <div
-              onKeyDown={() => null}
-              role="button"
-              tabIndex={0}
-            >
-              Logout
-            </div>
-          </Link>
-        ),
-      },
-    ]}
-  />
-);
-
 export function Header() {
   const email = useStoreState('email');
+  const loginType = useStoreState('loginType');
   const location = useLocation();
   const loggedIn = email !== '';
+  const isBuyer = loginType === 'Buyer';
+
+  const menu = (
+    <Menu
+      items={[
+        {
+          key: '1',
+          disabled: isBuyer,
+          label: (
+            <Link to="/powerplants">
+              <div>Dashboard</div>
+            </Link>
+          ),
+        },
+        {
+          key: '2',
+          label: (
+            <Link to="/offers">
+              <div>Offers</div>
+            </Link>
+          ),
+        },
+        {
+          key: '3',
+          label: (
+            // eslint-disable-next-line
+            <Link to='/'
+              onClick={async () => {
+                const res = await logout();
+                if (res.ok) {
+                  console.log('ok logout');
+                  dispatch({
+                    type: 'logout',
+                  });
+                }
+              }
+              }
+            >
+              <div
+                onKeyDown={() => null}
+                role="button"
+                tabIndex={0}
+              >
+                Logout
+              </div>
+            </Link>
+          ),
+        },
+      ]}
+    />
+  );
 
   return (
     <PageHeader
-      style={{ position: location.pathname === '/landing' ? 'fixed' : 'relative', backgroundColor: 'white', zIndex: 1, width: '100%' }}
+      style={{ position: location.pathname === '/' ? 'fixed' : 'relative', backgroundColor: 'white', zIndex: 1, width: '100%' }}
       title={< Link to="/" > GreenMatch</Link >}
       subTitle="... where your PPA is just one click away!"
       extra={
