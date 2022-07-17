@@ -69,9 +69,8 @@ export function Header() {
       subTitle="... where your PPA is just one click away!"
       extra={
         [
-          /* If user is not logged in, show landing page header,
-else show avatar dropdown menu */
-          !loggedIn ? (
+          // If user is not logged in, show landing page header with login btn
+          (!loggedIn && location.pathname === '/') ? (
             <Space>
               <a href="#introduction">Introduction</a>
               <a href="#about">About</a>
@@ -81,20 +80,49 @@ else show avatar dropdown menu */
                 <Link to="/login">Login</Link>
               </Button>
             </Space>
-          ) : (
-            <Dropdown overlay={menu}>
-              {/* eslint-disable-next-line */}
-              <a onClick={(e) => e.preventDefault()}>
-                <Space>
-                  <div>{email}</div>
-                  <Avatar
-                    size="large"
-                    icon={<UserOutlined />}
-                  />
-                </Space>
-              </a>
-            </Dropdown>
-          ),
+          ) :
+            // if user is logged in, show landing page header with dropdown
+            (loggedIn && location.pathname === '/') ? (
+              <Space>
+                <a href="#introduction">Introduction</a>
+                <a href="#about">About</a>
+                <a href="#team">Team</a>
+                <a href="#faq">FAQs</a>
+                <Dropdown overlay={menu}>
+                  {/* eslint-disable-next-line */}
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      <div>{email}</div>
+                      <Avatar
+                        size="large"
+                        icon={<UserOutlined />}
+                      />
+                    </Space>
+                  </a>
+                </Dropdown>
+              </Space>
+            ) :
+              // show dropdown only on pages other than landing page
+              (loggedIn) ? (
+                <Dropdown overlay={menu}>
+                  {/* eslint-disable-next-line */}
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      <div>{email}</div>
+                      <Avatar
+                        size="large"
+                        icon={<UserOutlined />}
+                      />
+                    </Space>
+                  </a>
+                </Dropdown>
+              ) :
+                // else, show only login button
+                (
+                  <Button size={'middle'}>
+                    <Link to="/login">Login</Link>
+                  </Button>
+                ),
         ]}
     />
   );
