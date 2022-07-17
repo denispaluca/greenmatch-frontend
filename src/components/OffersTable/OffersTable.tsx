@@ -2,6 +2,7 @@ import { Button, Progress, Row, Table } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useStoreState } from '../../state';
 import { Offer } from '../../types/offer';
 import { EnergyTypeDisplay } from '../EnergyTypeDisplay/EnergyTypeDisplay';
 
@@ -79,6 +80,9 @@ const columns: ColumnType<Offer>[] = [
 
 const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
   const navigate = useNavigate();
+  const loginType = useStoreState('loginType');
+  const isDisabled = loginType === undefined || loginType === 'Supplier';
+
   const buttonCol: ColumnType<Offer> = {
     title: 'PPA Conclusion',
     render: (value, offer) => {
@@ -87,6 +91,7 @@ const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
           <Button
             type="primary"
             onClick={() => navigate(`/offers/${offer._id}`)}
+            disabled={isDisabled}
           >Continue
           </Button>
         </Row>
