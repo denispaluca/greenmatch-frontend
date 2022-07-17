@@ -29,7 +29,7 @@ const Faq: React.FC = () => {
     <div style={{ paddingLeft: 24, color: '#5A5A5A' }}>
       Buyers will be charged monthly via SEPA direct debit by GreenMatch in
       order to pay for their concluded PPA conctract. Upon receipt of payment,
-      GreenMatch will take a 1.5% fee for providing its service. Suppliers will
+      <b> GreenMatch will take a 1.5% fee for providing its service</b>. Suppliers will
       thus receive in total 98.5% of the PPAs transaction volume.
     </div>
     ;

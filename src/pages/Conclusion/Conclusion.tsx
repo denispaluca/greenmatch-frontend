@@ -14,6 +14,7 @@ import {
   Input,
   Spin,
 } from 'antd';
+import styles from '../SupplierDashboard/SupplierDashboard.module.scss';
 import { RightOutlined, LeftOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -511,7 +512,7 @@ export function Conclusion() {
   }, [step, offerDetails, durationOptions, ppaProps, isLoading]);
 
   return (
-    <>
+    <div className={styles.supplierdashboard}>
       <Row>
         <Col
           span={12}
@@ -533,6 +534,6 @@ export function Conclusion() {
           {conclusionForm}
         </Col>
       </Row>
-    </>
+    </div>
   );
 }
