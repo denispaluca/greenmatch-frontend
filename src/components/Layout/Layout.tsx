@@ -2,6 +2,31 @@ import { Outlet } from 'react-router-dom';
 import { Header } from '../Header/Header';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import { useEffect } from 'react';
+import { Button, notification } from 'antd';
+import { useStoreState } from '../../state';
+import { Notification } from '../../types/notification';
+import NotificationProvider from '../../services/api/NotificationProvider';
+
+const openNotification = (notif: Notification) => {
+  const key = notif._id;
+  const btn = (
+    <Button
+      type="primary"
+      size="small"
+      onClick={() => notification.close(key)}
+    >
+      Mark as read
+    </Button>
+  );
+  notification.open({
+    message: 'PPA Cancelled',
+    description:
+      `PPA with supplier ${notif.supplierName} has been cancelled.`,
+    btn,
+    key,
+  });
+};
 
 export function Layout() {
   /*
@@ -13,6 +38,18 @@ export function Layout() {
   // eslint-disable-next-line max-len
   const stripePromise = loadStripe('pk_test_51LDTGtLY3fwx8Mq44A7wpR1YFpeZmJQpxayq4JSR4FV46W11zHt8i0QDPMPaBJ3NTWFdEfVnTpuUOxoaxFUsEdpK00THi7Wfh9');
 
+  const loginType = useStoreState('loginType');
+
+  useEffect(() => {
+    if (loginType === 'Buyer') {
+      fetchNotifications();
+    }
+  }, [loginType]);
+
+  const fetchNotifications = async () => {
+    const notifcations = await NotificationProvider.list();
+    notifcations.forEach(openNotification);
+  };
 
   return (
     <div>
