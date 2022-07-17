@@ -2,11 +2,12 @@ import { Outlet } from 'react-router-dom';
 import { Header } from '../Header/Header';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Button, notification } from 'antd';
 import { useStoreState } from '../../state';
 import { Notification } from '../../types/notification';
 import NotificationProvider from '../../services/api/NotificationProvider';
+import { io, Socket } from 'socket.io-client';
 
 const openNotification = (notif: Notification) => {
   const key = notif._id;
@@ -42,12 +43,21 @@ export function Layout() {
   const stripePromise = loadStripe('pk_test_51LDTGtLY3fwx8Mq44A7wpR1YFpeZmJQpxayq4JSR4FV46W11zHt8i0QDPMPaBJ3NTWFdEfVnTpuUOxoaxFUsEdpK00THi7Wfh9');
 
   const loginType = useStoreState('loginType');
+  const socket = useRef<Socket | null>(null);
 
   useEffect(() => {
+    if (!socket.current) {
+      socket.current = io('http://localhost:8080', { withCredentials: true });
+
+      socket.current.on('notification', (notif: Notification) => {
+        openNotification(notif);
+      });
+    }
+
     if (loginType === 'Buyer') {
       fetchNotifications();
     }
-  }, [loginType]);
+  }, [loginType, socket]);
 
   const fetchNotifications = async () => {
     const notifcations = await NotificationProvider.list();
