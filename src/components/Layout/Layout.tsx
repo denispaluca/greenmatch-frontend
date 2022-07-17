@@ -14,7 +14,10 @@ const openNotification = (notif: Notification) => {
     <Button
       type="primary"
       size="small"
-      onClick={() => notification.close(key)}
+      onClick={async () => {
+        await NotificationProvider.read(key);
+        notification.close(key);
+      }}
     >
       Mark as read
     </Button>
