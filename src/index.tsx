@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 // import { BrowserRouter } from 'react-router-dom';
-import CustomRouter from './customRoutes/customRouter';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import history from './customRoutes/history';
 
 const root = ReactDOM.createRoot(
@@ -13,9 +13,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <CustomRouter history={history}>
+    <HistoryRouter history={history}>
       <App />
-    </CustomRouter>
+    </HistoryRouter>
   </React.StrictMode>,
 );
 
