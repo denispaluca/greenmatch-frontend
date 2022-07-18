@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
-// import { BrowserRouter } from 'react-router-dom';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import history from './customRoutes/history';
 
