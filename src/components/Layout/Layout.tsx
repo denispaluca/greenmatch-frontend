@@ -29,6 +29,7 @@ const openNotification = (notif: Notification) => {
       `PPA with supplier ${notif.supplierName} has been cancelled.`,
     btn,
     key,
+    duration: 0,
   });
 };
 
