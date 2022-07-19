@@ -25,14 +25,14 @@ const reducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'setLogin': {
       const newState = {
-        ...state, LoginType: action.loginType, email: action.email,
+        ...state, loginType: action.loginType, email: action.email,
       };
       console.log(newState);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newState));
       return newState;
     }
     case 'logout': {
-      const newState = { ...state, LoginType: undefined, email: '' };
+      const newState = { ...state, loginType: undefined, email: '' };
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newState));
       return newState;
     }

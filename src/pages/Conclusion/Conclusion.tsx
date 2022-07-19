@@ -1,5 +1,4 @@
 /* eslint-disable indent */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable max-len */
 import {
   Button,
@@ -14,29 +13,27 @@ import {
   Input,
   Spin,
 } from 'antd';
-import { RightOutlined, LeftOutlined, LoadingOutlined } from '@ant-design/icons';
+import {
+  RightOutlined,
+  LeftOutlined,
+  LoadingOutlined,
+} from '@ant-design/icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ContractDetails } from '../../components';
 import { IbanElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import './IBANelement.css';
-import {
-  EnergyTypes,
-  PowerPlantOffer,
-  PpaContractDetails,
-  UserData,
-} from '../../types';
-import { useStoreState } from '../../state';
+import { PpaContractDetails } from '../../types';
 import { SetupIntentResult } from '@stripe/stripe-js';
 import { createSetupIntent } from '../../services/api/StripeProvider';
 import PPAProvider from '../../services/api/PPAProvider';
 import { Offer, SingleDuration } from '../../types/offer';
-import PowerPlantProvider from '../../services/api/PowerPlantProvider';
-import { PowerPlant, PPADurations } from '../../types/powerplant';
+import { PPADurations } from '../../types/powerplant';
 import OfferProvider from '../../services/api/OfferProvider';
 import UserDetailsProvider from '../../services/api/userDetailsProvider';
 import { UserInformation } from '../../types/user';
 import { ownerValidator } from '../../validators/accountOwner';
+import styles from '../SupplierDashboard/SupplierDashboard.module.scss';
 
 const { Step } = Steps;
 const LINK_CONSUMER_DASHBOARD = '/offers';
@@ -47,11 +44,12 @@ type RadioOptions = {
   disabled?: boolean;
 };
 
-const radioOptionConf: RadioOptions[] = [
+// Unused
+/* const radioOptionConf: RadioOptions[] = [
   { label: '5 Years', value: 5 },
   { label: '10 Years', value: 10 },
   { label: '15 Years', value: 15 },
-];
+]; */
 
 const configuredFilter = {
   amount: 1500,
@@ -237,20 +235,22 @@ export function Conclusion() {
         const iban = elements.getElement(IbanElement);
 
         // confirm setup intent and store iban information from customer
-        const stripeSetupIntent: SetupIntentResult = await stripe.confirmSepaDebitSetup(setupIntent.client_secret, {
-          payment_method: {
-            sepa_debit: iban!,
-            billing_details: {
-              name: owner,
-              email: ppaProps!.buyerEmail,
+        const stripeSetupIntent: SetupIntentResult =
+          await stripe.confirmSepaDebitSetup(setupIntent.client_secret, {
+            payment_method: {
+              sepa_debit: iban!,
+              billing_details: {
+                name: owner,
+                email: ppaProps!.buyerEmail,
+              },
             },
-          },
-        });
+          });
         console.log('Confirmed setup intent: ' + stripeSetupIntent);
 
         if (!stripeSetupIntent.error) {
           // get payment method id
-          const stripePaymentMethod: string = String(stripeSetupIntent.setupIntent.payment_method);
+          const stripePaymentMethod: string =
+            String(stripeSetupIntent.setupIntent.payment_method);
           console.log('Stripe payment method id: ' + stripePaymentMethod);
 
           // create PPA
@@ -454,7 +454,10 @@ export function Conclusion() {
                 <Form.Item
                   label="IBAN"
                   name="iban"
-                  rules={[{ required: true, message: 'Please input your IBAN!' }]}
+                  rules={[{
+                    required: true,
+                    message: 'Please input your IBAN!',
+                  }]}
                 >
                   <IbanElement options={IBAN_ELEMENT_OPTIONS} />
                 </Form.Item>
@@ -462,10 +465,16 @@ export function Conclusion() {
             </Col>
           </Row>
           <Row justify='center'>
-            {(isLoading) ? <Spin indicator={<LoadingOutlined style={{ fontSize: 40 }} />} /> :
+            {(isLoading) ?
+              <Spin
+                indicator={
+                  <LoadingOutlined
+                    style={{ fontSize: 40 }}
+                  />}
+              /> :
               <Alert
                 message={mandateAcceptanceText}
-                type="warning"
+                type="success"
                 style={{ width: '80%' }}
               />}
           </Row>
@@ -503,7 +512,7 @@ export function Conclusion() {
           status="success"
           title="Successfully concluded PPA!"
           subTitle={`Congratulations, your PPA has been concluded. 
-          You will find a corresponding acknowledgement E-Mail in your postbox`}
+          You will find a corresponding acknowledgement email in your postbox`}
           extra={[
             // eslint-disable-next-line react/jsx-key
             <Link to={LINK_CONSUMER_DASHBOARD}>
@@ -516,7 +525,7 @@ export function Conclusion() {
   }, [step, offerDetails, durationOptions, ppaProps, isLoading]);
 
   return (
-    <>
+    <div className={styles.supplierdashboard}>
       <Row>
         <Col
           span={12}
@@ -538,6 +547,6 @@ export function Conclusion() {
           {conclusionForm}
         </Col>
       </Row>
-    </>
+    </div>
   );
 }
