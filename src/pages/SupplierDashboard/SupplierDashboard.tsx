@@ -19,7 +19,6 @@ import {
 } from '../../types/powerplant';
 import styles from './SupplierDashboard.module.scss';
 
-
 const optionArray = [
   {
     value: EnergyType.Solar,

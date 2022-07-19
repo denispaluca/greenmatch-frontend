@@ -32,6 +32,7 @@ import { PPADurations } from '../../types/powerplant';
 import OfferProvider from '../../services/api/OfferProvider';
 import UserDetailsProvider from '../../services/api/userDetailsProvider';
 import { UserInformation } from '../../types/user';
+import { ownerValidator } from '../../validators/accountOwner';
 import styles from '../SupplierDashboard/SupplierDashboard.module.scss';
 
 const { Step } = Steps;
@@ -439,8 +440,9 @@ export function Conclusion() {
                   name="owner"
                   rules={[
                     {
-                      required: true,
-                      message: 'Please input the account owner!',
+                      validator: (_, value) => {
+                        return ownerValidator(value);
+                      },
                     },
                   ]}
                 >

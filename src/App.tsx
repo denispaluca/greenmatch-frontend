@@ -13,6 +13,7 @@ import {
 
 export function App() {
   return (
+
     <Routes>
       <Route element={<Layout />}>
         <Route
@@ -49,6 +50,7 @@ export function App() {
         element={<SupplierRegistration />}
       />
     </Routes>
+
   );
 }
 

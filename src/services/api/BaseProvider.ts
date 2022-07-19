@@ -1,4 +1,7 @@
 import { dispatch } from '../../state';
+import { logout } from '../auth/auth';
+import history from '../../customRoutes/history';
+
 
 // TODO Delete cookie getting after moving to server cookies
 export const request = async (
@@ -16,7 +19,9 @@ export const request = async (
   });
 
   if (response.status === 401) {
+    await logout();
     dispatch({ type: 'logout' });
+    history.push('/login');
   }
 
   return response.json();
