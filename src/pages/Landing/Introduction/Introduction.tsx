@@ -18,7 +18,6 @@ const Introduction: React.FC = () => {
         <p>A B2B marketplace for green, renewable energy PPAs</p>
         <Space>
           <Button
-            size={'large'}
             style={{ width: 300, height: 70, fontSize: '2rem' }}
             ghost
           >

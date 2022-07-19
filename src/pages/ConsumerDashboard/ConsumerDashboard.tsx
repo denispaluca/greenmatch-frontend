@@ -8,7 +8,12 @@ import {
   Divider, Slider, Button,
 } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { TeamOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  SearchOutlined,
+  TeamOutlined,
+  UndoOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { OffersTable } from '../../components';
 import { EnergyTypes, PPADuration } from '../../types';
 import OfferProvider from '../../services/api/OfferProvider';
@@ -45,7 +50,7 @@ const encodeEnergyType = (acceptedTypes: EnergyTypes[]) => {
   return res;
 };
 
-const YEARLY_MWH_PER_EMPLOYEE = 4;
+const YEARLY_KWH_PER_EMPLOYEE = 2500;
 
 const ConsumerDashboard: React.FC = () => {
   const [duration, setDuration] = useState<PPADuration>();
@@ -122,10 +127,10 @@ const ConsumerDashboard: React.FC = () => {
     setPriceEnd(value);
   };
 
-  const maxEmployees = Math.floor(maxCapacity / YEARLY_MWH_PER_EMPLOYEE);
+  const maxEmployees = Math.floor(maxCapacity / YEARLY_KWH_PER_EMPLOYEE);
   const onChangeEmployees = (value: number) => {
     setNrEmpolyees(value);
-    setYearlyConsumption(value * YEARLY_MWH_PER_EMPLOYEE);
+    setYearlyConsumption(value * YEARLY_KWH_PER_EMPLOYEE);
   };
 
   const reset = () => {
@@ -141,7 +146,7 @@ const ConsumerDashboard: React.FC = () => {
     <>
       <div className={styles.filter}>
         <Row>
-          <div className={styles.text}>
+          <div className={styles.headline}>
             <h2>Find a suitable PPA partner</h2>
           </div>
         </Row>
@@ -265,11 +270,17 @@ const ConsumerDashboard: React.FC = () => {
               <Button
                 type="primary"
                 onClick={reset}
+                icon={<UndoOutlined />}
+                shape="round"
+                size='large'
               >Reset
               </Button>
               <Button
                 type="primary"
                 onClick={filterOffers}
+                icon={<SearchOutlined />}
+                shape="round"
+                size='large'
               >
                 Find
               </Button>
@@ -279,7 +290,7 @@ const ConsumerDashboard: React.FC = () => {
       </div>
 
       <div className={styles.text}>
-        <p>Showing {offers.length} PPA offerings</p>
+        Showing {offers.length} PPA offerings
       </div>
       <OffersTable offers={offers} />
     </>);
