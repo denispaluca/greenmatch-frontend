@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import { Menu, Avatar, Dropdown, PageHeader, Space, Button } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Menu, Avatar, Dropdown, PageHeader, Space, Button, Divider } from 'antd';
+import { BookOutlined, DashboardOutlined, PoweroffOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
 import { dispatch, useStoreState } from '../../state';
 import { logout } from '../../services';
@@ -20,7 +20,7 @@ export function Header() {
           disabled: isBuyer,
           label: (
             <Link to="/powerplants">
-              <div>Dashboard</div>
+              <Space><DashboardOutlined /><div>Dashboard</div></Space>
             </Link>
           ),
         },
@@ -28,7 +28,7 @@ export function Header() {
           key: '2',
           label: (
             <Link to="/offers">
-              <div>Offers</div>
+              <Space><BookOutlined /><div>Offers</div></Space>
             </Link>
           ),
         },
@@ -53,7 +53,7 @@ export function Header() {
                 role="button"
                 tabIndex={0}
               >
-                Logout
+                <Space><PoweroffOutlined />Logout</Space>
               </div>
             </Link>
           ),
@@ -76,7 +76,10 @@ export function Header() {
               <a href="#about">About</a>
               <a href="#team">Team</a>
               <a href="#faq">FAQs</a>
-              <Button size={'middle'}>
+              <Divider type="vertical" />
+              <Button
+                size={'middle'}
+              >
                 <Link to="/login">Login</Link>
               </Button>
             </Space>
@@ -88,6 +91,7 @@ export function Header() {
                 <a href="#about">About</a>
                 <a href="#team">Team</a>
                 <a href="#faq">FAQs</a>
+                <Divider type="vertical" />
                 <Dropdown overlay={menu}>
                   {/* eslint-disable-next-line */}
                   <a onClick={(e) => e.preventDefault()}>
@@ -119,7 +123,9 @@ export function Header() {
               ) :
                 // else, show only login button
                 (
-                  <Button size={'middle'}>
+                  <Button
+                    size={'middle'}
+                  >
                     <Link to="/login">Login</Link>
                   </Button>
                 ),
