@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom';
 import { Layout } from './components';
 import {
   Dashboard,
-  UserSettings,
   Login,
   Conclusion,
   PowerPlantSettings,
@@ -29,20 +28,12 @@ export function App() {
           element={<PowerPlantSettings />}
         />
         <Route
-          path="user-settings"
-          element={<UserSettings />}
-        />
-        <Route
           path="offers"
           element={<ConsumerDashboard />}
         />
         <Route
           path="offers/:id"
           element={<Conclusion />}
-        />
-        <Route
-          path="landing"
-          element={<Landing />}
         />
         <Route
           path="ppa-overview/:id"

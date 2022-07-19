@@ -1,15 +1,17 @@
 import React from 'react';
-import { Welcome } from './Introduction/Introduction';
+import { Introduction } from './Introduction/Introduction';
 import { Team } from './Team/Team';
 import { About } from './About/About';
+import { Faq } from './Faq/Faq';
 import Footer from './Footer/Footer';
 
 const Landing: React.FC = () => {
   return (
     <>
-      <Welcome />
+      <Introduction />
       <About />
       <Team />
+      <Faq />
       <Footer />
     </>
   );

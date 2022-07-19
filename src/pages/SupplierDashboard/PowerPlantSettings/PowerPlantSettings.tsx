@@ -8,6 +8,7 @@ import {
   Space,
   Spin,
   Switch,
+  Typography,
 } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -17,6 +18,7 @@ import {
   PowerPlantUpdate,
   PPADurations,
 } from '../../../types/powerplant';
+import styles from '../SupplierDashboard.module.scss';
 
 const layout = {
   labelCol: { span: 2 },
@@ -114,95 +116,104 @@ export function PowerPlantSettings() {
 
   return (
     <>
-      <h1>{powerPlant.name}</h1>
-      <Form
-        {...layout}
-        form={form}
-        name="basic"
-      >
-        <Form.Item
-          label="Capacity"
-          initialValue={powerPlant.capacity}
-          name="capacity"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the yearly capacity of the power plant!',
-            },
-          ]}
+      <div className={styles.supplierdashboard}>
+        <h2>{powerPlant.name}</h2>
+        <Typography.Text
+          style={{ paddingBottom: '20px' }}
+          type="warning"
+          ellipsis
         >
-          <InputNumber
-            type="number"
-            onChange={(value) => form.setFieldsValue({ capacity: value })}
-            min={0}
-            addonAfter="kWh / Year"
-          />
-        </Form.Item>
-        <Form.Item
-          label="Current Price"
-          name="currentPrice"
-          initialValue={powerPlant.price}
-          rules={[
-            {
-              required: true,
-              message: 'Please input the current price per kWh!',
-            },
-          ]}
+          Edit the properties of your power plant.
+        </Typography.Text>
+        <Form
+          {...layout}
+          form={form}
+          name="basic"
         >
-          <InputNumber
-            type="number"
-            onChange={(value) => form.setFieldsValue({ currentPrice: value })}
-            min={0}
-            addonAfter="Cent / kWh"
-          />
-        </Form.Item>
-        <Form.Item
-          label="PPA Duration"
-          name="duration"
-          initialValue={decodeDurations(powerPlant.durations)}
-          rules={[
-            {
-              required: true,
-              message: 'Please check the possible PPA durations!',
-            },
-          ]}
-        >
-          <Checkbox.Group options={durationOptions} />
-        </Form.Item>
-        <Form.Item
-          label="Status"
-          name="status"
-        >
-          <Space>
-            <Switch
-              defaultChecked={powerPlant.live}
-              checkedChildren="Online"
-              unCheckedChildren="Offline"
-              onChange={(value) => form.setFieldsValue({ status: value })}
+          <Form.Item
+            label="Capacity"
+            initialValue={powerPlant.capacity}
+            name="capacity"
+            rules={[
+              {
+                required: true,
+                message: 'Please input the yearly capacity of the power plant!',
+              },
+            ]}
+          >
+            <InputNumber
+              type="number"
+              onChange={(value) => form.setFieldsValue({ capacity: value })}
+              min={0}
+              addonAfter="kWh / Year"
             />
-          </Space>
-        </Form.Item>
-        <Form.Item {...tailLayout}>
-          <Space>
-            <Button
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              htmlType="submit"
-              onClick={handleSave}
-            >
-              Save
-            </Button>
-          </Space>
-        </Form.Item>
-      </Form>
+          </Form.Item>
+          <Form.Item
+            label="Current Price"
+            name="currentPrice"
+            initialValue={powerPlant.price}
+            rules={[
+              {
+                required: true,
+                message: 'Please input the current price per kWh!',
+              },
+            ]}
+          >
+            <InputNumber
+              type="number"
+              onChange={(value) => form.setFieldsValue({ currentPrice: value })}
+              min={0}
+              addonAfter="Cent / kWh"
+            />
+          </Form.Item>
+          <Form.Item
+            label="PPA Duration"
+            name="duration"
+            initialValue={decodeDurations(powerPlant.durations)}
+            rules={[
+              {
+                required: true,
+                message: 'Please check the possible PPA durations!',
+              },
+            ]}
+          >
+            <Checkbox.Group options={durationOptions} />
+          </Form.Item>
+          <Form.Item
+            label="Status"
+            name="status"
+          >
+            <Space>
+              <Switch
+                defaultChecked={powerPlant.live}
+                checkedChildren="Online"
+                unCheckedChildren="Offline"
+                onChange={(value) => form.setFieldsValue({ status: value })}
+              />
+            </Space>
+          </Form.Item>
+          <Form.Item {...tailLayout}>
+            <Space>
+              <Button
+                onClick={() => {
+                  navigate(-1);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={handleSave}
+              >
+                Save
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </div>
     </>
   );
 }
 
-export default PowerPlantSettings;
+

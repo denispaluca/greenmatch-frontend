@@ -1,3 +1,4 @@
+import { PlusOutlined } from '@ant-design/icons';
 import {
   Button,
   Modal,
@@ -16,6 +17,7 @@ import {
   PowerPlant,
   PowerPlantCreate,
 } from '../../types/powerplant';
+import styles from './SupplierDashboard.module.scss';
 
 
 const optionArray = [
@@ -92,88 +94,97 @@ export function Dashboard() {
 
   return (
     <>
-      <Row>
-        <Button onClick={showModal}>Add New Power Plant</Button>
-      </Row>
-      <Row>
-        <Typography.Text
-          type="warning"
-          ellipsis
+      <div className={styles.supplierdashboard}>
+        <Row>
+          <Button
+            icon={<PlusOutlined />}
+            type='primary'
+            size='middle'
+            onClick={showModal}
+          >Add New Power Plant
+          </Button>
+        </Row>
+        <Row>
+          <Typography.Text
+            style={{ paddingTop: '20px', paddingBottom: '10px' }}
+            type="warning"
+            ellipsis
+          >
+            Click on any of the power plant cards to view the details.
+          </Typography.Text>
+        </Row>
+        {/* https://ant.design/components/form/#components-form-demo-form-in-modal */}
+        <Modal
+          title="Add New Power Plant"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
         >
-          Click on any of the power plant cards to view the details.
-        </Typography.Text>
-      </Row>
-      {/* https://ant.design/components/form/#components-form-demo-form-in-modal */}
-      <Modal
-        title="Add New Power Plant"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          name="form_in_modal"
-          initialValues={{ modifier: 'public' }}
-        >
-          <Form.Item
-            name="name"
-            label="Name"
-            rules={[
-              {
-                required: true,
-                message: 'Please input the name of the power plant!',
-              },
-            ]}
+          <Form
+            form={form}
+            layout="vertical"
+            name="form_in_modal"
+            initialValues={{ modifier: 'public' }}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="location"
-            label="Location"
-            rules={[
-              {
-                required: true,
-                message: 'Please input the location of the power plant!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="type"
-            label="Type"
-            rules={[
-              {
-                required: true,
-                message: 'Please input the type of the power plant!',
-              },
-            ]}
-          >
-            <Cascader
-              placeholder="Please select"
-              options={optionArray}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
-      <List
-        grid={{ gutter: 16, column: 3 }}
-        dataSource={powerPlants}
-        pagination={{
-          onChange: (page) => {
-            console.log(page);
-          },
-          pageSize: 6,
-          showSizeChanger: false,
-          hideOnSinglePage: true,
-        }}
-        renderItem={(item) => (
-          <List.Item>
-            <PowerPlantCard powerPlant={item} />
-          </List.Item>
-        )}
-      />
+            <Form.Item
+              name="name"
+              label="Name"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input the name of the power plant!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="location"
+              label="Location"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input the location of the power plant!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="type"
+              label="Type"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input the type of the power plant!',
+                },
+              ]}
+            >
+              <Cascader
+                placeholder="Please select"
+                options={optionArray}
+              />
+            </Form.Item>
+          </Form>
+        </Modal>
+        <List
+          grid={{ gutter: 32, column: 3 }}
+          dataSource={powerPlants}
+          pagination={{
+            onChange: (page) => {
+              console.log(page);
+            },
+            pageSize: 6,
+            showSizeChanger: false,
+            hideOnSinglePage: true,
+          }}
+          renderItem={(item) => (
+            <List.Item>
+              <PowerPlantCard powerPlant={item} />
+            </List.Item>
+          )}
+        />
+      </div>
     </>
   );
 }

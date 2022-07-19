@@ -87,7 +87,7 @@ const PPAOverView: FunctionComponent = () => {
       .catch((error) => {
         console.log('Failed to fetch PPA List of Powerplant', error);
       });
-  }, [params]);
+  }, [params, ppaToCancel]);
 
   return (
     <div>
