@@ -19,7 +19,8 @@ export function PowerPlantCard({ powerPlant }: PowerPlantProps) {
   return (
     <Card
       style={{ borderRadius: '10px', overflow: 'hidden' }}
-      headStyle={{ fontWeight: '200' }}
+      // can be used to change font size of title
+      headStyle={{}}
       hoverable
       onClick={(event) => {
         navigate('/ppa-overview/' + powerPlant._id);

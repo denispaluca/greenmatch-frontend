@@ -275,9 +275,9 @@ const ConsumerDashboard: React.FC = () => {
                   type="default"
                   onClick={reset}
                   icon={<UndoOutlined />}
-                  shape="round"
+                  shape="circle"
                   size='large'
-                >Reset
+                >
                 </Button>
                 <Button
                   type="primary"
