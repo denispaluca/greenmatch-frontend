@@ -47,6 +47,10 @@ export function Layout() {
   const socket = useRef<Socket | null>(null);
 
   useEffect(() => {
+    if (loginType !== 'Buyer') {
+      return;
+    }
+
     if (!socket.current) {
       socket.current = io('http://localhost:8080', { withCredentials: true });
 
@@ -55,9 +59,7 @@ export function Layout() {
       });
     }
 
-    if (loginType === 'Buyer') {
-      fetchNotifications();
-    }
+    fetchNotifications();
   }, [loginType, socket]);
 
   const fetchNotifications = async () => {
