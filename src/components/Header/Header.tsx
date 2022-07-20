@@ -65,8 +65,19 @@ export function Header() {
   return (
     <PageHeader
       style={{ position: location.pathname === '/' ? 'fixed' : 'relative', backgroundColor: 'white', zIndex: 1, width: '100%' }}
-      title={< Link to="/" > GreenMatch</Link >}
-      subTitle="... where your PPA is just one click away!"
+      title={
+        < Link to="/" >
+          <div
+            style={{
+              color: '#28dead',
+              fontWeight: '900',
+              textDecoration: 'underline',
+              textDecorationThickness: '5px',
+            }}
+          >
+            GreenMatch
+          </div>
+        </ Link >}
       extra={
         [
           // If user is not logged in, show landing page header with login btn
@@ -79,6 +90,7 @@ export function Header() {
               <Divider type="vertical" />
               <Button
                 size={'middle'}
+                type='primary'
               >
                 <Link to="/login">Login</Link>
               </Button>
@@ -98,7 +110,7 @@ export function Header() {
                     <Space>
                       <div>{email}</div>
                       <Avatar
-                        size="large"
+                        size='default'
                         icon={<UserOutlined />}
                       />
                     </Space>
@@ -114,7 +126,7 @@ export function Header() {
                     <Space>
                       <div>{email}</div>
                       <Avatar
-                        size="large"
+                        size='default'
                         icon={<UserOutlined />}
                       />
                     </Space>
@@ -125,6 +137,7 @@ export function Header() {
                 (
                   <Button
                     size={'middle'}
+                    type='primary'
                   >
                     <Link to="/login">Login</Link>
                   </Button>

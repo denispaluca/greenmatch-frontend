@@ -5,10 +5,15 @@ import {
   CheckboxOptionType,
   InputNumber,
   Checkbox,
-  Divider, Slider, Button,
+  Divider, Slider, Button, Space,
 } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { TeamOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  SearchOutlined,
+  TeamOutlined,
+  UndoOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { OffersTable } from '../../components';
 import { EnergyTypes, PPADuration } from '../../types';
 import OfferProvider from '../../services/api/OfferProvider';
@@ -45,7 +50,7 @@ const encodeEnergyType = (acceptedTypes: EnergyTypes[]) => {
   return res;
 };
 
-const YEARLY_MWH_PER_EMPLOYEE = 4;
+const YEARLY_KWH_PER_EMPLOYEE = 2500;
 
 const ConsumerDashboard: React.FC = () => {
   const [duration, setDuration] = useState<PPADuration>();
@@ -122,10 +127,10 @@ const ConsumerDashboard: React.FC = () => {
     setPriceEnd(value);
   };
 
-  const maxEmployees = Math.floor(maxCapacity / YEARLY_MWH_PER_EMPLOYEE);
+  const maxEmployees = Math.floor(maxCapacity / YEARLY_KWH_PER_EMPLOYEE);
   const onChangeEmployees = (value: number) => {
     setNrEmpolyees(value);
-    setYearlyConsumption(value * YEARLY_MWH_PER_EMPLOYEE);
+    setYearlyConsumption(value * YEARLY_KWH_PER_EMPLOYEE);
   };
 
   const reset = () => {
@@ -141,7 +146,7 @@ const ConsumerDashboard: React.FC = () => {
     <>
       <div className={styles.filter}>
         <Row>
-          <div className={styles.text}>
+          <div className={styles.headline}>
             <h2>Find a suitable PPA partner</h2>
           </div>
         </Row>
@@ -204,7 +209,9 @@ const ConsumerDashboard: React.FC = () => {
                   <Col span={24}>
                     <h3>Type</h3>
                     <Row>
-                      <Col span={12}>
+                      <Col
+                        span={12}
+                      >
                         <Checkbox.Group
                           options={energyOptions}
                           onChange={(e) =>
@@ -217,8 +224,8 @@ const ConsumerDashboard: React.FC = () => {
                 </Row>
               </Col>
               <Col span={12}>
-                <h3>Consumption</h3>
-                <Row>
+                <Row className={styles.filterrow}>
+                  <h3>Consumption</h3>
                   <Col span={24}>
                     <Row justify="space-between">
                       <Col>
@@ -245,7 +252,8 @@ const ConsumerDashboard: React.FC = () => {
                         />
                       </Col>
                     </Row>
-                    <Divider> OR </Divider>
+                    <Divider><div className={styles.filterrow}>OR</div>
+                    </Divider>
                     <Row justify="space-between">
                       Yearly Consumption
                       <InputNumber
@@ -261,25 +269,34 @@ const ConsumerDashboard: React.FC = () => {
               </Col>
             </Row>
 
-            <Row justify='space-evenly'>
-              <Button
-                type="primary"
-                onClick={reset}
-              >Reset
-              </Button>
-              <Button
-                type="primary"
-                onClick={filterOffers}
-              >
-                Find
-              </Button>
+            <Row justify='center'>
+              <Space>
+                <Button
+                  type="default"
+                  onClick={reset}
+                  icon={<UndoOutlined />}
+                  shape="circle"
+                  size='large'
+                >
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={filterOffers}
+                  icon={<SearchOutlined />}
+                  shape="round"
+                  size='large'
+                  style={{ width: 200 }}
+                >
+                  Find
+                </Button>
+              </Space>
             </Row>
           </Col>
         </Row>
       </div>
 
       <div className={styles.text}>
-        <p>Showing {offers.length} PPA offerings</p>
+        Showing {offers.length} PPA offerings
       </div>
       <OffersTable offers={offers} />
     </>);

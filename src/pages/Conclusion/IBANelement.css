@@ -5,7 +5,6 @@
 * These classes are added to your Stripe Element by default.
 * You can override these classNames by using the options passed
 * to the IbanElement component.
-* https://stripe.com/docs/js/elements_object/create_element?type=iban#elements_create-options-classes
 */
 
 .StripeElement {
@@ -16,7 +15,6 @@
   border-radius: 4px;
   box-shadow: 0 1px 3px 0 #e6ebf1;
   color: #32325d;
-  transition: box-shadow 150ms ease;
   transition: box-shadow 150ms ease;
 }
 
