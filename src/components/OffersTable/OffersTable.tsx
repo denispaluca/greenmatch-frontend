@@ -81,7 +81,7 @@ const columns: ColumnType<Offer>[] = [
 const OffersTable: React.FC<OffersTableProps> = ({ offers }) => {
   const navigate = useNavigate();
   const loginType = useStoreState('loginType');
-  const isDisabled = loginType === undefined || loginType === 'Supplier';
+  const isDisabled = loginType === null || loginType === 'Supplier';
 
   const buttonCol: ColumnType<Offer> = {
     title: 'PPA Conclusion',
