@@ -63,8 +63,20 @@ export function Header() {
   );
 
   return (
+    /*
+    // Header CSS border
+    borderBottom: 'solid',
+    borderColor: '#f8f8f8',
+    borderWidth: 'thin',
+    */
     <PageHeader
-      style={{ position: location.pathname === '/' ? 'fixed' : 'relative', backgroundColor: 'white', zIndex: 1, width: '100%' }}
+      style={{
+        position: location.pathname === '/' ? 'fixed' : 'relative',
+        backgroundColor: 'white',
+        zIndex: 1,
+        width: '100%',
+        boxShadow: '2px 2px 4px 1px rgba(0, 0, 0, 0.1)',
+      }}
       title={
         < Link to="/" >
           <div
