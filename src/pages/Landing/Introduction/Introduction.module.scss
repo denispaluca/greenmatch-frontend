@@ -28,6 +28,14 @@
   margin: auto;
 }
 
+.introduction .offers {
+  color: white;
+}
+
+.introduction .offers:hover {
+  text-decoration: underline;
+}
+
 .introduction p:first-child {
   font-size: 5rem;
   font-weight: 700;
@@ -35,10 +43,4 @@
 
 .introduction p:nth-child(2) {
   font-size: 2rem;
-}
-
-.introduction span {
-  color: rgb(255 255 255);
-  cursor: pointer;
-  font-size: 1rem;
 }
