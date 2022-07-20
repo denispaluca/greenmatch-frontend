@@ -33,7 +33,7 @@ import OfferProvider from '../../services/api/OfferProvider';
 import UserDetailsProvider from '../../services/api/userDetailsProvider';
 import { UserInformation } from '../../types/user';
 import { ownerValidator } from '../../validators/accountOwner';
-import styles from '../SupplierDashboard/SupplierDashboard.module.scss';
+import styles from '../Conclusion/Conclusion.module.scss';
 
 const { Step } = Steps;
 const LINK_CONSUMER_DASHBOARD = '/offers';

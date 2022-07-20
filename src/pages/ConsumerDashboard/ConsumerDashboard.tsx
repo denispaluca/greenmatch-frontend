@@ -5,7 +5,7 @@ import {
   CheckboxOptionType,
   InputNumber,
   Checkbox,
-  Divider, Slider, Button,
+  Divider, Slider, Button, Space,
 } from 'antd';
 import React, { useState, useEffect } from 'react';
 import {
@@ -209,7 +209,9 @@ const ConsumerDashboard: React.FC = () => {
                   <Col span={24}>
                     <h3>Type</h3>
                     <Row>
-                      <Col span={12}>
+                      <Col
+                        span={12}
+                      >
                         <Checkbox.Group
                           options={energyOptions}
                           onChange={(e) =>
@@ -222,8 +224,8 @@ const ConsumerDashboard: React.FC = () => {
                 </Row>
               </Col>
               <Col span={12}>
-                <h3>Consumption</h3>
-                <Row>
+                <Row className={styles.filterrow}>
+                  <h3>Consumption</h3>
                   <Col span={24}>
                     <Row justify="space-between">
                       <Col>
@@ -250,7 +252,8 @@ const ConsumerDashboard: React.FC = () => {
                         />
                       </Col>
                     </Row>
-                    <Divider> OR </Divider>
+                    <Divider><div className={styles.filterrow}>OR</div>
+                    </Divider>
                     <Row justify="space-between">
                       Yearly Consumption
                       <InputNumber
@@ -266,24 +269,27 @@ const ConsumerDashboard: React.FC = () => {
               </Col>
             </Row>
 
-            <Row justify='space-evenly'>
-              <Button
-                type="primary"
-                onClick={reset}
-                icon={<UndoOutlined />}
-                shape="round"
-                size='large'
-              >Reset
-              </Button>
-              <Button
-                type="primary"
-                onClick={filterOffers}
-                icon={<SearchOutlined />}
-                shape="round"
-                size='large'
-              >
-                Find
-              </Button>
+            <Row justify='center'>
+              <Space>
+                <Button
+                  type="default"
+                  onClick={reset}
+                  icon={<UndoOutlined />}
+                  shape="round"
+                  size='large'
+                >Reset
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={filterOffers}
+                  icon={<SearchOutlined />}
+                  shape="round"
+                  size='large'
+                  style={{ width: 200 }}
+                >
+                  Find
+                </Button>
+              </Space>
             </Row>
           </Col>
         </Row>
