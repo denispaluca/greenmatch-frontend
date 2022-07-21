@@ -242,7 +242,7 @@ const ConsumerDashboard: React.FC = () => {
                       <Col >
                         <TeamOutlined style={{ fontSize: '150%' }} />
                       </Col>
-                      <Col span={5}>
+                      <Col span={8}>
                         <InputNumber
                           min={1}
                           max={maxEmployees}
