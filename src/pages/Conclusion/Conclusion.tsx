@@ -89,7 +89,7 @@ const setPossibleDurations = (durations: PPADurations) => {
 // for ppa !!Never use this date in backend for ppa contract - user input!!
 const getStartDate = () => {
   const date = new Date();
-  return new Date(date.getFullYear(), date.getMonth() + 1, 1);
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth() + 1, 1));
 };
 
 

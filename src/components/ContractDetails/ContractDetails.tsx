@@ -64,7 +64,7 @@ export function ContractDetails(props: any) {
           <p>Starting Date:</p>
         </Col>
         <Col span={props.contentWidth}>
-          <p>{props.ppaData.start.toString()}</p>
+          <p>{props.ppaData.start.toUTCString()}</p>
         </Col>
       </Row>
     </>
