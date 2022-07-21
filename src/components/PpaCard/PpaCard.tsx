@@ -19,9 +19,9 @@ const PpaCard: FunctionComponent<PpaCardProps> =
     // if there is less than one month difference
     const currentDate = new Date();
     const d = new Date(ppa.startDate);
-    // const d = new Date(Date.UTC(a.getFullYear(), a.getMonth(), a.getDay()));
     const endDate = new Date(Date.UTC(d.getFullYear() + ppa.duration,
-      d.getMonth(), d.getDay()));
+      d.getMonth(), d.getDay() - 1));
+    endDate.setSeconds(endDate.getSeconds() - 1);
     const diff = Math.abs(currentDate.getTime() - endDate.getTime());
     const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
     const lessThanOneMonth = diffDays < 30;
