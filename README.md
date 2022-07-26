@@ -1,5 +1,5 @@
 # GreenMatch FrontEnd.
-This is the frontend of the Green Match system.
+This is the frontend of the GreenMatch system.
 
 ## Prerequisites
 - [node](https://nodejs.org/en/): v18.6.0
