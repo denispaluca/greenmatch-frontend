@@ -7,3 +7,15 @@
   background-position: center;
   background-size: cover;
 }
+
+.navigation {
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  padding-top: 2%;
+}
+
+.form h2 {
+  padding-top: 3%;
+  padding-bottom: 2%;
+}

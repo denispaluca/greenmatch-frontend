@@ -106,7 +106,7 @@ export function PowerPlantSettings() {
           price: values.currentPrice,
           durations: encodeDurations(values.duration),
         };
-        await PowerPlantProvider.update(id!, powerPlantUpdate);// putPP(values);
+        await PowerPlantProvider.update(id!, powerPlantUpdate);
         navigate('/powerplants');
       })
       .catch((info) => {
@@ -215,5 +215,3 @@ export function PowerPlantSettings() {
     </>
   );
 }
-
-

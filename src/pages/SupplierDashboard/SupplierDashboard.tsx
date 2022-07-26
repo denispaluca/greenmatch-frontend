@@ -112,7 +112,6 @@ export function Dashboard() {
             Click on any of the power plant cards to view the details.
           </Typography.Text>
         </Row>
-        {/* https://ant.design/components/form/#components-form-demo-form-in-modal */}
         <Modal
           title="Add New Power Plant"
           visible={isModalVisible}
