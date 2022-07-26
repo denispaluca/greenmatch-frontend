@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-idiomatic-order"
+  ],
+  "ignoreFiles": [
+    "node_modules/**",
+    "build/**"
+  ],
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "rules": {
+    "string-quotes": "single",
+    "indentation": 2,
+    "max-line-length": 80,
+    "at-rule-empty-line-before": null,
+    "scss/dollar-variable-empty-line-before": null,
+    "selector-class-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$|^[a-z][a-zA-Z0-9]+$"
+  }
+}

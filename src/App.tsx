@@ -1,18 +1,56 @@
-import {Route, Routes} from "react-router-dom";
-import {Layout} from "./components";
-import Dashboard from "./Dashboard";
+import { Routes, Route } from 'react-router-dom';
+import { Layout } from './components';
+import {
+  Dashboard,
+  Login,
+  Conclusion,
+  PowerPlantSettings,
+  ConsumerDashboard,
+  Landing,
+  PPAOverView,
+  SupplierRegistration,
+} from './pages';
 
-export function App(){
-  return(
+export function App() {
+  return (
+
     <Routes>
-      <Route element={<Layout/>}>
-        <Route path="/" element={<Dashboard/>} />
-        <Route 
-          path="/user-settings" 
-          element={<div>Add a page here</div>}
+      <Route element={<Layout />}>
+        <Route
+          path="/"
+          element={<Landing />}
+        />
+        <Route
+          path="powerplants"
+          element={<Dashboard />}
+        />
+        <Route
+          path="powerplants/:id/edit"
+          element={<PowerPlantSettings />}
+        />
+        <Route
+          path="offers"
+          element={<ConsumerDashboard />}
+        />
+        <Route
+          path="offers/:id"
+          element={<Conclusion />}
+        />
+        <Route
+          path="ppa-overview/:id"
+          element={<PPAOverView />}
         />
       </Route>
-      </Routes>
+      <Route
+        path="login"
+        element={<Login />}
+      />
+      <Route
+        path="register"
+        element={<SupplierRegistration />}
+      />
+    </Routes>
+
   );
 }
 

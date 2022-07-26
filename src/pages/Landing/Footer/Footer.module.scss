@@ -1,0 +1,40 @@
+.footer {
+  width: 100%;
+  padding: 3rem 1rem;
+  background:
+    url('../../../assets/images/backgrounds/green_ninety.png') no-repeat
+    center center/cover;
+  background-color: aquamarine;
+}
+
+.footer .container {
+  display: block;
+  max-width: 1240px;
+  margin: auto;
+  text-align: center;
+}
+
+.footer p {
+  color: rgb(255 255 255);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.footer ul {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+}
+
+.footer ul li {
+  padding: 1rem;
+}
+
+.footer li span {
+  color: rgb(255 255 255);
+}
+
+.footer li span:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
