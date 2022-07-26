@@ -479,7 +479,7 @@ export function Conclusion() {
   }, [step, offerDetails, durationOptions, ppaProps, isLoading]);
 
   return (
-    <div className={styles.supplierdashboard}>
+    <div className={styles.conclusion}>
       <Row>
         <Col
           span={12}
