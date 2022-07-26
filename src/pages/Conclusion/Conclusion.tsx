@@ -336,7 +336,6 @@ export function Conclusion() {
                 type="text"
                 onClick={handleNext}
               >
-                {' '}
                 Next <RightOutlined />
               </Button>
             </div>
