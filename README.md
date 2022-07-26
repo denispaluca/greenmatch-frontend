@@ -1,12 +1,18 @@
-# Pagemap
+# GreenMatch FrontEnd.
+This is the frontend of the Green Match system.
 
-/ -> Landing Page
-/login -> login Page
+## Prerequisites
+- [node](https://nodejs.org/en/): v18.6.0
+- [npm](https://www.npmjs.com/): v8.11
 
-/powerplants -> Supplier Dashboard
-/powerplants/:id/edit -> Power Plant Settings
+## Setup
+- Change the REACT_APP_API_URL if the backend is running on a different location.
 
-/offers -> Listing of filtered PPAs
-/offers/:id -> Conclusion of PPA
+## Running the project
+1. Run the backend project.
+2. Install all the project dependencies: ```npm install```
+3. Run the project: ```npm start```
 
-/register -> Registration page for new supplier
+## Credentials
+- 
+
