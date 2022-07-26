@@ -18,5 +18,6 @@ This is the frontend of the GreenMatch system.
 ## Credentials
 - MongoDB Atlas: email ```energiesucher@yahoo.com``` password ```B4T#Ly3zM!86```
 - Stripe (use test mode): email ```energiesucher@yahoo.com``` password ```B4T#Ly3zM!86```
+- Yahoo Mail: email ```energiesucher@yahoo.com``` password ```8QYJcRd6KyAZnxw```
 
 
