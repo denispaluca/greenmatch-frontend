@@ -33,7 +33,9 @@ const PpaCard: FunctionComponent<PpaCardProps> =
         className={styles.ppaCard}
         onClick={onClick}
       >
-        <Title level={2}>
+        <Title
+          level={5}
+        >
           PPA: {ppa._id}
           <Divider />
         </Title>
