@@ -25,7 +25,7 @@ const RevenueCard: FunctionComponent<RevenueCardProps> = ({ type, value }) => {
         <Typography.Title
           type={type === 'revenue' ? 'success' : 'danger'}
           ellipsis
-        >{value}
+        >{value.toFixed(2)}
         </Typography.Title>
         <EuroOutlined />
       </div>
