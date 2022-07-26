@@ -19,11 +19,13 @@ const PpaCard: FunctionComponent<PpaCardProps> =
     // if there is less than one month difference
     const currentDate = new Date();
     const d = new Date(ppa.startDate);
-    const endDate = new Date(d.getFullYear() + ppa.duration,
-      d.getMonth(), d.getDay());
+    const endDate = new Date(Date.UTC(d.getFullYear() + ppa.duration,
+      d.getMonth(), d.getDay() - 1));
+    endDate.setSeconds(endDate.getSeconds() - 1);
     const diff = Math.abs(currentDate.getTime() - endDate.getTime());
     const diffDays = Math.ceil(diff / (1000 * 3600 * 24));
     const lessThanOneMonth = diffDays < 30;
+
 
     return (
       // eslint-disable-next-line
@@ -84,7 +86,7 @@ const PpaCard: FunctionComponent<PpaCardProps> =
             span={14}
             className={styles.rowGutter}
           >
-            <Text>{ppa.startDate}</Text>
+            <Text>{d.toUTCString()}</Text>
           </Col>
           <Col
             span={10}
@@ -99,7 +101,7 @@ const PpaCard: FunctionComponent<PpaCardProps> =
             <Text type={lessThanOneMonth ? 'danger' : undefined}>
               <Space>
                 <>
-                  {endDate.toString()}
+                  {endDate.toUTCString()}
                   {lessThanOneMonth && (
                     <ExclamationCircleOutlined style={{ color: 'red' }} />
                   )}
