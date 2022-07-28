@@ -155,6 +155,17 @@ export function PowerPlantSettings() {
                 required: true,
                 message: 'Please input the yearly capacity of the power plant!',
               },
+              {
+                validator(_, value) {
+                  if (value < 1 && disabled === false) {
+                    console.log(value);
+                    return Promise.reject(
+                      new Error('Please enter a capacity greater than  0!'));
+                  } else {
+                    return Promise.resolve();
+                  }
+                },
+              },
             ]}
           >
             <InputNumber
@@ -172,6 +183,17 @@ export function PowerPlantSettings() {
               {
                 required: true,
                 message: 'Please input the current price per kWh!',
+              },
+              {
+                validator(_, value) {
+                  if (value < 1 && disabled === false) {
+                    console.log(value);
+                    return Promise.reject(
+                      new Error('Please enter a price greater than  0!'));
+                  } else {
+                    return Promise.resolve();
+                  }
+                },
               },
             ]}
           >
