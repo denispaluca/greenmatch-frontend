@@ -92,8 +92,10 @@ export function PowerPlantSettings() {
 
   const handleSave = () => {
     if (form.getFieldValue('status') === undefined) {
-      /* Has to be set to true or false depending
-      on the status of the power plant stored in the DB */
+      /*
+      * if user did  not toggle the switch, set status property
+      * to the status stored in the DB
+      */
       form.setFieldsValue({ status: powerPlant.live });
     }
     form
@@ -104,7 +106,7 @@ export function PowerPlantSettings() {
           live: values.status,
           capacity: values.capacity,
           price: values.currentPrice,
-          durations: encodeDurations(values.duration),
+          durations: encodeDurations(values.durations),
         };
         await PowerPlantProvider.update(id!, powerPlantUpdate);
         navigate('/powerplants');
@@ -139,11 +141,20 @@ export function PowerPlantSettings() {
                 required: true,
                 message: 'Please input the yearly capacity of the power plant!',
               },
+              /* {
+                validator: (_, value) => {
+                  if (value < 1) {
+                    return Promise.reject(
+                      new Error('Please enter a price greater than  0'));
+                  } else {
+                    Promise.resolve();
+                  }
+                },
+              }, */
             ]}
           >
             <InputNumber
               type="number"
-              onChange={(value) => form.setFieldsValue({ capacity: value })}
               min={0}
               addonAfter="kWh / Year"
             />
@@ -157,18 +168,27 @@ export function PowerPlantSettings() {
                 required: true,
                 message: 'Please input the current price per kWh!',
               },
+              /* {
+                validator: (_, value) => {
+                  if (value < 1) {
+                    return Promise.reject(
+                      new Error('Please enter a price greater than  0'));
+                  } else {
+                    Promise.resolve();
+                  }
+                },
+              }, */
             ]}
           >
             <InputNumber
               type="number"
-              onChange={(value) => form.setFieldsValue({ currentPrice: value })}
               min={0}
               addonAfter="Cent / kWh"
             />
           </Form.Item>
           <Form.Item
-            label="PPA Duration"
-            name="duration"
+            label="PPA Durations"
+            name="durations"
             initialValue={decodeDurations(powerPlant.durations)}
             rules={[
               {
@@ -183,14 +203,11 @@ export function PowerPlantSettings() {
             label="Status"
             name="status"
           >
-            <Space>
-              <Switch
-                defaultChecked={powerPlant.live}
-                checkedChildren="Online"
-                unCheckedChildren="Offline"
-                onChange={(value) => form.setFieldsValue({ status: value })}
-              />
-            </Space>
+            <Switch
+              defaultChecked={powerPlant.live}
+              checkedChildren="Online"
+              unCheckedChildren="Offline"
+            />
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Space>

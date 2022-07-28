@@ -208,7 +208,6 @@ export function Conclusion() {
   const handleBuy = () => {
     paymentForm
       .validateFields()
-      // To do: error handling
       .then(async (values) => {
         setIsLoading(true);
         /*
