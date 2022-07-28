@@ -90,7 +90,7 @@ const PPAOverView: FunctionComponent = () => {
   }, [params, ppaToCancel]);
 
   return (
-    <div>
+    <div className={styles.ppaoverview}>
       <Modal
         title="PPA Terms of Agreement"
         visible={selectedPpa !== undefined}

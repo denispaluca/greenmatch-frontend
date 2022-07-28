@@ -41,8 +41,7 @@ export function Layout() {
   * Make sure to call `loadStripe` outside of a component’s render to avoid
   * recreating the `Stripe` object on every render.
   */
-  // eslint-disable-next-line max-len
-  const stripePromise = loadStripe('pk_test_51LDTGtLY3fwx8Mq44A7wpR1YFpeZmJQpxayq4JSR4FV46W11zHt8i0QDPMPaBJ3NTWFdEfVnTpuUOxoaxFUsEdpK00THi7Wfh9');
+  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK!);
 
   const loginType = useStoreState('loginType');
   useEffect(() => {

@@ -1,4 +1,4 @@
-.supplierdashboard {
+.conclusion {
   width: 100%;
   height: calc(100vh - 72px);
   padding: 20px;
@@ -6,4 +6,16 @@
   background-image: url('../../assets/images/backgrounds/green_ten.png');
   background-position: center;
   background-size: cover;
+}
+
+.navigation {
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  padding-top: 2%;
+}
+
+.form h2 {
+  padding-top: 3%;
+  padding-bottom: 2%;
 }

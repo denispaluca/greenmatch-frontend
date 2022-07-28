@@ -44,13 +44,6 @@ type RadioOptions = {
   disabled?: boolean;
 };
 
-// Unused
-/* const radioOptionConf: RadioOptions[] = [
-  { label: '5 Years', value: 5 },
-  { label: '10 Years', value: 10 },
-  { label: '15 Years', value: 15 },
-]; */
-
 const configuredFilter = {
   amount: 1500,
   duration: 5,
@@ -282,18 +275,13 @@ export function Conclusion() {
       return <div>Loading</div>;
     } else if (step === 0) {
       return (
-        <>
+        <div className={styles.form}>
           <Row justify="center">
-            <Col
-              offset={6}
-              span={12}
-            >
-              <h2>PPA Properties</h2>
-            </Col>
+            <h2>PPA Properties</h2>
           </Row>
           <Row justify="center">
             <Col
-              offset={6}
+              offset={4}
               span={12}
             >
               <Form
@@ -337,46 +325,32 @@ export function Conclusion() {
               </Form>
             </Col>
           </Row>
-          <Row>
-            <Col
-              span={4}
-              offset={4}
-            >
+          <Row justify='center'>
+            <div className={styles.navigation}>
               <Link to={LINK_CONSUMER_DASHBOARD}>
                 <Button type="text">
                   <LeftOutlined /> Listing
                 </Button>
               </Link>
-            </Col>
-            <Col
-              span={4}
-              offset={12}
-            >
               <Button
                 type="text"
                 onClick={handleNext}
               >
-                {' '}
                 Next <RightOutlined />
               </Button>
-            </Col>
+            </div>
           </Row>
-        </>
+        </div>
       );
     } else if (step === 1) {
       return (
-        <>
+        <div className={styles.form}>
           <Row justify="center">
-            <Col
-              offset={6}
-              span={12}
-            >
-              <h2>Confirm Contract Details</h2>
-            </Col>
+            <h2>Confirm Contract Details</h2>
           </Row>
           <Row justify="center">
             <Col
-              offset={6}
+              offset={4}
               span={12}
             >
               <ContractDetails
@@ -386,42 +360,29 @@ export function Conclusion() {
               />
             </Col>
           </Row>
-          <Row>
-            <Col
-              span={4}
-              offset={4}
-            >
+          <Row justify='center'>
+            <div className={styles.navigation}>
               <Button
                 type="text"
                 onClick={() => setStep((prev) => prev - 1)}
               >
                 <LeftOutlined /> Back
               </Button>
-            </Col>
-            <Col
-              span={4}
-              offset={12}
-            >
               <Button
                 type="text"
                 onClick={handleNext}
               >
                 Confirm <RightOutlined />
               </Button>
-            </Col>
+            </div>
           </Row>
-        </>
+        </div>
       );
     } else if (step === 2) {
       return (
-        <>
+        <div className={styles.form}>
           <Row justify="center">
-            <Col
-              offset={6}
-              span={12}
-            >
-              <h2>Payment Details</h2>
-            </Col>
+            <h2>Payment Details</h2>
           </Row>
           <Row justify="center">
             <Col
@@ -478,11 +439,8 @@ export function Conclusion() {
                 style={{ width: '80%' }}
               />}
           </Row>
-          <Row>
-            <Col
-              span={4}
-              offset={4}
-            >
+          <Row justify='center'>
+            <div className={styles.navigation}>
               <Button
                 type="text"
                 onClick={() => setStep((prev) => prev - 1)}
@@ -490,11 +448,7 @@ export function Conclusion() {
               >
                 <LeftOutlined /> Back
               </Button>
-            </Col>
-            <Col
-              span={4}
-              offset={12}
-            >
+
               <Button
                 type="text"
                 onClick={handleBuy}
@@ -502,9 +456,9 @@ export function Conclusion() {
               >
                 Buy <RightOutlined />
               </Button>
-            </Col>
+            </div>
           </Row>
-        </>
+        </div>
       );
     } else {
       return (
@@ -525,7 +479,7 @@ export function Conclusion() {
   }, [step, offerDetails, durationOptions, ppaProps, isLoading]);
 
   return (
-    <div className={styles.supplierdashboard}>
+    <div className={styles.conclusion}>
       <Row>
         <Col
           span={12}
