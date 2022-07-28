@@ -400,6 +400,10 @@ export function Conclusion() {
                   name="owner"
                   rules={[
                     {
+                      required: true,
+                      message: 'Please input an account owner!',
+                    },
+                    {
                       validator: (_, value) => {
                         return ownerValidator(value);
                       },
