@@ -51,6 +51,7 @@ const encodeEnergyType = (acceptedTypes: EnergyTypes[]) => {
 };
 
 const YEARLY_KWH_PER_EMPLOYEE = 2500;
+const DEFAULT_EMPLOYEE_NUMBER = 10;
 
 const ConsumerDashboard: React.FC = () => {
   const [duration, setDuration] = useState<PPADuration>();
@@ -58,8 +59,9 @@ const ConsumerDashboard: React.FC = () => {
   const [priceEnd, setPriceEnd] = useState<number>();
   const [acceptedEnergyTypes, setAcceptedEnergyTypes] =
     useState<EnergyTypes[]>(['solar', 'wind', 'hydro']);
-  const [nrEmpolyees, setNrEmpolyees] = useState(10);
-  const [yearlyConsumption, setYearlyConsumption] = useState(0);
+  const [nrEmpolyees, setNrEmpolyees] = useState(DEFAULT_EMPLOYEE_NUMBER);
+  const [yearlyConsumption, setYearlyConsumption] =
+    useState(DEFAULT_EMPLOYEE_NUMBER * YEARLY_KWH_PER_EMPLOYEE);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100);
   const [maxCapacity, setMaxCapacity] = useState(100000);
@@ -138,8 +140,8 @@ const ConsumerDashboard: React.FC = () => {
     setPriceStart(undefined);
     setPriceEnd(undefined);
     setAcceptedEnergyTypes(['solar', 'wind', 'hydro']);
-    setNrEmpolyees(10);
-    setYearlyConsumption(0);
+    setNrEmpolyees(DEFAULT_EMPLOYEE_NUMBER);
+    setYearlyConsumption(DEFAULT_EMPLOYEE_NUMBER * YEARLY_KWH_PER_EMPLOYEE);
   };
 
   return (
