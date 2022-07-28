@@ -73,12 +73,26 @@ export function PowerPlantSettings() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [powerPlant, setPowerPlant] = useState<PowerPlant>();
+  const [disabled, setDisabled] = useState<boolean>();
 
+  /*
+  * decides wether the switch to change power plant status should be enabled
+  * or not. If price and capacity input > 0 -> enabled
+  */
+  const onInputChange = () => {
+    if (form.getFieldValue('currentPrice') &&
+      form.getFieldValue('capacity') > 0) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  };
 
   useEffect(() => {
     PowerPlantProvider.get(id!)
       .then((pp) => {
         setPowerPlant(pp);
+        onInputChange();
       })
       .catch((error) => {
         console.log('Failed to fetch Power Plant', error);
@@ -141,22 +155,13 @@ export function PowerPlantSettings() {
                 required: true,
                 message: 'Please input the yearly capacity of the power plant!',
               },
-              /* {
-                validator: (_, value) => {
-                  if (value < 1) {
-                    return Promise.reject(
-                      new Error('Please enter a price greater than  0'));
-                  } else {
-                    Promise.resolve();
-                  }
-                },
-              }, */
             ]}
           >
             <InputNumber
               type="number"
-              min={0}
+              min={1}
               addonAfter="kWh / Year"
+              onChange={onInputChange}
             />
           </Form.Item>
           <Form.Item
@@ -168,22 +173,13 @@ export function PowerPlantSettings() {
                 required: true,
                 message: 'Please input the current price per kWh!',
               },
-              /* {
-                validator: (_, value) => {
-                  if (value < 1) {
-                    return Promise.reject(
-                      new Error('Please enter a price greater than  0'));
-                  } else {
-                    Promise.resolve();
-                  }
-                },
-              }, */
             ]}
           >
             <InputNumber
               type="number"
-              min={0}
+              min={1}
               addonAfter="Cent / kWh"
+              onChange={onInputChange}
             />
           </Form.Item>
           <Form.Item
@@ -207,6 +203,7 @@ export function PowerPlantSettings() {
               defaultChecked={powerPlant.live}
               checkedChildren="Online"
               unCheckedChildren="Offline"
+              disabled={disabled}
             />
           </Form.Item>
           <Form.Item {...tailLayout}>
