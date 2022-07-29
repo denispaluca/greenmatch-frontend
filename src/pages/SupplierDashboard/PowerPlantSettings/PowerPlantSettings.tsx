@@ -157,7 +157,7 @@ export function PowerPlantSettings() {
               },
               {
                 validator: (_, value) => {
-                  if (value < 1 && disabled === false) {
+                  if (value < 1) {
                     console.log(value);
                     return Promise.reject(
                       new Error('Please enter a capacity greater than  0!'));
@@ -186,7 +186,7 @@ export function PowerPlantSettings() {
               },
               {
                 validator: (_, value) => {
-                  if (value < 1 && disabled === false) {
+                  if (value < 1) {
                     console.log(value);
                     return Promise.reject(
                       new Error('Please enter a price greater than  0!'));
