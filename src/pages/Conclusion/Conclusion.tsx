@@ -311,6 +311,17 @@ export function Conclusion() {
                   name="amount"
                   rules={[
                     { required: true, message: 'Please specify amount!' },
+                    {
+                      validator: (_, value) => {
+                        if (value > offerDetails.availableCapacity) {
+                          console.log(value);
+                          return Promise.reject(
+                            new Error('Please enter a feasable capacity!'));
+                        } else {
+                          return Promise.resolve();
+                        }
+                      },
+                    },
                   ]}
                 >
                   <InputNumber
