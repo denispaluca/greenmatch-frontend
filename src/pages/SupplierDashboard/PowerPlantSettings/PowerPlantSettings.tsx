@@ -156,7 +156,7 @@ export function PowerPlantSettings() {
                 message: 'Please input the yearly capacity of the power plant!',
               },
               {
-                validator(_, value) {
+                validator: (_, value) => {
                   if (value < 1 && disabled === false) {
                     console.log(value);
                     return Promise.reject(
@@ -185,7 +185,7 @@ export function PowerPlantSettings() {
                 message: 'Please input the current price per kWh!',
               },
               {
-                validator(_, value) {
+                validator: (_, value) => {
                   if (value < 1 && disabled === false) {
                     console.log(value);
                     return Promise.reject(
