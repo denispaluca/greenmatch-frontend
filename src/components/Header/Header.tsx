@@ -1,6 +1,18 @@
-/* eslint-disable max-len */
-import { Menu, Avatar, Dropdown, PageHeader, Space, Button, Divider } from 'antd';
-import { BookOutlined, DashboardOutlined, PoweroffOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  Menu,
+  Avatar,
+  Dropdown,
+  PageHeader,
+  Space,
+  Button,
+  Divider,
+} from 'antd';
+import {
+  BookOutlined,
+  DashboardOutlined,
+  PoweroffOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
 import { dispatch, useStoreState } from '../../state';
 import { logout } from '../../services';

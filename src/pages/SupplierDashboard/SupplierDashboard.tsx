@@ -109,7 +109,7 @@ export function Dashboard() {
             type="warning"
             ellipsis
           >
-            Click on any of the power plant cards to view the details.
+            Click on any of the power plant cards to see the closed PPAs.
           </Typography.Text>
         </Row>
         <Modal

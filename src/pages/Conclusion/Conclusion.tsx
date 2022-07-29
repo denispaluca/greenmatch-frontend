@@ -1,5 +1,4 @@
 /* eslint-disable indent */
-/* eslint-disable max-len */
 import {
   Button,
   Row,
@@ -208,7 +207,6 @@ export function Conclusion() {
   const handleBuy = () => {
     paymentForm
       .validateFields()
-      // To do: error handling
       .then(async (values) => {
         setIsLoading(true);
         /*
@@ -312,6 +310,17 @@ export function Conclusion() {
                   name="amount"
                   rules={[
                     { required: true, message: 'Please specify amount!' },
+                    {
+                      validator: (_, value) => {
+                        if (value > offerDetails.availableCapacity) {
+                          console.log(value);
+                          return Promise.reject(
+                            new Error('Please enter a feasable capacity!'));
+                        } else {
+                          return Promise.resolve();
+                        }
+                      },
+                    },
                   ]}
                 >
                   <InputNumber
@@ -400,6 +409,10 @@ export function Conclusion() {
                   label="Account Owner"
                   name="owner"
                   rules={[
+                    {
+                      required: true,
+                      message: 'Please input an account owner!',
+                    },
                     {
                       validator: (_, value) => {
                         return ownerValidator(value);

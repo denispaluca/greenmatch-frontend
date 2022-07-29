@@ -146,7 +146,7 @@ const PPAOverView: FunctionComponent = () => {
         ellipsis
         className={styles.ppaInfo}
       >
-        Click on any of the PPAs to view the details.
+        Click on any of the PPA cards to view the terms of agreement.
       </Typography.Text>
       <Carousel responsive={responsive}>
         {ppas.map((ppa) => (
